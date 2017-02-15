@@ -1,3 +1,4 @@
+
 # You Don't Know JS: Up & Going  --(罗尧)
 # Chapter 3: Into YDKJS
 
@@ -21,23 +22,32 @@ This critical understanding of "lexical scope" is what we then base our explorat
 
 One important application of closure is the module pattern, as we briefly introduced in this book in Chapter 2. The module pattern is perhaps the most prevalent code organization pattern in all of JavaScript; deep understanding of it should be one of your highest priorities.
 
-## this & Object Prototypes  --(张静)
+## this和对象原型（this & Object Prototypes）  --(张静)
 
 Perhaps one of the most widespread and persistent mistruths about JavaScript is that the `this` keyword refers to the function it appears in. Terribly mistaken.
+也许JavaScript中最常见最持久的错误，就是'this'关键词引用它出现的function。大错特错。（refers to：引用）
 
 The `this` keyword is dynamically bound based on how the function in question is executed, and it turns out there are four simple rules to understand and fully determine `this` binding.
+the function in question：所讨论的function
+'this'关键词基于所讨论的function是如何执行的而动态绑定，结果有四条简单的规则来理解和确定‘this’绑定。
 
 Closely related to the `this` keyword is the object prototype mechanism, which is a look-up chain for properties, similar to how lexical scope variables are found. But wrapped up in the prototypes is the other huge miscue about JS: the idea of emulating (fake) classes and (so-called "prototypal") inheritance.
+与‘this’关键词密切相关的是对象原型机制，这是一条属性查找链，类似于怎样去查找词汇作用域变量。但是在原型中包装是JS的另一巨大失误：模仿类和继承的想法。
 
 Unfortunately, the desire to bring class and inheritance design pattern thinking to JavaScript is just about the worst thing you could try to do, because while the syntax may trick you into thinking there's something like classes present, in fact the prototype mechanism is fundamentally opposite in its behavior.
+不幸的，将类和继承这种设计模式引入js的想法可能是你尝试过的最糟糕的事情，因为这个语法会诱使你认为真的存在类一样的事物，事实上，原型机制从根本上与这种行为相反。(trick into:诱使)
 
 What's at issue is whether it's better to ignore the mismatch and pretend that what you're implementing is "inheritance," or whether it's more appropriate to learn and embrace how the object prototype system actually works. The latter is more appropriately named "behavior delegation."
+问题是，假设你正在用继承，却忽略这种不匹配更好，还是更适合学习了解对象原型系统是怎样工作的。后者更适合命名为“行为委托”。
 
 This is more than syntactic preference. Delegation is an entirely different, and more powerful, design pattern, one that replaces the need to design with classes and inheritance. But these assertions will absolutely fly in the face of nearly every other blog post, book, and conference talk on the subject for the entirety of JavaScript's lifetime.
+这不仅仅是语法偏好。委托是一个完全不同的，更强大的设计模式，它代替了用类和继承进行设计的需要。但是这些断言一定不会考虑到那些在JavaScript整个生命周期中讨论这个主题的几乎所有的博客、书籍和会议（fly in the face of ： 悍然不顾）
 
 The claims I make regarding delegation versus inheritance come not from a dislike of the language and its syntax, but from the desire to see the true capability of the language properly leveraged and the endless confusion and frustration wiped away.
+我对代理与继承的声明并不是因为我对这种语言和语法的不喜欢，而是来自于一个期望，期望看到语言的真正能力被适当地利用以及无穷的混乱和沮丧被消除。
 
 But the case I make regarding prototypes and delegation is a much more involved one than what I will indulge here. If you're ready to reconsider everything you think you know about JavaScript "classes" and "inheritance," I offer you the chance to "take the red pill" (*Matrix* 1999) and check out Chapters 4-6 of the *this & Object Prototypes* title of this series.
+但是我做的这个原型和代表的案例是我想参与的更多的一个。如果你准备重新思考关于你对js中类和继承的认识，我给你提供“选择红色药丸”的机会，(源自黑客帝国：矩阵，1999)，请查阅本系列标题为“this和对象原型”的第四到六章。
 
 ## Types & Grammar  --(翠翠)
 
@@ -107,3 +117,20 @@ We take each important area of focus in the language and dedicate a short but ve
 
 | 单词 | 音标 | 释义 |
 | ---- | ---- | ---- |
+| widespread | [ˈwʌɪdsprɛd] | adj. 普遍的，广泛的；分布广的 |
+| persistent | [pə'sɪst(ə)nt] | adj. 固执的，坚持的；持久稳固的 |
+| dynamically | [dai'næmikəli] | adv. 动态地；充满活力地；不断变化地 |
+| bound | [baʊnd] | adj. 有义务的；必定的；受约束的；装有封面的  vt. 束缚；使跳跃  n. 范围；跳跃  vi. 限制；弹起 |
+| executed | ['eksɪ,kjʊtɪd］ | adj. 已执行的；已生效的 |
+| mechanism | ['mek(ə)nɪz(ə)m] | n. 机制；原理，途径；进程；机械装置；技巧 |
+| lexical | ['leksɪk(ə)l] | adj. 词汇的；[语] 词典的；词典编纂的 |
+| miscue | [mɪs'kjuː] | n. 撞歪；失误  vi. 撞歪；错过提示 |
+| emulate | ['emjʊleɪt] | vt. 仿真；模仿；尽力赶上；同…竞争  n. 仿真；仿效 |
+| syntax | ['sɪntæks] | n. 语法；句法；有秩序的排列 |
+| fundamentally | [fʌndə'mentəlɪ] | adv. 根本地，从根本上；基础地 |
+| embrace | [ɪm'breɪs; em-] | vt. 拥抱；信奉，皈依；包含  vi. 拥抱  n. 拥抱 |
+| delegation | [delɪ'geɪʃ(ə)n] | n. 代表团；授权；委托 |
+| assertions | [ə'sə:ʃən] | n. 断言（assertion的复数）；认定 |
+| versus | ['vɜːsəs] | prep. 对；与...相对；对抗 |
+| leverage | ['liːv(ə)rɪdʒ; 'lev(ə)rɪdʒ] | n. 手段，影响力；杠杆作用；杠杆效率  v. 利用；举债经营 |
+| indulge | [ɪn'dʌldʒ] | vt. 满足；纵容；使高兴；使沉迷于…  vi. 沉溺；满足；放任 |
