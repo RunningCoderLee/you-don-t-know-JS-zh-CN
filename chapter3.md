@@ -79,21 +79,37 @@ The *Async & Performance* title is designed to give you all the tools and skills
 
 ## ES6 & Beyond  --(张润)
 
-No matter how much you feel you've mastered JavaScript to this point, the truth is that JavaScript is never going to stop evolving, and moreover, the rate of evolution is increasing rapidly. This fact is almost a metaphor for the spirit of this series, to embrace that we'll never fully *know* every part of JS, because as soon as you master it all, there's going to be new stuff coming down the line that you'll need to learn.
+No matter how much you feel you've mastered JavaScript to this point, the truth is that JavaScript is never going to stop evolving, and moreover, the rate of evolution is increasing rapidly. The spirit of to embrace that we'll never fully *know* every part of JS, because as soon as you master it all, there's going to be new stuff coming down the line that you'll need to learn.
+
+无论你感觉你已经多大程度上掌握了JavaScript,而事实却是JavaScript从未停止发展的脚步，而且，发展的速度正在逐步增快。心理上必须承认，我们可能永远也不会完全*了解*JS中的每一个部分,因为一旦你掌握了所有JS知识,又会有新的落于纸上的知识需要你掌握。
 
 This title is dedicated to both the short- and mid-term visions of where the language is headed, not just the *known* stuff like ES6 but the *likely* stuff beyond.
 
+这个标题致力于提出对当下最流行的语言的短期和中期的愿景,不仅仅是为了让你*了解*类似于ES6这样的知识,而是要提出一些超前的*有可能*出现的知识。
+
 While all the titles of this series embrace the state of JavaScript at the time of this writing, which is mid-way through ES6 adoption, the primary focus in the series has been more on ES5. Now, we want to turn our attention to ES6, ES7, and ...
+
+尽管本系列的所有标题在编写时都说明了JavaScript的发展现状,即正是ES6被采用的中期,但主旨还是集中在ES5更多一些.当下,我们期望你将目光转移到ES6,ES7上等等
 
 Since ES6 is nearly complete at the time of this writing, *ES6 & Beyond* starts by dividing up the concrete stuff from the ES6 landscape into several key categories, including new syntax, new data structures (collections), and new processing capabilities and APIs. We cover each of these new ES6 features, in varying levels of detail, including reviewing details that are touched on in other books of this series.
 
+既然在写这本书时,ES6已经接近尾声,*ES6 & 更高版本* 首先将ES6中的具体知识分为几个主要的领域,包括新的语法,新的数据结构(集合),和新的执行性能和APIs.本书在很多细节方面涵盖了一些新的ES6功能,还参考了其他书上本系列的一些细节知识.
+
 Some exciting ES6 things to look forward to reading about: destructuring, default parameter values, symbols, concise methods, computed properties, arrow functions, block scoping, promises, generators, iterators, modules, proxies, weakmaps, and much, much more! Phew, ES6 packs quite a punch!
+
+一些令人兴奋的ES6功能期待被阅读: 解构,默认参数值,符号,简明的方法,计算属性,箭头函数,块范围,promises函数,生成器,迭代器,模块,代理,weakmaps,还有很多很多！ES6是如此的强有力!
 
 The first part of the book is a roadmap for all the stuff you need to learn to get ready for the new and improved JavaScript you'll be writing and exploring over the next couple of years.
 
+这本书的第一部分是一个路线图,里面包含你将会用到的,在未来几年不断发展的,即你需要学习的新的和优化后的JavaScript.
+
 The latter part of the book turns attention to briefly glance at things that we can likely expect to see in the near future of JavaScript. The most important realization here is that post-ES6, JS is likely going to evolve feature by feature rather than version by version, which means we can expect to see these near-future things coming much sooner than you might imagine.
 
+本书后面的一部分主要致力于简单浏览一下我们将来所期望看到的JavaScript.最需要我们认识到的是,ES6之后,JS很可能以功能演进代替版本演进,这意味着近未来这些演进可能比你想象中的更快到来.
+
 The future for JavaScript is bright. Isn't it time we start learning it!?
+
+未来JavaScript值得期待.此时正是我们开始学习它的大好时机！
 
 ## Review  --(李欣)
 
