@@ -42,7 +42,7 @@ But the case I make regarding prototypes and delegation is a much more involved 
 ## 类型和语法（Types & Grammar)  --(翠翠)
 
 The third title in this series primarily focuses on tackling yet another highly controversial topic: type coercion. Perhaps no topic causes more frustration with JS developers than when you talk about the confusions surrounding implicit coercion.                            
-本章的第三个标题主要关注解决另一个有较高争议的话题：强制类型转换。大概再也没有话题能让JS开发人员感到更加挫折当你谈论困惑环境中的隐式强制类型转换。         
+本章的第三个标题主要关注解决另一个有较高争议的话题：强制类型转换。大概再也没有话题能让JS开发人员感到更加挫折当你谈论困惑环境中的隐式强制类型转换。                      
 
 By far, the conventional wisdom is that implicit coercion is a "bad part" of the language and should be avoided at all costs. In fact, some have gone so far as to call it a "flaw" in the design of the language. Indeed, there are tools whose entire job is to do nothing but scan your code and complain if you're doing anything even remotely like coercion.
 到目前为止，普遍认为隐式强制类型转换是一种糟糕的语言，应该不惜一切代价禁止。事实上，有些人甚至称它为“缺陷”的语言设计。而实际中，在工作中有工具看似什么都没做但是它能遍历你的代码并完成转换，尽管你只做了一点类似强制转换。
@@ -50,14 +50,14 @@ By far, the conventional wisdom is that implicit coercion is a "bad part" of the
 But is coercion really so confusing, so bad, so treacherous, that your code is doomed from the start if you use it?
 但是强制转换是真的让人困惑、糟糕、危险，如果你使用它，你的代码从一开始就注定要失败。
 
-I say no. After having built up an understanding of how types and values really work in Chapters 1-3, Chapter 4 takes on this debate and fully explains how coercion works, in all its nooks and crevices. We see just what parts of coercion really are surprising and what parts actually make complete sense if given the time to learn.
-现在不解释强制转换。在1-3章中已经理解类型和值是如何工作的，第4章会讨论它并充分解释了强制转换是如何工作的，在它所用到的地方。我们看到的部分强制类型转换真的令人很惊讶，如果你花时间去学习就知道是哪部分正真的完成了强制类型转换。
+I say no. After having built up an understanding of how types and values really work in Chapters 1-3, Chapter 4 takes on this debate and fully explains how coercion works, in all its nooks and crevices. We see just what parts of coercion really are surprising and what parts actually make complete sense if given the time to learn.                         
+现在不解释强制转换。在1-3章中已经理解类型和值是如何工作的，第4章会讨论它并充分解释了强制转换是如何工作的，在它所用到的地方。我们看到的部分强制类型转换真的令人很惊讶，如果你花时间去学习就知道是哪部分正真的完成了强制类型转换。                           
 
-But I'm not merely suggesting that coercion is sensible and learnable, I'm asserting that coercion is an incredibly useful and totally underestimated tool that *you should be using in your code.* I'm saying that coercion, when used properly, not only works, but makes your code better. All the naysayers and doubters will surely scoff at such a position, but I believe it's one of the main keys to upping your JS game.
-但是我不只是建议强制类型是明智和可学的，我主张强制类型是非常有用的并且完全的低估了工具 *在你的代码中你应该使用它*。我现在说的强制类型，当使用恰当，不仅是工作，而且还会使你的代码变得更好。在这里所有的拒绝者和怀疑者将会被嘲笑,但是我相信它是提高你JS能力的关键。
+But I'm not merely suggesting that coercion is sensible and learnable, I'm asserting that coercion is an incredibly useful and totally underestimated tool that *you should be using in your code.* I'm saying that coercion, when used properly, not only works, but makes your code better. All the naysayers and doubters will surely scoff at such a position, but I believe it's one of the main keys to upping your JS game.                        
+但是我不只是建议强制类型是明智和可学的，我主张强制类型是非常有用的并且完全的低估了工具 *在你的代码中你应该使用它*。我现在说的强制类型，当使用恰当，不仅是工作，而且还会使你的代码变得更好。在这里所有的拒绝者和怀疑者将会被嘲笑,但是我相信它是提高你JS能力的关键。                         
 
-Do you want to just keep following what the crowd says, or are you willing to set all the assumptions aside and look at coercion with a fresh perspective? The *Types & Grammar* title of this series will coerce your thinking.
-你是想跟随大众说的，还是你愿意在一边设置所有的假设，或者是以一个新的视觉看强制类型？*类型和语法* 系列的章节将会让你思考。
+Do you want to just keep following what the crowd says, or are you willing to set all the assumptions aside and look at coercion with a fresh perspective? The *Types & Grammar* title of this series will coerce your thinking.                              
+你是想跟随大众说的，还是你愿意在一边设置所有的假设，或者是以一个新的视觉看强制类型？*类型和语法* 系列的章节将会让你思考。       
 
 
 ## 单词本
