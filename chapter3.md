@@ -1,26 +1,35 @@
+# 你不知道的JS（You Don't Know JS: Up & Going）  --(罗尧)
+# 第三章：进入YDKJS（Chapter 3: Into YDKJS）
 
-# You Don't Know JS: Up & Going  --(罗尧)
-# Chapter 3: Into YDKJS
 
-What is this series all about? Put simply, it's about taking seriously the task of learning *all parts of JavaScript*, not just some subset of the language that someone called "the good parts," and not just whatever minimal amount you need to get your job done at work.
+What is this series all about? Put simply, it's about taking seriously the task of learning *all parts of JavaScript*, not just some subset of the language that someone called "the good parts," and not just whatever minimal amount you need to get your job done at work.    
+这个系列是什么？ 简单地说，它将帮你深入学习*JavaScript*的所有部分，而不只是语言中被称为“好的部分”的那些内容，你需要学习不止一点。
 
-Serious developers in other languages expect to put in the effort to learn most or all of the language(s) they primarily write in, but JS developers seem to stand out from the crowd in the sense of typically not learning very much of the language. This is not a good thing, and it's not something we should continue to allow to be the norm.
+Serious developers in other languages expect to put in the effort to learn most or all of the language(s) they primarily write in, but JS developers seem to stand out from the crowd in the sense of typically not learning very much of the language. This is not a good thing, and it's not something we should continue to allow to be the norm.    
+其他语言开发者期望读者努力学习他们主要写的大多数或所有的语言，但是JS开发人员似乎与众不同，通常不会让你学习很多语言。这不是一件好事，也不应该继续被允许成为规范。
 
-The *You Don't Know JS* (*YDKJS*) series stands in stark contrast to the typical approaches to learning JS, and is unlike almost any other JS books you will read. It challenges you to go beyond your comfort zone and to ask the deeper "why" questions for every single behavior you encounter. Are you up for that challenge?
+The *You Don't Know JS* (*YDKJS*) series stands in stark contrast to the typical approaches to learning JS, and is unlike almost any other JS books you will read. It challenges you to go beyond your comfort zone and to ask the deeper "why" questions for every single behavior you encounter. Are you up for that challenge?   
+*你不知道JS*（*YDKJS*）系列与典型的学习JS的教程形成鲜明对比，并且几乎与你读的任何其他JS书不同。 它可能会让你感到不舒服，对你遇到的每一个单一的行为探索更深层次的原因。你准备好迎接挑战了吗？
 
-I'm going to use this final chapter to briefly summarize what to expect from the rest of the books in the series, and how to most effectively go about building a foundation of JS learning on top of *YDKJS*.
+I'm going to use this final chapter to briefly summarize what to expect from the rest of the books in the series, and how to most effectively go about building a foundation of JS learning on top of *YDKJS*.    
+我会在最后一章简要总结一下这系列中其他书的目标，以及如何最有效系统地从*YDKJS*学习JS基础。
 
-## Scope & Closures  --(罗尧)
+## 作用域和闭包（Scope & Closures）  --(罗尧)
 
-Perhaps one of the most fundamental things you'll need to quickly come to terms with is how scoping of variables really works in JavaScript. It's not enough to have anecdotal fuzzy *beliefs* about scope.
+Perhaps one of the most fundamental things you'll need to quickly come to terms with is how scoping of variables really works in JavaScript. It's not enough to have anecdotal fuzzy *beliefs* about scope.   
+或许你需要快速地去理解的一个基本的内容就是变量的作用域在JavaScript中是如何工作的。对于作用域只是了解大概是不够的。
 
-The *Scope & Closures* title starts by debunking the common misconception that JS is an "interpreted language" and therefore not compiled. Nope.
+The *Scope & Closures* title starts by debunking the common misconception that JS is an "interpreted language" and therefore not compiled. Nope.       
+*作用域和闭包*标题一开始就揭露了一个常见的误解——JS是一门“解释型语言”，因此不编译。然而事实并非如此。
 
-The JS engine compiles your code right before (and sometimes during!) execution. So we use some deeper understanding of the compiler's approach to our code to understand how it finds and deals with variable and function declarations. Along the way, we see the typical metaphor for JS variable scope management, "Hoisting."
+The JS engine compiles your code right before (and sometimes during!) execution. So we use some deeper understanding of the compiler's approach to our code to understand how it finds and deals with variable and function declarations. Along the way, we see the typical metaphor for JS variable scope management, "Hoisting."      
+JS引擎在执行之前（有时是在执行中！）编译您的代码。因此，我们可以从编译器的角度进行更深入的理解，以了解它如何查找、处理变量及函数声明。在这过程中我们会看到关于JS变量作用域管理的典型比喻。
 
-This critical understanding of "lexical scope" is what we then base our exploration of closure on for the last chapter of the book. Closure is perhaps the single most important concept in all of JS, but if you haven't first grasped firmly how scope works, closure will likely remain beyond your grasp.
+This critical understanding of "lexical scope" is what we then base our exploration of closure on for the last chapter of the book. Closure is perhaps the single most important concept in all of JS, but if you haven't first grasped firmly how scope works, closure will likely remain beyond your grasp.         
+对“词法作用域”的及其重要的理解将在本书最后一章进行探讨。闭包可能是所有JS中最重要的一个概念，但如果你没有先深层次地理解闭包是如何工作的，闭包可能会超出你的掌握。
 
-One important application of closure is the module pattern, as we briefly introduced in this book in Chapter 2. The module pattern is perhaps the most prevalent code organization pattern in all of JavaScript; deep understanding of it should be one of your highest priorities.
+One important application of closure is the module pattern, as we briefly introduced in this book in Chapter 2. The module pattern is perhaps the most prevalent code organization pattern in all of JavaScript; deep understanding of it should be one of your highest priorities.          
+闭包的一个重要应用是模块模式，我们会在这本书的第2章中简要介绍。模块模式可能是所有JavaScript中最流行的代码组织模式; 对它的深刻理解应该是你的最高优先事项之一。
 
 ## this和对象原型（this & Object Prototypes）  --(张静)
 
@@ -132,6 +141,14 @@ We take each important area of focus in the language and dedicate a short but ve
 
 | 单词 | 音标 | 释义 |
 | ---- | ---- | ---- |
+| encounter | [ɛnˈkaʊntɚ] | vt.遭遇;不期而遇;对抗n.相遇，碰见;遭遇战;对决，冲突vi.碰见，尤指不期而遇|
+| foundation | [faʊnˈdeʃən] | n.基础;地基;粉底;基金（会）|
+| fundamental | [ˌfʌndəˈmɛntl]| adj.基础的，基本的，根本的，重要的，原始的，主要的，十分重大的;[物]基频的，基谐波的;[乐]基音的|
+| come to terms with || 与…达成协议;忍受，对待 |
+|anecdotal|[ˌænɪkˈdoʊtl]| adj.轶事的;趣闻的;多轶事的;含轶事的 |
+| fuzzy | [ˈfʌzi] | adj.模糊的;绒毛般的，毛茸茸的;糊涂的，含糊不清的 |
+| beliefs | [bɪ'li:fs] | n.信，信任（belief的复数形式）|
+| lexical | [ˈlɛksɪkəl] | adj.词汇的;具词典性质的，词典的 |
 | widespread | [ˈwʌɪdsprɛd] | adj. 普遍的，广泛的；分布广的 |
 | persistent | [pə'sɪst(ə)nt] | adj. 固执的，坚持的；持久稳固的 |
 | dynamically | [dai'næmikəli] | adv. 动态地；充满活力地；不断变化地 |
@@ -155,3 +172,4 @@ We take each important area of focus in the language and dedicate a short but ve
 | dense | [dɛns] | adj. 稠密的；浓厚的；愚钝的 |
 | criticism | ['krɪtə'sɪzəm] | n. 批评；考证；苛求 |
 | insult | [ɪn'sʌlt] | vt. 侮辱；辱骂；损害  n. 侮辱；凌辱；无礼 |
+
