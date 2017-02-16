@@ -73,7 +73,7 @@ Do you want to just keep following what the crowd says, or are you willing to se
 | at all costs | | 无论如何，不惜一切代价 |
 | merely | 英 ['mɪəlɪ]  美 ['mɪrli] | adv. 仅仅，只不过；只是 |
 | incredibly | 英 [ɪn'kredɪblɪ]  美 [ɪn'krɛdəbli] | adv. 难以置信地；非常地 |
-| assumptions | 美 [ə'sʌmpʃən] | . 假定，设想（assumption复数形式 |
+| assumptions | 美 [ə'sʌmpʃən] | n. 假定，设想（assumption复数形式 |
 
 ## Async & Performance  --(张雪)
 
