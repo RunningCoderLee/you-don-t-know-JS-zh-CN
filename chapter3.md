@@ -58,19 +58,41 @@ The claims I make regarding delegation versus inheritance come not from a dislik
 But the case I make regarding prototypes and delegation is a much more involved one than what I will indulge here. If you're ready to reconsider everything you think you know about JavaScript "classes" and "inheritance," I offer you the chance to "take the red pill" (*Matrix* 1999) and check out Chapters 4-6 of the *this & Object Prototypes* title of this series.
 但是我做的这个原型和代表的案例是我想参与的更多的一个。如果你准备重新思考关于你对js中类和继承的认识，我给你提供“选择红色药丸”的机会，(源自黑客帝国：矩阵，1999)，请查阅本系列标题为“this和对象原型”的第四到六章。
 
-## Types & Grammar  --(翠翠)
+## 类型和语法（Types & Grammar)  --(翠翠)
 
-The third title in this series primarily focuses on tackling yet another highly controversial topic: type coercion. Perhaps no topic causes more frustration with JS developers than when you talk about the confusions surrounding implicit coercion.
+The third title in this series primarily focuses on tackling yet another highly controversial topic: type coercion. Perhaps no topic causes more frustration with JS developers than when you talk about the confusions surrounding implicit coercion.                            
+本章的第三个标题主要关注解决另一个有较高争议的话题：强制类型转换。大概再也没有话题能让JS开发人员感到更加挫折当你谈论困惑环境中的隐式强制类型转换。                      
 
 By far, the conventional wisdom is that implicit coercion is a "bad part" of the language and should be avoided at all costs. In fact, some have gone so far as to call it a "flaw" in the design of the language. Indeed, there are tools whose entire job is to do nothing but scan your code and complain if you're doing anything even remotely like coercion.
+到目前为止，普遍认为隐式强制类型转换是一种糟糕的语言，应该不惜一切代价禁止。事实上，有些人甚至称它为“缺陷”的语言设计。而实际中，在工作中有工具看似什么都没做但是它能遍历你的代码并完成转换，尽管你只做了一点类似强制转换。
 
 But is coercion really so confusing, so bad, so treacherous, that your code is doomed from the start if you use it?
+但是强制转换是真的让人困惑、糟糕、危险，如果你使用它，你的代码从一开始就注定要失败。
 
-I say no. After having built up an understanding of how types and values really work in Chapters 1-3, Chapter 4 takes on this debate and fully explains how coercion works, in all its nooks and crevices. We see just what parts of coercion really are surprising and what parts actually make complete sense if given the time to learn.
+I say no. After having built up an understanding of how types and values really work in Chapters 1-3, Chapter 4 takes on this debate and fully explains how coercion works, in all its nooks and crevices. We see just what parts of coercion really are surprising and what parts actually make complete sense if given the time to learn.                         
+现在不解释强制转换。在1-3章中已经理解类型和值是如何工作的，第4章会讨论它并充分解释了强制转换是如何工作的，在它所用到的地方。我们看到的部分强制类型转换真的令人很惊讶，如果你花时间去学习就知道是哪部分正真的完成了强制类型转换。                           
 
-But I'm not merely suggesting that coercion is sensible and learnable, I'm asserting that coercion is an incredibly useful and totally underestimated tool that *you should be using in your code.* I'm saying that coercion, when used properly, not only works, but makes your code better. All the naysayers and doubters will surely scoff at such a position, but I believe it's one of the main keys to upping your JS game.
+But I'm not merely suggesting that coercion is sensible and learnable, I'm asserting that coercion is an incredibly useful and totally underestimated tool that *you should be using in your code.* I'm saying that coercion, when used properly, not only works, but makes your code better. All the naysayers and doubters will surely scoff at such a position, but I believe it's one of the main keys to upping your JS game.                        
+但是我不只是建议强制类型是明智和可学的，我主张强制类型是非常有用的并且完全的低估了工具 *在你的代码中你应该使用它*。我现在说的强制类型，当使用恰当，不仅是工作，而且还会使你的代码变得更好。在这里所有的拒绝者和怀疑者将会被嘲笑,但是我相信它是提高你JS能力的关键。                         
 
-Do you want to just keep following what the crowd says, or are you willing to set all the assumptions aside and look at coercion with a fresh perspective? The *Types & Grammar* title of this series will coerce your thinking.
+Do you want to just keep following what the crowd says, or are you willing to set all the assumptions aside and look at coercion with a fresh perspective? The *Types & Grammar* title of this series will coerce your thinking.                              
+你是想跟随大众说的，还是你愿意在一边设置所有的假设，或者是以一个新的视觉看强制类型？*类型和语法* 系列的章节将会让你思考。       
+
+
+## 单词本
+
+| 单词 | 音标 | 释义 |
+| ---- | ---- | ---- |
+| tackling | 英 ['tæklɪŋ]  美 ['tæklɪŋ] | n. 装备，用具；扭住 v. 处理；抓住（tackle的现在分词）|
+| controversial | 英 [kɒntrə'vɜːʃ(ə)l]  美 [,kɑntrə'vɝʃl] | adj. 有争议的；有争论的 |
+| coercion | 美 [ko'ɝʒən] 英 [kəʊ'ɜːʃ(ə)n] | n. 强制；强迫 |
+| frustration | 英 [frʌ'streɪʃn]  美 [frʌ'streʃən] | n. 挫折 |
+| confusion | 英 [kən'fjuːʒ(ə)n]  美 [kən'fjʊʒən] | n. 混淆，混乱；困惑 |
+| conventional | 英 [kən'venʃ(ə)n(ə)l]  美 [kən'vɛnʃənl] | adj. 符合习俗的，传统的；常见的；惯例的 |
+| at all costs | | 无论如何，不惜一切代价 |
+| merely | 英 ['mɪəlɪ]  美 ['mɪrli] | adv. 仅仅，只不过；只是 |
+| incredibly | 英 [ɪn'kredɪblɪ]  美 [ɪn'krɛdəbli] | adv. 难以置信地；非常地 |
+| assumptions | 美 [ə'sʌmpʃən] | n. 假定，设想（assumption复数形式 |
 
 ## Async & Performance  --(张雪)
 
@@ -172,4 +194,3 @@ We take each important area of focus in the language and dedicate a short but ve
 | dense | [dɛns] | adj. 稠密的；浓厚的；愚钝的 |
 | criticism | ['krɪtə'sɪzəm] | n. 批评；考证；苛求 |
 | insult | [ɪn'sʌlt] | vt. 侮辱；辱骂；损害  n. 侮辱；凌辱；无礼 |
-
