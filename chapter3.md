@@ -105,13 +105,19 @@ The latter part of the book turns attention to briefly glance at things that we 
 
 The future for JavaScript is bright. Isn't it time we start learning it!?
 
-## Review  --(李欣)
+## 回顾(Review)  --(李欣)
 
 The *YDKJS* series is dedicated to the proposition that all JS developers can and should learn all of the parts of this great language. No person's opinion, no framework's assumptions, and no project's deadline should be the excuse for why you never learn and deeply understand JavaScript.
+*YDKJS*系列致力于让所有的JS开发者们可以并且应该去学习这门伟大语言的所有部分。个人意见，框架假设和项目截止日期都不应该成为你不学习和深入了解JavaScript的借口。
+
 
 We take each important area of focus in the language and dedicate a short but very dense book to fully explore all the parts of it that you perhaps thought you knew but probably didn't fully.
+我们把语言中所关注的每一个重点领域提取出来并且制作成一本简短但是浓缩了很多精华的书，在这些书里全面的阐述了那些你或许只知其然不知其所以然的内容
+
 
 "You Don't Know JS" isn't a criticism or an insult. It's a realization that all of us, myself included, must come to terms with. Learning JavaScript isn't an end goal but a process. We don't know JavaScript, yet. But we will!
+"你不知道的JS"并不是一种批评或侮辱。这是一种认知，我们所有人，包括我自己，必须接受它。学习JavaScript是一个过程而不是一个最终目标。我们不了解JavaScript，但是我们终将会了解并完全掌握它。
+
 
 ## 单词本
 
@@ -134,3 +140,10 @@ We take each important area of focus in the language and dedicate a short but ve
 | versus | ['vɜːsəs] | prep. 对；与...相对；对抗 |
 | leverage | ['liːv(ə)rɪdʒ; 'lev(ə)rɪdʒ] | n. 手段，影响力；杠杆作用；杠杆效率  v. 利用；举债经营 |
 | indulge | [ɪn'dʌldʒ] | vt. 满足；纵容；使高兴；使沉迷于…  vi. 沉溺；满足；放任 |
+| dedicated | ['dɛdə'ketɪd] | adj. 专用的；专注的；献身的 |
+| proposition | [,prɑpə'zɪʃən] | n. [数] 命题；提议；主题；议题 |
+| assumption | [ə'sʌmpʃən] | n. 假定；设想；担任；采取 |
+| dense | [dɛns] | adj. 稠密的；浓厚的；愚钝的 |
+| criticism | ['krɪtə'sɪzəm] | n. 批评；考证；苛求 |
+| insult | [ɪn'sʌlt] | vt. 侮辱；辱骂；损害  n. 侮辱；凌辱；无礼 |
+
