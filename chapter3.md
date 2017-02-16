@@ -77,12 +77,13 @@ But it's the combination of promises and generators that "yields" our most effec
 但是，只有将promises和generators结合在一起才是效率最高的最新JavaScript异步编码模式。实际上，未来很多先进的异步机制都在ES7中到来，并且会以现在的promises和generators作为基础。为了认真对待异步编程中的效率问题，你需要能够顺利将promises和generators结合使用。
 
 If promises and generators are about expressing patterns that let our programs run more concurrently and thus get more processing accomplished in a shorter period, JS has many other facets of performance optimization worth exploring.
+promises 和 generators 让我们的程序运行起来并发性更好，这样就可以在比较短的周期内处理完成更多事情。除此之外，JS还有很多其他方面的性能优化值得我们探索。
 
-Chapter 5 delves into topics like program parallelism with Web Workers and data parallelism with SIMD, as well as low-level optimization techniques like ASM.js. Chapter 6 takes a look at performance optimization from the perspective of proper benchmarking techniques, including what kinds of performance to worry about and what to ignore.
+Chapter 5 delves into topics like program parallelism with Web Workers and data parallelism with SIMD, as well as low-level optimization techniques like ASM.js. Chapter 6 takes a look at performance optimization from the perspective of proper benchmarking techniques, including what kinds of performance to worry about and what to ignore.第五章会讲解使用Web Workers实现程序并行、使用 单指令流多数据流(SIMD)实现数据并行化、底层优化技术比如ASM.js。第六章探讨了从浏览器基准测试的角度进行性能优化，包括了各种需要关注或是无需在意的性能关键点。
 
-Writing JavaScript effectively means writing code that can break the constraint barriers of being run dynamically in a wide range of browsers and other environments. It requires a lot of intricate and detailed planning and effort on our parts to take a program from "it works" to "it works well."
+Writing JavaScript effectively means writing code that can break the constraint barriers of being run dynamically in a wide range of browsers and other environments. It requires a lot of intricate and detailed planning and effort on our parts to take a program from "it works" to "it works well." 编写出有效出色的JS代码意味着写出的代码可以打破在不同浏览器、不同运行环境下的限制壁垒。这需要我们付出很多复杂且细致的努力，让程序从“能运行”到“运行地不错”。
 
-The *Async & Performance* title is designed to give you all the tools and skills you need to write reasonable and performant JavaScript code.
+The *Async & Performance* title is designed to give you all the tools and skills you need to write reasonable and performant JavaScript code. *异步和性能(Async & Performance)* 这一章可以让你学到写优秀合理JS代码所需的工具和技巧。
 
 ## ES6 & Beyond  --(张润)
 
@@ -114,3 +115,12 @@ We take each important area of focus in the language and dedicate a short but ve
 
 | 单词 | 音标 | 释义 |
 | ---- | ---- | ---- |
+| asynchronous | [eɪ'sɪŋkrənəs] | 非同步；异步的 |
+| synchronous | ['sɪŋkrənəs] | 同步的；共时的 |
+| parallel | ['perə.lel] | 平行的，并行的 |
+| concurrent | [kənˈkʌrənt] | 并发；并行；并发的 |
+| inversion | [ɪn'vɜrʃ(ə)n] | 倒置；颠倒；倒转 |
+| yield| [jild] | 屈服；让步；放弃；提供 |
+| sophistication | [sə.fɪstɪ'keɪʃ(ə)n] | 复杂；诡辩；先进 |
+| SIMD | ---- | 单指令流多数据流 |
+| intricate | ['ɪntrɪkət] | 错综复杂的 |
