@@ -94,29 +94,37 @@ Do you want to just keep following what the crowd says, or are you willing to se
 | incredibly | 英 [ɪn'kredɪblɪ]  美 [ɪn'krɛdəbli] | adv. 难以置信地；非常地 |
 | assumptions | 美 [ə'sʌmpʃən] | n. 假定，设想（assumption复数形式 |
 
-## Async & Performance  --(张雪)
+## 异步和性能 (Async & Performance)  --(张雪)
 
 The first three titles of this series focus on the core mechanics of the language, but the fourth title branches out slightly to cover patterns on top of the language mechanics for managing asynchronous programming. Asynchrony is not only critical to the performance of our applications, it's increasingly becoming *the* critical factor in writability and maintainability.
+本系列的前三章重点在Javascript语言的核心机制上，但第四章稍微进行了拓展，介绍了语言的顶层机制：如何编写异步的程序。异步不仅对于我们应用的性能表现是否重要，它也正逐渐成为代码的可编码性和已维护性的关键因素。
 
 The book starts first by clearing up a lot of terminology and concept confusion around things like "async," "parallel," and "concurrent," and explains in depth how such things do and do not apply to JS.
+本书开始会先理清一些容易让人混淆的术语和概念，比如“异步”、“并行”和“并发”，并且深入解释其中适用于JS和不适用于JS的部分。
 
 Then we move into examining callbacks as the primary method of enabling asynchrony. But it's here that we quickly see that the callback alone is hopelessly insufficient for the modern demands of asynchronous programming. We identify two major deficiencies of callbacks-only coding: *Inversion of Control* (IoC) trust loss and lack of linear reason-ability.
+然后我们会审视一下实现异步的首要方法：回调函数。但在这里我们可以快速得出一个结论：回调函数并不能有效地满足现代的异步编程的需求。我们发现了两个适用回调函数的不足之处： 不可靠的*控制反转（IoC，Inversion of Control）*  和 缺乏线性编码能力。 
 
 To address these two major deficiencies, ES6 introduces two new mechanisms (and indeed, patterns): promises and generators.
+为了解决这两大不足之处，ES6一如了两种新的机制：promises 和 generators
 
 Promises are a time-independent wrapper around a "future value," which lets you reason about and compose them regardless of if the value is ready or not yet. Moreover, they effectively solve the IoC trust issues by routing callbacks through a trustable and composable promise mechanism.
+Promise 是一种时间依赖性容器，包裹着一个可能的“未来值”，这让你能够推测和创建这些“未来值”，不论这些值是否已经准备就绪。此外，它们通过一个可信和可组合的promise（承诺）机制将回调进行路由，高效地解决了IoC信任问题。
 
 Generators introduce a new mode of execution for JS functions, whereby the generator can be paused at `yield` points and be resumed asynchronously later. The pause-and-resume capability enables synchronous, sequential looking code in the generator to be processed asynchronously behind the scenes. By doing so, we address the non-linear, non-local-jump confusions of callbacks and thereby make our asynchronous code sync-looking so as to be more reason-able.
+Generator引入了一种执行JS函数的新模式，借此generator可以在`yield`暂停并且稍后异步继续运行。这种暂停和继续的让同步的、看起来序列化形式的代码在generator背后的机制中异步执行。通过这种方式，我们就避免了非线性、非就近跳转的回调函数造成的困惑，从而让我们的异步代码看起来更加同步也更加合理。
 
 But it's the combination of promises and generators that "yields" our most effective asynchronous coding pattern to date in JavaScript. In fact, much of the future sophistication of asynchrony coming in ES7 and later will certainly be built on this foundation. To be serious about programming effectively in an async world, you're going to need to get really comfortable with combining promises and generators.
+但是，只有将promises和generators结合在一起才是效率最高的最新JavaScript异步编码模式。实际上，未来很多先进的异步机制都在ES7中到来，并且会以现在的promises和generators作为基础。为了认真对待异步编程中的效率问题，你需要能够顺利将promises和generators结合使用。
 
 If promises and generators are about expressing patterns that let our programs run more concurrently and thus get more processing accomplished in a shorter period, JS has many other facets of performance optimization worth exploring.
+promises 和 generators 让我们的程序运行起来并发性更好，这样就可以在比较短的周期内处理完成更多事情。除此之外，JS还有很多其他方面的性能优化值得我们探索。
 
-Chapter 5 delves into topics like program parallelism with Web Workers and data parallelism with SIMD, as well as low-level optimization techniques like ASM.js. Chapter 6 takes a look at performance optimization from the perspective of proper benchmarking techniques, including what kinds of performance to worry about and what to ignore.
+Chapter 5 delves into topics like program parallelism with Web Workers and data parallelism with SIMD, as well as low-level optimization techniques like ASM.js. Chapter 6 takes a look at performance optimization from the perspective of proper benchmarking techniques, including what kinds of performance to worry about and what to ignore.第五章会讲解使用Web Workers实现程序并行、使用 单指令流多数据流(SIMD)实现数据并行化、底层优化技术比如ASM.js。第六章探讨了从浏览器基准测试的角度进行性能优化，包括了各种需要关注或是无需在意的性能关键点。
 
-Writing JavaScript effectively means writing code that can break the constraint barriers of being run dynamically in a wide range of browsers and other environments. It requires a lot of intricate and detailed planning and effort on our parts to take a program from "it works" to "it works well."
+Writing JavaScript effectively means writing code that can break the constraint barriers of being run dynamically in a wide range of browsers and other environments. It requires a lot of intricate and detailed planning and effort on our parts to take a program from "it works" to "it works well." 编写出有效出色的JS代码意味着写出的代码可以打破在不同浏览器、不同运行环境下的限制壁垒。这需要我们付出很多复杂且细致的努力，让程序从“能运行”到“运行地不错”。
 
-The *Async & Performance* title is designed to give you all the tools and skills you need to write reasonable and performant JavaScript code.
+The *Async & Performance* title is designed to give you all the tools and skills you need to write reasonable and performant JavaScript code. *异步和性能(Async & Performance)* 这一章可以让你学到写优秀合理JS代码所需的工具和技巧。
 
 ## ES6 & Beyond  --(张润)
 
@@ -163,11 +171,20 @@ We take each important area of focus in the language and dedicate a short but ve
 
 | 单词 | 音标 | 释义 |
 | ---- | ---- | ---- |
+| asynchronous | [eɪ'sɪŋkrənəs] | 非同步；异步的 |
+| synchronous | ['sɪŋkrənəs] | 同步的；共时的 |
+| parallel | ['perə.lel] | 平行的，并行的 |
+| concurrent | [kənˈkʌrənt] | 并发；并行；并发的 |
+| inversion | [ɪn'vɜrʃ(ə)n] | 倒置；颠倒；倒转 |
+| yield| [jild] | 屈服；让步；放弃；提供 |
+| sophistication | [sə.fɪstɪ'keɪʃ(ə)n] | 复杂；诡辩；先进 |
+| SIMD | ---- | 单指令流多数据流 |
+| intricate | ['ɪntrɪkət] | 错综复杂的 |
 | encounter | [ɛnˈkaʊntɚ] | vt.遭遇;不期而遇;对抗n.相遇，碰见;遭遇战;对决，冲突vi.碰见，尤指不期而遇|
 | foundation | [faʊnˈdeʃən] | n.基础;地基;粉底;基金（会）|
 | fundamental | [ˌfʌndəˈmɛntl]| adj.基础的，基本的，根本的，重要的，原始的，主要的，十分重大的;[物]基频的，基谐波的;[乐]基音的|
 | come to terms with || 与…达成协议;忍受，对待 |
-|anecdotal|[ˌænɪkˈdoʊtl]| adj.轶事的;趣闻的;多轶事的;含轶事的 |
+| anecdotal | [ˌænɪkˈdoʊtl] | adj.轶事的;趣闻的;多轶事的;含轶事的 |
 | fuzzy | [ˈfʌzi] | adj.模糊的;绒毛般的，毛茸茸的;糊涂的，含糊不清的 |
 | beliefs | [bɪ'li:fs] | n.信，信任（belief的复数形式）|
 | lexical | [ˈlɛksɪkəl] | adj.词汇的;具词典性质的，词典的 |
