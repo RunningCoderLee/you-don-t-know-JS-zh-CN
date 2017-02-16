@@ -62,14 +62,13 @@ The book starts first by clearing up a lot of terminology and concept confusion 
 本书开始会先理清一些容易让人混淆的术语和概念，比如“异步”、“并行”和“并发”，并且深入解释其中适用于JS和不适用于JS的部分。
 
 Then we move into examining callbacks as the primary method of enabling asynchrony. But it's here that we quickly see that the callback alone is hopelessly insufficient for the modern demands of asynchronous programming. We identify two major deficiencies of callbacks-only coding: *Inversion of Control* (IoC) trust loss and lack of linear reason-ability.
-然后我们会审视一下实现异步的首要方法：回调函数。但在这里我们可以快速得出一个结论：回调函数并不能有效地满足现代的异步编程的需求。我们发现了两个适用回调函数的不足之处： *控制反转* 信任丢失 和 缺乏线性推测能力。 
+然后我们会审视一下实现异步的首要方法：回调函数。但在这里我们可以快速得出一个结论：回调函数并不能有效地满足现代的异步编程的需求。我们发现了两个适用回调函数的不足之处： 不可靠的*控制反转（IoC，Inversion of Control）*  和 缺乏线性编码能力。 
 
 To address these two major deficiencies, ES6 introduces two new mechanisms (and indeed, patterns): promises and generators.
 为了解决这两大不足之处，ES6一如了两种新的机制：promises 和 generators
 
 Promises are a time-independent wrapper around a "future value," which lets you reason about and compose them regardless of if the value is ready or not yet. Moreover, they effectively solve the IoC trust issues by routing callbacks through a trustable and composable promise mechanism.
-Promise 是一种时间依赖性容器，包裹着一个可能的“未来值”，这让你能够推测和创建这些“未来值”，不论这些值是否已经准备就绪。不仅如此，Promise也是解决控制反转的有效方法。
-——————————————————————————————————————————————————————————————————————————————————
+Promise 是一种时间依赖性容器，包裹着一个可能的“未来值”，这让你能够推测和创建这些“未来值”，不论这些值是否已经准备就绪。此外，它们通过一个可信和可组合的promise（承诺）机制将回调进行路由，高效地解决了IoC信任问题。
 
 Generators introduce a new mode of execution for JS functions, whereby the generator can be paused at `yield` points and be resumed asynchronously later. The pause-and-resume capability enables synchronous, sequential looking code in the generator to be processed asynchronously behind the scenes. By doing so, we address the non-linear, non-local-jump confusions of callbacks and thereby make our asynchronous code sync-looking so as to be more reason-able.
 Generator引入了一种执行JS函数的新模式，借此generator可以在`yield`暂停并且稍后异步继续运行。这种暂停和继续的让同步的、看起来序列化形式的代码在generator背后的机制中异步执行。通过这种方式，我们就避免了非线性、非就近跳转的回调函数造成的困惑，从而让我们的异步代码看起来更加同步也更加合理。
@@ -78,7 +77,6 @@ But it's the combination of promises and generators that "yields" our most effec
 但是，只有将promises和generators结合在一起才是效率最高的最新JavaScript异步编码模式。实际上，未来很多先进的异步机制都在ES7中到来，并且会以现在的promises和generators作为基础。为了认真对待异步编程中的效率问题，你需要能够顺利将promises和generators结合使用。
 
 If promises and generators are about expressing patterns that let our programs run more concurrently and thus get more processing accomplished in a shorter period, JS has many other facets of performance optimization worth exploring.
-
 
 Chapter 5 delves into topics like program parallelism with Web Workers and data parallelism with SIMD, as well as low-level optimization techniques like ASM.js. Chapter 6 takes a look at performance optimization from the perspective of proper benchmarking techniques, including what kinds of performance to worry about and what to ignore.
 
