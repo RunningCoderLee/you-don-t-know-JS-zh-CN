@@ -155,31 +155,51 @@ Let's imagine the above exchange (which processes this code snippet) as a conver
 让我们想象一下关于如何处理上述代码片段的一段对话。这段对话很如下：
 
 > ***Engine***: Hey *Scope*, I have an RHS reference for `foo`. Ever heard of it?
+
 > ***引擎***: 你好啊，*作用域*！我想对`foo`进行RHS引用，你见过它吗？
+
 > ***Scope***: Why yes, I have. *Compiler* declared it just a second ago. He's a function. Here you go.
+
 > ***作用域***: 当然啦，*编译器* 刚刚对它进行了声明。它是一个函数，给你。
+
 > ***Engine***: Great, thanks! OK, I'm executing `foo`.
+
 > ***作用域***: 太棒了，多谢！好了，我要执行`foo`。
+
 > ***Engine***: Hey, *Scope*, I've got an LHS reference for `a`, ever heard of it?
+
 > ***作用域***: 嗨，*作用域*，我这有个对于`a`的LHS引用，你见过这个家伙吗？
+
 > ***Scope***: Why yes, I have. *Compiler* declared it as a formal parameter to `foo` just recently. Here you go.
+
 > ***作用域***: 当然啦，*编译器* 把它声明成了一个`foo`的形式参数，给你。
 
 > ***Engine***: Helpful as always, *Scope*. Thanks again. Now, time to assign `2` to `a`.
+
 > ***作用域***: 多谢，*作用域*。执行将`2` 赋值给 `a`
+
 > ***Engine***: Hey, *Scope*, sorry to bother you again. I need an RHS look-up for `console`. Ever heard of it?
+
 > ***作用域***: 嗨，*作用域* 不好意思又要打扰你了。我需要对`console`进行RHS查询。你见过他吗？
+
 > ***Scope***: No problem, *Engine*, this is what I do all day. Yes, I've got `console`. He's built-in. Here ya go.
+
 > ***作用域***: 没关系，*引擎*，我每天都在这么做。好的，我找到了`console`。它是一个内置对象。给你。
 
 > ***Engine***: Perfect. Looking up `log(..)`. OK, great, it's a function.
+
 > ***作用域***: 太好了，正在查找`log(..)`。好了，这是一个函数。
+
 > ***Engine***: Yo, *Scope*. Can you help me out with an RHS reference to `a`. I think I remember it, but just want to double-check.
+
 > ***作用域***: 哟，*作用域*。你能帮我查下`a`的RHS引用吗？我好想见过它，不过为了保险起见，再检查一下。
+
 > ***Scope***: You're right, *Engine*. Same guy, hasn't changed. Here ya go.
+
 > ***作用域***: 好的，*引擎*。`a`没有变化，和上次一样。给你。
 
 > ***Engine***: Cool. Passing the value of `a`的, which is `2`, into `log(..)`.
+
 > ***作用域***: 好咧，将`a`的的值`2`传递到`log(..)`中。
 > ...
 
