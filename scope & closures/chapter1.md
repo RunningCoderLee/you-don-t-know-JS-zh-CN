@@ -223,6 +223,7 @@ var c = foo( 2 );
 2. 找到所有RHS查询（有四个）
 **Note:** See the chapter review for the quiz answers!
 **注意：** 答案位于本章回顾！
+
 ## Nested Scope  --(张润)
 
 We said that *Scope* is a set of rules for looking up variables by their identifier name. There's usually more than one *Scope* to consider, however.
