@@ -99,25 +99,31 @@ Being slightly glib for a moment, you could also think "RHS" instead means "retr
 
 Let's dig into that deeper.
 
-When I say: --(翠翠)
+When I say: --(翠翠)                     
+思考以下代码: --(翠翠)
 
 ```js
 console.log( a );
 ```
 
-The reference to `a` is an RHS reference, because nothing is being assigned to `a` here. Instead, we're looking-up to retrieve the value of `a`, so that the value can be passed to `console.log(..)`.
+The reference to `a` is an RHS reference, because nothing is being assigned to `a` here. Instead, we're looking-up to retrieve the value of `a`, so that the value can be passed to `console.log(..)`.                                    
+`a`的引用是一个RHS引用，因为这里没有任何值分配给`a`.相反，我们查找得到`a`的值，这样值就可以传递给`console.log(...)`.                       
 
-By contrast:
+By contrast:             
+相比之下：                       
 
 ```js
 a = 2;
 ```
 
-The reference to `a` here is an LHS reference, because we don't actually care what the current value is, we simply want to find the variable as a target for the `= 2` assignment operation.
+The reference to `a` here is an LHS reference, because we don't actually care what the current value is, we simply want to find the variable as a target for the `= 2` assignment operation.   
+这里`a`的引用则是一个LHS引用，因为我们实际上并不关心当前的值是什么，我们仅仅想找到变量作为一个目标关于`=2`赋值操作.                                   
 
-**Note:** LHS and RHS meaning "left/right-hand side of an assignment" doesn't necessarily literally mean "left/right side of the `=` assignment operator". There are several other ways that assignments happen, and so it's better to conceptually think about it as: "who's the target of the assignment (LHS)" and "who's the source of the assignment (RHS)".
+**Note:** LHS and RHS meaning "left/right-hand side of an assignment" doesn't necessarily literally mean "left/right side of the `=` assignment operator". There are several other ways that assignments happen, and so it's better to conceptually think about it as: "who's the target of the assignment (LHS)" and "who's the source of the assignment (RHS)".                       
+**注意:** LHS和RHS的意思是"赋值操作的左边/右边"，不一定就是字面上的意思"`=`赋值操作的左边/右边"。发生赋值操作还有其他几种方式，所以最好是在概念上理解它:"谁是赋值操作的目标(LHS)"和"谁是赋值操作的来源(RHS)".                             
 
-Consider this program, which has both LHS and RHS references:
+Consider this program, which has both LHS and RHS references:           
+思考以下程序，LHS和RHS都有引用:                    
 
 ```js
 function foo(a) {
@@ -127,19 +133,26 @@ function foo(a) {
 foo( 2 );
 ```
 
-The last line that invokes `foo(..)` as a function call requires an RHS reference to `foo`, meaning, "go look-up the value of `foo`, and give it to me." Moreover, `(..)` means the value of `foo` should be executed, so it'd better actually be a function!
+The last line that invokes `foo(..)` as a function call requires an RHS reference to `foo`, meaning, "go look-up the value of `foo`, and give it to me." Moreover, `(..)` means the value of `foo` should be executed, so it'd better actually be a function!                        
+最后一行调用`foo(..)`函数需要对`foo`做一个RHS引用,意味着,"去查找`foo`的值,并把它给我."然而,`(..)`意味着`foo`的值应该被执行,所以它最好是一个函数！                     
 
-There's a subtle but important assignment here. **Did you spot it?**
+There's a subtle but important assignment here. **Did you spot it?**                        
+这里有一个容易忽略但是又很重要的细节在赋值操作中. **你发现它了吗？**                     
 
-You may have missed the implied `a = 2` in this code snippet. It happens when the value `2` is passed as an argument to the `foo(..)` function, in which case the `2` value is **assigned** to the parameter `a`. To (implicitly) assign to parameter `a`, an LHS look-up is performed.
+You may have missed the implied `a = 2` in this code snippet. It happens when the value `2` is passed as an argument to the `foo(..)` function, in which case the `2` value is **assigned** to the parameter `a`. To (implicitly) assign to parameter `a`, an LHS look-up is performed.                             
+你也许忽略掉了隐式的`a=2`在这段代码片段中。当值`2`作为参数传递给`foo(..)`函数时,`2`这个值就会**分配**给参数`a`.为了(隐式的)分配给参数`a`，一个LHS查找就会执行.                              
 
-There's also an RHS reference for the value of `a`, and that resulting value is passed to `console.log(..)`. `console.log(..)` needs a reference to execute. It's an RHS look-up for the `console` object, then a property-resolution occurs to see if it has a method called `log`.
+There's also an RHS reference for the value of `a`, and that resulting value is passed to `console.log(..)`. `console.log(..)` needs a reference to execute. It's an RHS look-up for the `console` object, then a property-resolution occurs to see if it has a method called `log`.                              
+这里值`a`也有RHS引用,并且结果值指向`console.log(..)`.`console.log(..)`需要一个引用来执行.这是一个RHS查询关于`console`对象,然后查询得到的值中是否有一个叫`log`的方法.                       
 
-Finally, we can conceptualize that there's an LHS/RHS exchange of passing the value `2` (by way of variable `a`'s RHS look-up) into `log(..)`. Inside of the native implementation of `log(..)`, we can assume it has parameters, the first of which (perhaps called `arg1`) has an LHS reference look-up, before assigning `2` to it.
+Finally, we can conceptualize that there's an LHS/RHS exchange of passing the value `2` (by way of variable `a`'s RHS look-up) into `log(..)`. Inside of the native implementation of `log(..)`, we can assume it has parameters, the first of which (perhaps called `arg1`) has an LHS reference look-up, before assigning `2` to it.                             
+最后，我们可以概念化理解LHS/RHS交换传递值`2`(通过变量`a`的RHS查询方式)在`log(..)`中。`log(..)`的内部本地实现，我们可以假设它有参数，在把`2`分配给它之前，它的第一个参数(也许被叫做`arg1`)做了一个LHS引用查找.          
 
-**Note:** You might be tempted to conceptualize the function declaration `function foo(a) {...` as a normal variable declaration and assignment, such as `var foo` and `foo = function(a){...`. In so doing, it would be tempting to think of this function declaration as involving an LHS look-up.
+**Note:** You might be tempted to conceptualize the function declaration `function foo(a) {...` as a normal variable declaration and assignment, such as `var foo` and `foo = function(a){...`. In so doing, it would be tempting to think of this function declaration as involving an LHS look-up.                        
+**注意:** 你可能有意概念化的将函数声明`function foo(a) {...`作为一个标准的变量声明和赋值,如`var foo`和`foo = function(a){...`.这样做,将会有意认为这个函数声明执行了LHS查询.                
 
-However, the subtle but important difference is that *Compiler* handles both the declaration and the value definition during code-generation, such that when *Engine* is executing code, there's no processing necessary to "assign" a function value to `foo`. Thus, it's not really appropriate to think of a function declaration as an LHS look-up assignment in the way we're discussing them here.
+However, the subtle but important difference is that *Compiler* handles both the declaration and the value definition during code-generation, such that when *Engine* is executing code, there's no processing necessary to "assign" a function value to `foo`. Thus, it's not really appropriate to think of a function declaration as an LHS look-up assignment in the way we're discussing them here.                       
+然而,容易忽略但很重要的区别在于 *编译器(Compiler)* 操纵着声明和值的定义在代码产生中,如当 *引擎(Engine)* 执行着代码时,这里没有进程必须将一个函数值分配给`foo`.因此,这里我们讨论认为将一个函数声明作为LHS查询赋值的方式不是真正的合适                        
 
 ### Engine/Scope Conversation  --(张雪)
 
@@ -314,8 +327,15 @@ var c = foo( 2 );
 
 | 单词 | 音标 | 释义 |
 | ---- | ---- | ---- |
+| retrieve | 英 [rɪ'triːv]  美 [rɪ'triv] |vt. [计] 检索；恢复；重新得到vi. 找回猎物n. [计] 检索；恢复，取回|
+| By contrast || 相比之下，与之相比 |
+| literally | 英 ['lɪt(ə)rəlɪ]  美 ['lɪtərəli] | adv. 照字面地；逐字地；不夸张地；正确地；简直 |
+| execute | 英 ['eksɪkjuːt]  美 ['ɛksɪkjut] | vt. 实行；执行；处死 |
+| implementation | 英 [ɪmplɪmen'teɪʃ(ə)n] | n. [计] 实现；履行；安装启用 |
+| assume | 英 [ə'sjuːm]  美 [ə'sum] | vi. 假定；设想；承担；采取vt. 僭取；篡夺；夺取；擅用；侵占|
 
 
 ## 疑难杂句
-`example1`
-`example2`
+`It's an RHS look-up for the ``console` `object, then a property-resolution occurs to see if it has a method called` `log`.
+
+`it's not really appropriate to think of a function declaration as an LHS look-up assignment in the way we're discussing them here`
