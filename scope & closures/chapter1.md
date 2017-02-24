@@ -47,57 +47,79 @@ Let's just say, for simplicity's sake, that any snippet of JavaScript has to be 
 
 The way we will approach learning about scope is to think of the process in terms of a conversation. But, *who* is having the conversation?
 
-### The Cast --(张静)
+###  演员阵容（The Cast） --(张静)
 
 Let's meet the cast of characters that interact to process the program `var a = 2;`, so we understand their conversations that we'll listen in on shortly:
+让我们来看看参与到`var a = 2;`这个程序过程中的演员表，这样让我们明白下面我们将听到的简短的对话。
 
 1. *Engine*: responsible for start-to-finish compilation and execution of our JavaScript program.
+1. *引擎*：负责从头到尾的js代码的编译和执行。
 
 2. *Compiler*: one of *Engine*'s friends; handles all the dirty work of parsing and code-generation (see previous section).
+2. *编译器*：*引擎*的其中一个朋友;处理所有语法分析和代码生成的脏活累活。（参考之前的片段）
 
 3. *Scope*: another friend of *Engine*; collects and maintains a look-up list of all the declared identifiers (variables), and enforces a strict set of rules as to how these are accessible to currently executing code.
+3. *作用域*：*引擎*的另一个朋友;收集和维持所有声明的标识符(变量组成的查询表，并实施一套非常严格的规则，确定当前执行的代码对这些对这些标识符的访问权限。
 
 For you to *fully understand* how JavaScript works, you need to begin to *think* like *Engine* (and friends) think, ask the questions they ask, and answer those questions the same.
-
+为了你能够*完全理解*JavaScript是怎么工作的，你需要开始去*思考*像*引擎*(和他的朋友们)思考，                                         
 ### Back & Forth
 
 When you see the program `var a = 2;`, you most likely think of that as one statement. But that's not how our new friend *Engine* sees it. In fact, *Engine* sees two distinct statements, one which *Compiler* will handle during compilation, and one which *Engine* will handle during execution.
+当你看见`var a = 2;`这段程序，你最有可能认为这是一个声明。但是我们的新朋友引擎不是这样看的。事实上，引擎认为这是两个完全不同的声明，一个由编译器在编译过程中处理，另一个由引擎在执行过程中处理。
 
 So, let's break down how *Engine* and friends will approach the program `var a = 2;`.
+所以，让我们分解引擎和他的朋友们是怎样着手处理`var a = 2;`这个程序的。
 
-The first thing *Compiler* will do with this program is perform lexing to break it down into tokens, which it will then parse into a tree. But when *Compiler* gets to code-generation, it will treat this program somewhat differently than perhaps assumed.
+The first thing *Compiler* will do with  this program is perform lexing to break it down into tokens, which it will then parse into a tree. But when *Compiler* gets to code-generation, it will treat this program somewhat differently than perhaps assumed.
+*引擎*处理这个程序的第一件事是分解成词法单元，然后将这些词法解析成一棵树。但是当*编译器*开始代码生成时，它将对这段程序的处理方式跟之前假定的不同。
 
 A reasonable assumption would be that *Compiler* will produce code that could be summed up by this pseudo-code: "Allocate memory for a variable, label it `a`, then stick the value `2` into that variable." Unfortunately, that's not quite accurate.
+一个合理的假设是*编译器*产生代码可以用这些假代码概括："为变量分配内存，标记为`a`，然后把`2`赋给变量。"不幸的是，这不是完全正确。
 
 *Compiler* will instead proceed as:
+*编译器*将按如下进行：
 
 1. Encountering `var a`, *Compiler* asks *Scope* to see if a variable `a` already exists for that particular scope collection. If so, *Compiler* ignores this declaration and moves on. Otherwise, *Compiler* asks *Scope* to declare a new variable called `a` for that scope collection.
+1. 遇到`a`,,*编译器*问*作用域*是否变量`a`已经存在于作用域集合内，如果存在，*编译器*忽略这个声明，继续编译。否则，*编译器*让*作用域*声明一个叫`a`的新的变量存到这个作用域的集合中。
 
 2. *Compiler* then produces code for *Engine* to later execute, to handle the `a = 2` assignment. The code *Engine* runs will first ask *Scope* if there is a variable called `a` accessible in the current scope collection. If so, *Engine* uses that variable. If not, *Engine* looks *elsewhere* (see nested *Scope* section below).
+2. *编译器*产生*引擎*稍后会执行的代码，用去处理`a = 2`这个赋值操作。*引擎*跑起来后会先问*作用域*，这里是否有一个叫`a`的变量在当前作用域集合内。如果有，*引擎*使用它。如果没有，*引擎*继续查找*别处*(阅读下面*作用域*章节)
 
 If *Engine* eventually finds a variable, it assigns the value `2` to it. If not, *Engine* will raise its hand and yell out an error!
+如果*引擎*最后找到一个变量，将`2`赋给它。如果没有，*引擎*将举手示意并抛出一个错误。
 
 To summarize: two distinct actions are taken for a variable assignment: First, *Compiler* declares a variable (if not previously declared in the current scope), and second, when executing, *Engine* looks up the variable in *Scope* and assigns to it, if found.
+总结：变量赋值操作是两个不同的动作：首先，*编译器*声明一个变量(如果在当前作用域中没有之前的声明)，第二，执行时，*引擎*在作用域中查找变量，如果找到就赋值给它。
 
-### Compiler Speak
+### 编译器说（Compiler Speak）
 
 We need a little bit more compiler terminology to proceed further with understanding.
+为了进一步理解，我们需要了解更多的编译器术语。
 
 When *Engine* executes the code that *Compiler* produced for step (2), it has to look-up the variable `a` to see if it has been declared, and this look-up is consulting *Scope*. But the type of look-up *Engine* performs affects the outcome of the look-up.
+当*引擎*执行*编译器*在第二步生成的代码时，它查找这个变量`a`，看它是否已被声明过，查找时询问*作用域*。但是*引擎* 查找的方法影响查找的效果。
 
 In our case, it is said that *Engine* would be performing an "LHS" look-up for the variable `a`. The other type of look-up is called "RHS".
+在我们的例子中，据说*引擎*将执行一个"LHS"查找法来查找变量`a`。还有一个类型叫"RHS"。
 
 I bet you can guess what the "L" and "R" mean. These terms stand for "Left-hand Side" and "Right-hand Side".
+我打赌你能猜到"L"和"R"代表的意思。术语就是"左手边"和"右手边"
 
 Side... of what? **Of an assignment operation.**
+什么的边？**赋值操作的。**
 
 In other words, an LHS look-up is done when a variable appears on the left-hand side of an assignment operation, and an RHS look-up is done when a variable appears on the right-hand side of an assignment operation.
+换句话说，当变量显示在一个赋值操作的左手边时开始一个LHS查找，当变量显示在一个赋值操作的右手边时开始一个RHS查找。
 
 Actually, let's be a little more precise. An RHS look-up is indistinguishable, for our purposes, from simply a look-up of the value of some variable, whereas the LHS look-up is trying to find the variable container itself, so that it can assign. In this way, RHS doesn't *really* mean "right-hand side of an assignment" per se, it just, more accurately, means "not left-hand side".
+事实上，我们更精确一点，对于我们的目的，简单的查找一些变量的值，RHS查找没啥不一样。然而LHS查找尝试变量的容器，以便对其赋值。这样，RHS并不*真正的*意味着"赋值操作的右手边"，意味着"不在左边"。
 
 Being slightly glib for a moment, you could also think "RHS" instead means "retrieve his/her source (value)", implying that RHS means "go get the value of...".
+灵活一下，你可以认为"RHS"意味着"检索它的资源"，暗示着"得到谁的值"。
 
 Let's dig into that deeper.
+让我们钻研的更深。
 
 When I say: --(翠翠)
 
@@ -313,7 +335,14 @@ var c = foo( 2 );
 ## 单词本
 
 | 单词 | 音标 | 释义 |
-| ---- | ---- | ---- |
+| imply | [ɪm'plaɪ] | vt. 意味；暗示；隐含 |
+| retrieve | [rɪ'triːv | vt. [计] 检索；恢复；重新得到  vi. 找回猎物  n. [计] 检索；恢复，取回 |
+| glib | [glɪb] | adj. 口齿伶俐的，油嘴滑舌的 |
+| dig into | v. 钻研；掘进去 | 
+| proceed | [prə'siːd] | vi. 开始；继续进行；发生；行进  n. 收入，获利 |
+| encountering | 遭遇 |
+| versus | ['vɜːsəs] | prep. 对；与...相对；对抗 |
+| leverage | ['liːv(ə)rɪdʒ; 'lev(ə)rɪdʒ] | n. 手段，影响力；杠杆作用；杠杆效率  v. 利用；举债经营 |
 
 
 ## 疑难杂句
