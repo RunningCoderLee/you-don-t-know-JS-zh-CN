@@ -245,6 +245,11 @@ We said that *Scope* is a set of rules for looking up variables by their identif
 
 Just as a block or function is nested inside another block or function, scopes are nested inside other scopes. So, if a variable cannot be found in the immediate scope, *Engine* consults the next outer containing scope, continuing until found or until the outermost (aka, global) scope has been reached.
 
+## 嵌套作用域
+我们所说的 *作用域*是在根据特定名称查找某个变量时所要遵循的一些规则.然而,我们通常所要考虑的不仅仅是一个*作用域*这么简单.
+
+如下：
+
 Consider:
 
 ```js
@@ -259,33 +264,62 @@ foo( 2 ); // 4
 
 The RHS reference for `b` cannot be resolved inside the function `foo`, but it can be resolved in the *Scope* surrounding it (in this case, the global).
 
+`b`右侧的参数引用不能被`foo`函数内部解析,但是它能够被其所属的`作用域`解析(在这个例子中,是全局).
+
 So, revisiting the conversations between *Engine* and *Scope*, we'd overhear:
+
+因此,重新回顾 *Engine* 和 *Scope* 之间的会话,我们将能窃听到如下会话:
 
 > ***Engine***: "Hey, *Scope* of `foo`, ever heard of `b`? Got an RHS reference for it."
 
+> ***Engine***: "Hey, `foo`中的 *作用域*,你听说过`b`么?它的右边有一个参数."
+
 > ***Scope***: "Nope, never heard of it. Go fish."
+
+> ***Scope***: "没有, 从来没听说过. 走开."
 
 > ***Engine***: "Hey, *Scope* outside of `foo`, oh you're the global *Scope*, ok cool. Ever heard of `b`? Got an RHS reference for it."
 
-> ***Scope***: "Yep, sure have. Here ya go."
+> ***Engine***: "Hey, `foo`外部的*作用域*, oh是一个全局的 *作用域*, ok cool. 听说过`b`吗? 它的右边有一个变量."
+
+> ***Scope***: "Yep, 当然. 这有儿有你要的."
+
+
+
 
 The simple rules for traversing nested *Scope*: *Engine* starts at the currently executing *Scope*, looks for the variable there, then if not found, keeps going up one level, and so on. If the outermost global scope is reached, the search stops, whether it finds the variable or not.
+
+遍历嵌套的*作用域*的规则很简单: *Engine* 从当前*作用域*开始执行,寻找变量,如果没找到,再从下一级开始找,如此循环.当找到最外层的全局作用域时,无论是否找到该变量,都会停止查找.
 
 ### Building on Metaphors
 
 To visualize the process of nested *Scope* resolution, I want you to think of this tall building.
 
+为了使这个嵌套*作用域*的过程可视化,我希望你想象一座高层建筑.
+
 <img src="fig1.png" width="250">
 
 The building represents our program's nested *Scope* rule set. The first floor of the building represents your currently executing *Scope*, wherever you are. The top level of the building is the global *Scope*.
 
+这个建筑代表着我们程序的嵌套`作用域`的规则集.建筑的第一层代表着当前执行程序的`作用域`,无论你处于什么位置.该建筑的最高层都是全局`作用域`.
+
 You resolve LHS and RHS references by looking on your current floor, and if you don't find it, taking the elevator to the next floor, looking there, then the next, and so on. Once you get to the top floor (the global *Scope*), you either find what you're looking for, or you don't. But you have to stop regardless.
+
+你可以通过查找本楼层作用域来解析等号左边和右边的引用,但是如果在本楼层作用域中找不到对应的变量引用,就需要乘坐电梯到下一楼层寻找,以此类推.当你到达了顶层(即全局作用域),同样开始查找,但是没有找到,无疑你应该到此为止停止继续找下去了.
+
+
 
 ## Errors
 
 Why does it matter whether we call it LHS or RHS?
 
+为什么我们如此强调LHS或者RHS
+
 Because these two types of look-ups behave differently in the circumstance where the variable has not yet been declared (is not found in any consulted *Scope*).
+
+因为当一个变量还没有被声明(即在任何`作用域`中都无法被解析)的时候,这两种类型的查找行为是全然不同的.
+
+如下:
 
 Consider:
 
@@ -295,7 +329,7 @@ function foo(a) {
 	b = a;
 }
 
-foo( 2 );
+foo( 2 );   // ‘b’ is not defined
 ```
 
 When the RHS look-up occurs for `b` the first time, it will not be found. This is said to be an "undeclared" variable, because it is not found in the scope.  --(李欣)
@@ -371,8 +405,9 @@ var c = foo( 2 );
 
 ## 单词本
 
-| 单词 | 音标 | 释义 |
-| ---- | ---- | ---- |
+| 单词  | 音标   | 释义           |
+| ---- | ----  | -------------  |
+| LHS  |       | Left Hand Side |
 | retrieve | 英 [rɪ'triːv]  美 [rɪ'triv] |vt. [计] 检索；恢复；重新得到vi. 找回猎物n. [计] 检索；恢复，取回|
 | By contrast || 相比之下，与之相比 |
 | literally | 英 ['lɪt(ə)rəlɪ]  美 ['lɪtərəli] | adv. 照字面地；逐字地；不夸张地；正确地；简直 |
