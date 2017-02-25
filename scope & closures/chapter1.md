@@ -1,51 +1,79 @@
-# You Don't Know JS: Scope & Closures --(罗尧)
-# Chapter 1: What is Scope?
+# 你不知道的JS：作用域和闭包(You Don't Know JS: Scope & Closures) --(罗尧)
+# 什么是作用域？（Chapter 1: What is Scope?）
 
-One of the most fundamental paradigms of nearly all programming languages is the ability to store values in variables, and later retrieve or modify those values. In fact, the ability to store values and pull values out of variables is what gives a program *state*.
+One of the most fundamental paradigms of nearly all programming languages is the ability to store values in variables, and later retrieve or modify those values. In fact, the ability to store values and pull values out of variables is what gives a program *state*.    
+几乎所有编程语言的最基本的功能之一是将值存储在变量中，然后检索或修改这些值。事实上，存储值和从变量中取出值的能力赋予了程序*状态(state)*。
 
-Without such a concept, a program could perform some tasks, but they would be extremely limited and not terribly interesting.
+Without such a concept, a program could perform some tasks, but they would be extremely limited and not terribly interesting.     
+没有这样的概念，程序可以执行一些任务，但是它们将是非常有限的，并不会非常有趣。
 
-But the inclusion of variables into our program begets the most interesting questions we will now address: where do those variables *live*? In other words, where are they stored? And, most importantly, how does our program find them when it needs them?
+But the inclusion of variables into our program begets the most interesting questions we will now address: where do those variables *live*? In other words, where are they stored? And, most importantly, how does our program find them when it needs them?    
+但将变量包含在我们的程序中产生了我们现在要解决的最有趣的问题：这些变量*住*在哪里？ 换句话说，他们在哪里存储？ 最重要的是，我们的程序在需要它们时如何找到它们？
 
-These questions speak to the need for a well-defined set of rules for storing variables in some location, and for finding those variables at a later time. We'll call that set of rules: *Scope*.
+These questions speak to the need for a well-defined set of rules for storing variables in some location, and for finding those variables at a later time. We'll call that set of rules: *Scope*.     
+这些问题说明，需要一个明确定义的规则，用于在某个位置存储变量，并在以后找到这些变量。我们将这套规则称为：*作用域（Scope）*。
 
-But, where and how do these *Scope* rules get set?
+But, where and how do these *Scope* rules get set?   
+但是，这些*作用域*规则在哪里及如何设置的呢？
 
-## Compiler Theory
+## 编译原理（Compiler Theory）
 
-It may be self-evident, or it may be surprising, depending on your level of interaction with various languages, but despite the fact that JavaScript falls under the general category of "dynamic" or "interpreted" languages, it is in fact a compiled language. It is *not* compiled well in advance, as are many traditionally-compiled languages, nor are the results of compilation portable among various distributed systems.
+It may be self-evident, or it may be surprising, depending on your level of interaction with various languages, but despite the fact that JavaScript falls under the general category of "dynamic" or "interpreted" languages, it is in fact a compiled language. It is *not* compiled well in advance, as are many traditionally-compiled languages, nor are the results of compilation portable among various distributed systems.     
+或许你早就知道，或者你是从未听说，这取决于你的知识水平，尽管JavaScript属于“动态”或“解释”语言的一般类别，但它实际上是一门编译语言。和许多传统编译的语言不同，它*不是*提前编译的，编译结果也不能在各种分布式系统间移植。
 
-But, nevertheless, the JavaScript engine performs many of the same steps, albeit in more sophisticated ways than we may commonly be aware, of any traditional language-compiler.
+But, nevertheless, the JavaScript engine performs many of the same steps, albeit in more sophisticated ways than we may commonly be aware, of any traditional language-compiler.       
+但是，尽管如此，JavaScript引擎和传统的编译语言执行许多相同的步骤，有些甚至比我们想的的更加复杂。
 
-In traditional compiled-language process, a chunk of source code, your program, will undergo typically three steps *before* it is executed, roughly called "compilation":
+In traditional compiled-language process, a chunk of source code, your program, will undergo typically three steps *before* it is executed, roughly called "compilation":      
+在传统的编译语言过程中，一段源代码，你的程序，将在执行*之前*经历三个步骤，大致称为“编译”：
 
-1. **Tokenizing/Lexing:** breaking up a string of characters into meaningful (to the language) chunks, called tokens. For instance, consider the program: `var a = 2;`. This program would likely be broken up into the following tokens: `var`, `a`, `=`, `2`, and `;`. Whitespace may or may not be persisted as a token, depending on whether it's meaningful or not.
+1. **Tokenizing/Lexing:** breaking up a string of characters into meaningful (to the language) chunks, called tokens. For instance, consider the program: `var a = 2;`. This program would likely be broken up into the following tokens: `var`, `a`, `=`, `2`, and `;`. Whitespace may or may not be persisted as a token, depending on whether it's meaningful or not.1.       
+**分词/词法分析（Tokenizing/Lexing）:** 将字符串分解成有意义的（对于语言）块，称为词法单元（tokens）。例如，考虑程序：`var a = 2;`。这个程序可能被分解成下面的标记：`var`，`a`，`=`，`2`和`;`。空白是否被当作词法单元，这取决于它是否有意义。
 
-    **Note:** The difference between tokenizing and lexing is subtle and academic, but it centers on whether or not these tokens are identified in a *stateless* or *stateful* way. Put simply, if the tokenizer were to invoke stateful parsing rules to figure out whether `a` should be considered a distinct token or just part of another token, *that* would be **lexing**.
+    **Note:** The difference between tokenizing and lexing is subtle and academic, but it centers on whether or not these tokens are identified in a *stateless* or *stateful* way. Put simply, if the tokenizer were to invoke stateful parsing rules to figure out whether `a` should be considered a distinct token or just part of another token, *that* would be **lexing**.    
+    **注意:** 分词和词法分析之间的区别是微妙的，主要区分方法是对词法单元的识别是通过*有状态*还是*无状态*方式进行的。简单地说，如果词法单元生成器调用有状态的解析规则来判断`a`是否应被视为一个独立的词法单元还是另一个词法单元的一部分，这就是*词法分析*。
 
-2. **Parsing:** taking a stream (array) of tokens and turning it into a tree of nested elements, which collectively represent the grammatical structure of the program. This tree is called an "AST" (<b>A</b>bstract <b>S</b>yntax <b>T</b>ree).
+2. **Parsing:** taking a stream (array) of tokens and turning it into a tree of nested elements, which collectively represent the grammatical structure of the program. This tree is called an "AST" (<b>A</b>bstract <b>S</b>yntax <b>T</b>ree).     
+**解析（Parsing）:** 解析将获取词法单元流（数组）并将其转换成嵌套元素表示程序语法结构的树，这棵树被称为“AST”(<b>A</b>bstract <b>S</b>yntax <b>T</b>ree).
 
-    The tree for `var a = 2;` might start with a top-level node called `VariableDeclaration`, with a child node called `Identifier` (whose value is `a`), and another child called `AssignmentExpression` which itself has a child called `NumericLiteral` (whose value is `2`).
+    The tree for `var a = 2;` might start with a top-level node called `VariableDeclaration`, with a child node called `Identifier` (whose value is `a`), and another child called `AssignmentExpression` which itself has a child called `NumericLiteral` (whose value is `2`).`var a = 2;`的抽象语法树可能从名为`VariableDeclaration`的顶级节点开始，下面一个称为`Identifier`（其值为`a`）的子节点和另一个称为`AssignmentExpression`的子节点，`AssignmentExpression`有一个名为NumericLiteral的子节点（值为2）。
 
-3. **Code-Generation:** the process of taking an AST and turning it into executable code. This part varies greatly depending on the language, the platform it's targeting, etc.
+3. **Code-Generation:** the process of taking an AST and turning it into executable code. This part varies greatly depending on the language, the platform it's targeting, etc.     
+**代码生成（Code-Generation）：** 获取AST并将其转换为可执行代码的过程被称为代码生成。根据不同的语言，目标平台等而有所不同。
+ 
+    So, rather than get mired in details, we'll just handwave and say that there's a way to take our above described AST for `var a = 2;` and turn it into a set of machine instructions to actually *create* a variable called `a` (including reserving memory, etc.), and then store a value into `a`.     
+    抛开具体细节，简单来说有一种方法将`var a = 2;`的我们上面提到的AST变成一组机器指令去*创建*一个称为`a`的变量（包括分配内存等），然后将值存储到`a`中。
+    
+    **Note:** The details of how the engine manages system resources are deeper than we will dig, so we'll just take it for granted that the engine is able to create and store variables as needed.       
+    **注意:** 关于引擎管理系统资源的细节超出了讨论范围，我们只要知道引擎能够根据需要创建和存储变量就可以了。
 
-    So, rather than get mired in details, we'll just handwave and say that there's a way to take our above described AST for `var a = 2;` and turn it into a set of machine instructions to actually *create* a variable called `a` (including reserving memory, etc.), and then store a value into `a`.
+The JavaScript engine is vastly more complex than *just* those three steps, as are most other language compilers. For instance, in the process of parsing and code-generation, there are certainly steps to optimize the performance of the execution, including collapsing redundant elements, etc.      
+JavaScript引擎比那些*只有*三个步骤的语言编译器复杂得多。例如，在解析和代码生成的过程中，肯定有步骤来优化执行的性能，包括折叠冗余元素等。
 
-    **Note:** The details of how the engine manages system resources are deeper than we will dig, so we'll just take it for granted that the engine is able to create and store variables as needed.
+So, I'm painting only with broad strokes here. But I think you'll see shortly why *these* details we *do* cover, even at a high level, are relevant.       
+所以，我在这里只做宏观、简单地介绍。但我想你会很快看到为什么我们会覆盖到这么高难度的内容，这与我么要讨论的事有所关联。
 
-The JavaScript engine is vastly more complex than *just* those three steps, as are most other language compilers. For instance, in the process of parsing and code-generation, there are certainly steps to optimize the performance of the execution, including collapsing redundant elements, etc.
+For one thing, JavaScript engines don't get the luxury (like other language compilers) of having plenty of time to optimize, because JavaScript compilation doesn't happen in a build step ahead of time, as with other languages.    
+首先，JavaScript引擎不会像其他语言编译器那样花费大量时间来优化，因为JavaScript编译不会像其他语言一样在提前的构建步骤中发生。
 
-So, I'm painting only with broad strokes here. But I think you'll see shortly why *these* details we *do* cover, even at a high level, are relevant.
+For JavaScript, the compilation that occurs happens, in many cases, mere microseconds (or less!) before the code is executed. To ensure the fastest performance, JS engines use all kinds of tricks (like JITs, which lazy compile and even hot re-compile, etc.) which are well beyond the "scope" of our discussion here.      
+对于JavaScript，执行前的bianyi编译大多数情况下只用几微秒（甚至更少），为了确保最佳性能，JS引擎使用各种各样的技巧（如JIT，延迟编译甚至实施重编译等），这些都超出了我们在这里讨论的“作用域”范围。
 
-For one thing, JavaScript engines don't get the luxury (like other language compilers) of having plenty of time to optimize, because JavaScript compilation doesn't happen in a build step ahead of time, as with other languages.
+Let's just say, for simplicity's sake, that any snippet of JavaScript has to be compiled before (usually *right* before!) it's executed. So, the JS compiler will take the program `var a = 2;` and compile it *first*, and then be ready to execute it, usually right away.      
+简单来说，任何JavaScript代码片段必须在执行之前编译（通常*就是在*执行之前！）。所以，JS编译器*首先*将对程序`var a = 2;`进行编译，然后准备执行它，通常是立刻执行。
 
-For JavaScript, the compilation that occurs happens, in many cases, mere microseconds (or less!) before the code is executed. To ensure the fastest performance, JS engines use all kinds of tricks (like JITs, which lazy compile and even hot re-compile, etc.) which are well beyond the "scope" of our discussion here.
+## 理解作用域（Understanding Scope）
 
-Let's just say, for simplicity's sake, that any snippet of JavaScript has to be compiled before (usually *right* before!) it's executed. So, the JS compiler will take the program `var a = 2;` and compile it *first*, and then be ready to execute it, usually right away.
+The way we will approach learning about scope is to think of the process in terms of a conversation. But, *who* is having the conversation?    
+我们学习范围的方法是将这个过程想象成几个人在对话。那么，是*谁*在谈话？
 
-## Understanding Scope
-
-The way we will approach learning about scope is to think of the process in terms of a conversation. But, *who* is having the conversation?
+| 单词 | 音标 | 释义 |
+| ---- | ---- | ---- |
+|concept|['kɒnsept]|n. 观念，概念|
+|academic|[ækə'demɪk]|adj. 学术的；理论的；学院的 n.大学生，大学教师；学者|
+|tokenizer||n. 分词器；编译器|
+|invoke|[ɪn'vəʊk]|vt. 调用；祈求；引起；恳求|
+|occurs||v. 重现（occur的第三人称单数）|
 
 ### The Cast --(张静)
 
