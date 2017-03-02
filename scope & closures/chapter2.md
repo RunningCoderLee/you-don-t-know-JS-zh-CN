@@ -159,6 +159,8 @@ with (obj) {
 -- （张润）
 However, there's much more going on here than just a convenient short-hand for object property access. Consider:
 
+无论如何,这都代表着更多的意义,而不单单是为了方便快速查找对象属性访问权
+
 ```js
 function foo(obj) {
 	with (obj) {
@@ -184,15 +186,31 @@ console.log( a ); // 2 -- Oops, leaked global!
 
 In this code example, two objects `o1` and `o2` are created. One has an `a` property, and the other does not. The `foo(..)` function takes an object reference `obj` as an argument, and calls `with (obj) { .. }` on the reference. Inside the `with` block, we make what appears to be a normal lexical reference to a variable `a`, an LHS reference in fact (see Chapter 1), to assign to it the value of `2`.
 
+
+在这段代码实例中,两个对象o1和o2被创建了.其中一个有a属性,而另一个没有.`foo(..)`这个函数将`obj`这个对象的引用作为参数传递,同时调用了`with（obj）`这个函数的引用.在`with`这个块作用域内,我们看似只是对`a`这个变量做了一个普通的词法引用,实际上是一个`LHS`引用,将2赋值给它.
+
+
 When we pass in `o1`, the `a = 2` assignment finds the property `o1.a` and assigns it the value `2`, as reflected in the subsequent `console.log(o1.a)` statement. However, when we pass in `o2`, since it does not have an `a` property, no such property is created, and `o2.a` remains `undefined`.
+
+
+当我们传递`o1`作为参数时,`a=2`这个操作找到`o1.a` ,同时将2赋值给o1.a,如同`console.log(01.a)`所体现的一样.然而,当我们传递`o2`这个参数过去时,因为`o2`中没有`a`这个属性,也没有这样的属性会被创建，则`o2.a`就是`undefined`了.
+
 
 But then we note a peculiar side-effect, the fact that a global variable `a` was created by the `a = 2` assignment. How can this be?
 
+但是我们注意到一个奇怪的副作用, `a = 2`这个操作产生了一个全局变量`a`,这是为什么呢?
+
 The `with` statement takes an object, one which has zero or more properties, and **treats that object as if *it* is a wholly separate lexical scope**, and thus the object's properties are treated as lexically defined identifiers in that "scope".
+
+`with`可以将一个没有或者有很多属性的对象**隔离成一个完全分离的词法作用域**,因此在这个作用域中的对象的属性也被认为是该作用域中的词法标识符
 
 **Note:** Even though a `with` block treats an object like a lexical scope, a normal `var` declaration inside that `with` block will not be scoped to that `with` block, but instead the containing function scope.
 
+**Note:**即使一个`with`块将一个对象当做是一个词法作用域,而一个正常用`var`声明的内部变量将不会被包含在`with`块中,而是包含在调用`with`所在的函数作用域中.
+
 While the `eval(..)` function can modify existing lexical scope if it takes a string of code with one or more declarations in it, the `with` statement actually creates a **whole new lexical scope** out of thin air, from the object you pass to it.
+
+当有一些代码声明在函数内部时,`eval(..)`函数就能够修改现存的词法作用域,而实际情况下`with`声明则根据你传进来的对象凭空创建了**一个全新的词法作用域**
 
 
 -- （李欣）
@@ -225,3 +243,10 @@ Lexical scope means that scope is defined by author-time decisions of where func
 Two mechanisms in JavaScript can "cheat" lexical scope: `eval(..)` and `with`. The former can modify existing lexical scope (at runtime) by evaluating a string of "code" which has one or more declarations in it. The latter essentially creates a whole new lexical scope (again, at runtime) by treating an object reference *as* a "scope" and that object's properties as scoped identifiers.
 
 The downside to these mechanisms is that it defeats the *Engine*'s ability to perform compile-time optimizations regarding scope look-up, because the *Engine* has to assume pessimistically that such optimizations will be invalid. Code *will* run slower as a result of using either feature. **Don't use them.**
+
+
+ lexical 词汇的
+ peculiar 奇异的
+ lexically defined identifiers 词法标识符
+ statement 声明
+ out of thin air 凭空
