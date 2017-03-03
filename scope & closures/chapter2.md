@@ -137,18 +137,24 @@ foo( "var a = 2" );
 
 -- （张雪）
 There are other facilities in JavaScript which amount to a very similar effect to `eval(..)`. `setTimeout(..)` and `setInterval(..)` *can* take a string for their respective first argument, the contents of which are `eval`uated as the code of a dynamically-generated function. This is old, legacy behavior and long-since deprecated. Don't do it!
+JS里有一些其他的方法，有着和`eval(..)`. `setTimeout(..)` 以及 `setInterval(..)` 相似的作用，这些方法接受一个字符串作为第一个参数，并将其作为动态生成的函数代码执行。这是一种古老的方法，现在已经不推荐使用了。
 
 The `new Function(..)` function constructor similarly takes a string of code in its **last** argument to turn into a dynamically-generated function (the first argument(s), if any, are the named parameters for the new function). This function-constructor syntax is slightly safer than `eval(..)`, but it should still be avoided in your code.
+函数构造器`new Function(..)`也有类似的的作用，它接受一个字符串作为 **最后** 一个参数并将其转换成动态生成的函数代码（如果构造器有第一个参数，第一个参数会被当成新函数的形参），这种函数构造语法比`eval(..)`安全一点，但也应尽量避免使用。
 
 The use-cases for dynamically generating code inside your program are incredibly rare, as the performance degradations are almost never worth the capability.
+你很少会在程序里用到动态生成代码，而且动态生成代码会带来性能下降，不值得使用。
 
 ### `with`
 
 The other frowned-upon (and now deprecated!) feature in JavaScript which cheats lexical scope is the `with` keyword. There are multiple valid ways that `with` can be explained, but I will choose here to explain it from the perspective of how it interacts with and affects lexical scope.
+另一个不推荐并且已经弃用JS特性`with`,`with`能欺骗词法作用域。`with`的用法可以从很多种角度解释，这里我会从它如何与词法作用域交互以及对词法作用域的影响来解释。
 
 `with` is typically explained as a short-hand for making multiple property references against an object *without* repeating the object reference itself each time.
+`with` 常常被用作快速引用一个对象中的多个属性，这样可以避免每次对对象的重复引用。
 
 For example:
+例如：
 
 ```js
 var obj = {
@@ -157,12 +163,12 @@ var obj = {
 	c: 3
 };
 
-// more "tedious" to repeat "obj"
+// 这样写很枯燥
 obj.a = 2;
 obj.b = 3;
 obj.c = 4;
 
-// "easier" short-hand
+// 这样写很便捷
 with (obj) {
 	a = 3;
 	b = 4;
@@ -255,7 +261,12 @@ JavaScript中有两个机制可以“欺骗”此法作用域：`eval(..)`和`wi
 The downside to these mechanisms is that it defeats the *Engine*'s ability to perform compile-time optimizations regarding scope look-up, because the *Engine* has to assume pessimistically that such optimizations will be invalid. Code *will* run slower as a result of using either feature. **Don't use them.**
 这两个机制的副作用是*引擎*无法在编译时对作用域查找进行优化，因为*引擎*只能谨慎地认为这样的优化是无效的。使用这其中任何一个机制都将导致代码运行变慢。**不用使用它们**
 
+## 单词本
+
 | 单词 | 音标 | 释义 |
+| ---- | ---- | ---- |
+| deprecated | ['deprɪkeɪt] | 不赞成；祈免；贬低 |
+| lexical | ['leksɪk(ə)l] | 词汇的 |
 | innermost | ['ɪnəməʊst] | adj. 内心的；最里面的，最深处的；秘密的 |
 | simultaneously | [,sɪml'teɪnɪəslɪ] | adv. 同时地 |
 | diagrams | ['daɪə,græm] | n. 图表；[数] 图解（diagram的复数）；略图 v. 用图解释；作…的图解（diagram的三单形式） |
