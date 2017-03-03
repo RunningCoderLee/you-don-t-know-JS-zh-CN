@@ -255,3 +255,9 @@ JavaScript中有两个机制可以“欺骗”此法作用域：eval(..)和with�
 The downside to these mechanisms is that it defeats the *Engine*'s ability to perform compile-time optimizations regarding scope look-up, because the *Engine* has to assume pessimistically that such optimizations will be invalid. Code *will* run slower as a result of using either feature. **Don't use them.**
 
 词 法 作 用 域 意 味 着 作 用 域 是 由 书 写 代 码 时 函 数 声 明 的 位 置 来 决 定 的。 编 译 的 词 法 分 析 阶 段 基 本 能 够 知 道 全 部 标 识 符 在 哪 里 以 及 是 如 何 声 明 的， 从 而 能 够 预 测 在 执 行 过 程 中 如 何 对 它 们 进 行 查 找。 JavaScript 中 有 两 个 机 制 可 以“ 欺 骗” 词 法 作 用 域： eval(..) 和 with。 前 者 可 以 对 一 段 包 含 一 个 或 多 个 声 明 的“ 代 码” 字 符 串 进 行 演 算， 并 借 此 来 修 改 已 经 存 在 的 词 法 作 用 域（ 在 运 行 时）。 后 者 本 质 上 是 通 过 将 一 个 对 象 的 引 用 当 作 作 用 域 来 处 理， 将 对 象 的 属 性 当 作 作 用 域 中 的 标 识 符 来 处 理， 从 而 创 建 了 一 个 新 的 词 法 作 用 域（ 同 样 是 在 运 行 时）。 这 两 个 机 制 的 副 作 用 是 引 擎 无 法 在 编 译 时 对 作 用 域 查 找 进 行 优 化， 因 为 引 擎 只 能 谨 慎 地 认 为 这 样 的 优 化 是 无 效 的。 使 用 这 其 中 任 何 一 个 机 制 都 将 导 致 代 码 运 行 变 慢。 不 要 使用他们
+
+| 单词 | 音标 | 释义 |
+| innermost | ['ɪnəməʊst] | adj. 内心的；最里面的，最深处的；秘密的 |
+| simultaneously | [,sɪml'teɪnɪəslɪ] | adv. 同时地 |
+| diagrams | ['daɪə,græm] | n. 图表；[数] 图解（diagram的复数）；略图 v. 用图解释；作…的图解（diagram的三单形式） |
+| encompass | [ɪn'kʌmpəs; en-] | vt. 包含；包围，环绕；完成 |
