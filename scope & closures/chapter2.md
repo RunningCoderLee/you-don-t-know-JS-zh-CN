@@ -86,23 +86,31 @@ No matter *where* a function is invoked from, or even *how* it is invoked, its l
 The lexical scope look-up process *only* applies to first-class identifiers, such as the `a`, `b`, and `c`. If you had a reference to `foo.bar.baz` in a piece of code, the lexical scope look-up would apply to finding the `foo` identifier, but once it locates that variable, object property-access rules take over to resolve the `bar` and `baz` properties, respectively.
 词法作用域查找只会查找一级标识符，比如a、b和c。如果代码中引用了｀foo.bar.baz｀，词法作用域查找只会试图查找｀foo｀标识符，找到这个变量后，对象属性访问规则会分别接管对｀bar｀和｀baz｀属性的访问。
 
-## Cheating Lexical  --（翠翠）
+## Cheating Lexical  --（翠翠）            
+## 欺骗的词法 --（翠翠）                         
 
-If lexical scope is defined only by where a function is declared, which is entirely an author-time decision, how could there possibly be a way to "modify" (aka, cheat) lexical scope at run-time?
+If lexical scope is defined only by where a function is declared, which is entirely an author-time decision, how could there possibly be a way to "modify" (aka, cheat) lexical scope at run-time?                        
+如果词法作用域被定义在一个仅仅是函数声明的地方,这完全地是一个创作时的决定,怎么样才可能有一种方法在运行的时候"修改"(即,欺骗)词法作用域？                      
 
-JavaScript has two such mechanisms. Both of them are equally frowned-upon in the wider community as bad practices to use in your code. But the typical arguments against them are often missing the most important point: **cheating lexical scope leads to poorer performance.**
+JavaScript has two such mechanisms. Both of them are equally frowned-upon in the wider community as bad practices to use in your code. But the typical arguments against them are often missing the most important point: **cheating lexical scope leads to poorer performance.**                    
+JavaScript种有两种这样的机制.在广泛的社区觉得这两种机制使用在你的代码中都是一些糟糕的练习.但是典型的反对他们常常会忽略最重要的一点: **欺骗的词法作用域导致性能降低.**                     
 
-Before I explain the performance issue, though, let's look at how these two mechanisms work.
+Before I explain the performance issue, though, let's look at how these two mechanisms work.                      
+但在我解释性能问题之前,让我们先看这两种机制是如何工作的.                           
 
 ### `eval`
 
-The `eval(..)` function in JavaScript takes a string as an argument, and treats the contents of the string as if it had actually been authored code at that point in the program. In other words, you can programmatically generate code inside of your authored code, and run the generated code as if it had been there at author time.
+The `eval(..)` function in JavaScript takes a string as an argument, and treats the contents of the string as if it had actually been authored code at that point in the program. In other words, you can programmatically generate code inside of your authored code, and run the generated code as if it had been there at author time.                                 
+在JavaAcript中`eval(...)`函数可以接受一个字符串作为参数,并且字符串的内容被视为好像完全的授权在程序的代码那个位置.换句话说,你可以在编写代码里面以编程方式生成代码,并且运行生成的代码好像在已经才那里.              
 
-Evaluating `eval(..)` (pun intended) in that light, it should be clear how `eval(..)` allows you to modify the lexical scope environment by cheating and pretending that author-time (aka, lexical) code was there all along.
+Evaluating `eval(..)` (pun intended) in that light, it should be clear how `eval(..)` allows you to modify the lexical scope environment by cheating and pretending that author-time (aka, lexical) code was there all along.                            
+这样去领悟`eval(..)`(一语双关)就很简单了,`eval(..)`是怎样通过欺骗和伪装创作时(即,词法)代码允许你修改词法作用域环境,这就很清楚了.                   
 
-On subsequent lines of code after an `eval(..)` has executed, the *Engine* will not "know" or "care" that the previous code in question was dynamically interpreted and thus modified the lexical scope environment. The *Engine* will simply perform its lexical scope look-ups as it always does.
+On subsequent lines of code after an `eval(..)` has executed, the *Engine* will not "know" or "care" that the previous code in question was dynamically interpreted and thus modified the lexical scope environment. The *Engine* will simply perform its lexical scope look-ups as it always does.                          
+在执行`eval(..)`之后一行的代码,*引擎* 并不"知道"或者"在乎"先前的代码是动态的解释这个问题因此修改了词法作用域环境.*引擎* 总是只会执行它的词法作用域查找.                 
 
-Consider the following code:
+Consider the following code:              
+思考下面代码:                 
 
 ```js
 function foo(str, a) {
@@ -115,15 +123,20 @@ var b = 2;
 foo( "var b = 3;", 1 ); // 1, 3
 ```
 
-The string `"var b = 3;"` is treated, at the point of the `eval(..)` call, as code that was there all along. Because that code happens to declare a new variable `b`, it modifies the existing lexical scope of `foo(..)`. In fact, as mentioned above, this code actually creates variable `b` inside of `foo(..)` that shadows the `b` that was declared in the outer (global) scope.
+The string `"var b = 3;"` is treated, at the point of the `eval(..)` call, as code that was there all along. Because that code happens to declare a new variable `b`, it modifies the existing lexical scope of `foo(..)`. In fact, as mentioned above, this code actually creates variable `b` inside of `foo(..)` that shadows the `b` that was declared in the outer (global) scope.                         
+在`eval(..)`调用的位置，字符串`"var b = 3;"`作为代码一直在那里执行.因为代码发生了声明一个新的变量`b`,它修改了`foo(..)`已经存在的词法作用域.事实上,正如上面提到一样,这段代码实际上在`foo(..)`之内创建变量`b`,遮蔽外部（全局）作用域已经声明了的变量`b`.                                
 
-When the `console.log(..)` call occurs, it finds both `a` and `b` in the scope of `foo(..)`, and never finds the outer `b`. Thus, we print out "1, 3" instead of "1, 2" as would have normally been the case.
+When the `console.log(..)` call occurs, it finds both `a` and `b` in the scope of `foo(..)`, and never finds the outer `b`. Thus, we print out "1, 3" instead of "1, 2" as would have normally been the case.                                
+当`console.log(..)`被调用时,在`foo(..)`作用域同时找到`a`和`b`,却从不会找到外部的`b`.因此,我们输出"1,3"而不是通常情况下的"1,2"。                        
 
-**Note:** In this example, for simplicity's sake, the string of "code" we pass in was a fixed literal. But it could easily have been programmatically created by adding characters together based on your program's logic. `eval(..)` is usually used to execute dynamically created code, as dynamically evaluating essentially static code from a string literal would provide no real benefit to just authoring the code directly.
+**Note:** In this example, for simplicity's sake, the string of "code" we pass in was a fixed literal. But it could easily have been programmatically created by adding characters together based on your program's logic. `eval(..)` is usually used to execute dynamically created code, as dynamically evaluating essentially static code from a string literal would provide no real benefit to just authoring the code directly.                      
+**注意:** 在这个例子中,为简单起见,我们传递的字符串"代码"是固定不变的.但是它很容易的以编程方式创建通过添加字符连在一起基于你程序的逻辑.`eval(..)`通常用来执行动态的创建代码,动态的执行本质上一个字符串文字静态代码,直接编写代码不会提供真正的好处.                    
 
-By default, if a string of code that `eval(..)` executes contains one or more declarations (either variables or functions), this action modifies the existing lexical scope in which the `eval(..)` resides. Technically, `eval(..)` can be invoked "indirectly", through various tricks (beyond our discussion here), which causes it to instead execute in the context of the global scope, thus modifying it. But in either case, `eval(..)` can at runtime modify an author-time lexical scope.
+By default, if a string of code that `eval(..)` executes contains one or more declarations (either variables or functions), this action modifies the existing lexical scope in which the `eval(..)` resides. Technically, `eval(..)` can be invoked "indirectly", through various tricks (beyond our discussion here), which causes it to instead execute in the context of the global scope, thus modifying it. But in either case, `eval(..)` can at runtime modify an author-time lexical scope.                          
+默认情况下,如果一个字符串的代码`eval(..)`执行包含一个或多个声明（无论是变量还是函数）,就会触发修改已经存在的`eval(..)`所在的词法作用域.从技术上讲,`eval(..)`可以间接的被调用，通过各种技巧（这里超出了我们的讨论范围）,导致它在上下文的全局作用域中被修改.但在任何情况下,`eval(..)`能在运行时修改一个创作时的词法作用域.                               
 
-**Note:** `eval(..)` when used in a strict-mode program operates in its own lexical scope, which means declarations made inside of the `eval()` do not actually modify the enclosing scope.
+**Note:** `eval(..)` when used in a strict-mode program operates in its own lexical scope, which means declarations made inside of the `eval()` do not actually modify the enclosing scope.                          
+**注意:** 在严格模式程序中`eval(..)`使用运行时有自己的词法作用域,这就意味着`eval()`内部的声明不能实际的修改其封闭的作用域.                  
 
 ```js
 function foo(str) {
@@ -271,4 +284,10 @@ The downside to these mechanisms is that it defeats the *Engine*'s ability to pe
 | simultaneously | [,sɪml'teɪnɪəslɪ] | adv. 同时地 |
 | diagrams | ['daɪə,græm] | n. 图表；[数] 图解（diagram的复数）；略图 v. 用图解释；作…的图解（diagram的三单形式） |
 | encompass | [ɪn'kʌmpəs; en-] | vt. 包含；包围，环绕；完成 |
-
+| entirely | [ɪn'taɪɚli] | adv. 完全地，彻底地 |
+| treat | [trit] | vt. 治疗；对待；探讨；视为vi. 探讨；请客；协商n. 请客；款待|
+| previous | ['privɪəs] |adj. 以前的；早先的；过早的adv. 在先；在…以前 |
+| dynamically | [daɪ'næmɪkli] | adv. 动态地；充满活力地；不断变化地 |
+| interpret | [ɪn'tɝprɪt] | vt. 说明；口译vi. 解释；翻译 |
+| essentially | [ɪ'sɛnʃəli] | adv. 本质上；本来 |
+| indirectly | [,ɪndə'rɛktli] | adv. 间接地；不诚实；迂回地 |
