@@ -227,7 +227,7 @@ In other words, in the pessimistic sense, most of those optimizations it *would*
 最悲观的情况是如果出现了`eval(..)`或`with`，所有的优化可能都是无意义的，因此最简单的做法就是*完全*不做任何优化。
 
 Your code will almost certainly tend to run slower simply by the fact that you include an `eval(..)` or `with` anywhere in the code. No matter how smart the *Engine* may be about trying to limit the side-effects of these pessimistic assumptions, **there's no getting around the fact that without the optimizations, code runs slower.**
-如果代码中大量使用` eval(..)`或`with`，那么运行起来一定会变得非常慢。无论*引擎*多聪明，识图将这些悲观情况的副作用限制在最小范围内，也无法避免如果没有这些优化，代码会运行得更慢这个事实。
+如果代码中大量使用` eval(..)`或`with`，那么运行起来一定会变得非常慢。无论*引擎*多聪明，**试图将这些悲观情况的副作用限制在最小范围内，也无法避免如果没有这些优化，代码会运行得更慢这个事实。**
 
 ## Review (TL;DR)
 ## 回顾
@@ -236,8 +236,8 @@ Lexical scope means that scope is defined by author-time decisions of where func
 词法作用域意味着作用域是由书写代码时函数声明的位置来决定的。变异的词法分析阶段基本能够知道全部标识符在哪里以及是如何声明的，从而能够预测在执行过程中如何对它们进行查找。
 
 Two mechanisms in JavaScript can "cheat" lexical scope: `eval(..)` and `with`. The former can modify existing lexical scope (at runtime) by evaluating a string of "code" which has one or more declarations in it. The latter essentially creates a whole new lexical scope (again, at runtime) by treating an object reference *as* a "scope" and that object's properties as scoped identifiers.
-JavaScript中有两个机制可以“欺骗”此法作用域：eval(..)和with。前者可以对一段
+JavaScript中有两个机制可以“欺骗”此法作用域：`eval(..)`和`with`。前者可以对一段包含一个或多个声明的“代码”字符串进行演算，并借此来修改已经存在的词法作用域（在运行时）。后者本质上是通过将一个对象的引用当做作用域来处理，将对象的属性*当做*作用域中的"标识符"来处理，从而创建了一个新的词法作用域（同样是在运行时）。
 
 The downside to these mechanisms is that it defeats the *Engine*'s ability to perform compile-time optimizations regarding scope look-up, because the *Engine* has to assume pessimistically that such optimizations will be invalid. Code *will* run slower as a result of using either feature. **Don't use them.**
+这两个机制的副作用是*引擎*无法在编译时对作用域查找进行优化，因为*引擎*只能谨慎地认为这样的优化是无效的。使用这其中任何一个机制都将导致代码运行变慢。**不用使用它们**
 
-词 法 作 用 域 意 味 着 作 用 域 是 由 书 写 代 码 时 函 数 声 明 的 位 置 来 决 定 的。 编 译 的 词 法 分 析 阶 段 基 本 能 够 知 道 全 部 标 识 符 在 哪 里 以 及 是 如 何 声 明 的， 从 而 能 够 预 测 在 执 行 过 程 中 如 何 对 它 们 进 行 查 找。 JavaScript 中 有 两 个 机 制 可 以“ 欺 骗” 词 法 作 用 域： eval(..) 和 with。 前 者 可 以 对 一 段 包 含 一 个 或 多 个 声 明 的“ 代 码” 字 符 串 进 行 演 算， 并 借 此 来 修 改 已 经 存 在 的 词 法 作 用 域（ 在 运 行 时）。 后 者 本 质 上 是 通 过 将 一 个 对 象 的 引 用 当 作 作 用 域 来 处 理， 将 对 象 的 属 性 当 作 作 用 域 中 的 标 识 符 来 处 理， 从 而 创 建 了 一 个 新 的 词 法 作 用 域（ 同 样 是 在 运 行 时）。 这 两 个 机 制 的 副 作 用 是 引 擎 无 法 在 编 译 时 对 作 用 域 查 找 进 行 优 化， 因 为 引 擎 只 能 谨 慎 地 认 为 这 样 的 优 化 是 无 效 的。 使 用 这 其 中 任 何 一 个 机 制 都 将 导 致 代 码 运 行 变 慢。 不 要 使用他们
