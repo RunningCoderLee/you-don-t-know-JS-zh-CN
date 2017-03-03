@@ -1,23 +1,30 @@
-# You Don't Know JS: Scope & Closures --（罗尧）
-# Chapter 2: Lexical Scope
+# 你不知道的JS：作用域和闭包（You Don't Know JS: Scope & Closures） --（罗尧）
+# 第二章：词法作用域（Chapter 2: Lexical Scope）
 
-In Chapter 1, we defined "scope" as the set of rules that govern how the *Engine* can look up a variable by its identifier name and find it, either in the current *Scope*, or in any of the *Nested Scopes* it's contained within.
+In Chapter 1, we defined "scope" as the set of rules that govern how the *Engine* can look up a variable by its identifier name and find it, either in the current *Scope*, or in any of the *Nested Scopes* it's contained within.  
+在第1章中，我们将“作用域”定义为一组规则，它们管理*引擎*如何在当前*作用域*中或在包含的任何*嵌套作用域*中通过其标识符名称查找变量。
 
-There are two predominant models for how scope works. The first of these is by far the most common, used by the vast majority of programming languages. It's called **Lexical Scope**, and we will examine it in-depth. The other model, which is still used by some languages (such as Bash scripting, some modes in Perl, etc.) is called **Dynamic Scope**.
+There are two predominant models for how scope works. The first of these is by far the most common, used by the vast majority of programming languages. It's called **Lexical Scope**, and we will examine it in-depth. The other model, which is still used by some languages (such as Bash scripting, some modes in Perl, etc.) is called **Dynamic Scope**.  
+作用域工作原理有两个主要模型。第一个是迄今为止最常见的，被绝大多数编程语言使用。它被称为**词法作用域（Lexical Scope）**，我们将深入研究它。 另一种模型仍然由一些语言（如Bash脚本，Perl中的一些模式等）使用被称为**动态作用域（Dynamic Scope）**。
 
-Dynamic Scope is covered in Appendix A. I mention it here only to provide a contrast with Lexical Scope, which is the scope model that JavaScript employs.
+Dynamic Scope is covered in Appendix A. I mention it here only to provide a contrast with Lexical Scope, which is the scope model that JavaScript employs.   
+在附录A中会介绍动态作用域。我在这里提到它只是为了提供与词法作用域的对比，这是JavaScript采用的作用域模型。
 
-## Lex-time
+## 词法阶段（Lex-time）
 
-As we discussed in Chapter 1, the first traditional phase of a standard language compiler is called lexing (aka, tokenizing). If you recall, the lexing process examines a string of source code characters and assigns semantic meaning to the tokens as a result of some stateful parsing.
+As we discussed in Chapter 1, the first traditional phase of a standard language compiler is called lexing (aka, tokenizing). If you recall, the lexing process examines a string of source code characters and assigns semantic meaning to the tokens as a result of some stateful parsing.   
+正如我们在第1章中讨论的，标准语言编译器的第一个传统阶段称为词法化（又叫单词化）。如果你记得，词法化过程检查一串源代码字符，并为某些有状态的解析的过程赋予单词语义。
 
-It is this concept which provides the foundation to understand what lexical scope is and where the name comes from.
+It is this concept which provides the foundation to understand what lexical scope is and where the name comes from.     正是这个概念提供了理解词法作用域是什么以及名字来自哪里的基础。 
 
-To define it somewhat circularly, lexical scope is scope that is defined at lexing time. In other words, lexical scope is based on where variables and blocks of scope are authored, by you, at write time, and thus is (mostly) set in stone by the time the lexer processes your code.
+To define it somewhat circularly, lexical scope is scope that is defined at lexing time. In other words, lexical scope is based on where variables and blocks of scope are authored, by you, at write time, and thus is (mostly) set in stone by the time the lexer processes your code.   
+简单来说，词法作用域是在词法分析阶段定义的作用域。换句话说，词法作用域基于变量和块作用域写在哪里，因此在词法分析器处理你的代码的时候不会改变（大部分是这样）。
 
-**Note:** We will see in a little bit there are some ways to cheat lexical scope, thereby modifying it after the lexer has passed by, but these are frowned upon. It is considered best practice to treat lexical scope as, in fact, lexical-only, and thus entirely author-time in nature.
+**Note:** We will see in a little bit there are some ways to cheat lexical scope, thereby modifying it after the lexer has passed by, but these are frowned upon. It is considered best practice to treat lexical scope as, in fact, lexical-only, and thus entirely author-time in nature.     
+**注意：**我们可以用一些方法来欺骗词法作用域，从而在词法分析器通过之后对其进行修改，但这些都不推荐。事实上，让词法作用域根据词法关系保持书写时的自然关系不变，是一个非常好的最佳实践。
 
-Let's consider this block of code:
+Let's consider this block of code:      
+让我们来思考下面一段代码   
 
 ```js
 function foo(a) {
@@ -34,9 +41,9 @@ function foo(a) {
 foo( 2 ); // 2 4 12
 ```
 
-There are three nested scopes inherent in this code example. It may be helpful to think about these scopes as bubbles inside of each other.
+There are three nested scopes inherent in this code example. It may be helpful to think about these scopes as bubbles inside of each other.  此代码示例中有三个嵌套作用域。 将这些作用域看作彼此内部的气泡可能会有所帮助。
 
-<img src="fig2.png" width="500">
+<img src="/images/chapter2/fig2.png" width="500">
 
 **Bubble 1** encompasses the global scope, and has just one identifier in it: `foo`. --(张静)
 
@@ -240,4 +247,8 @@ JavaScript中有两个机制可以“欺骗”此法作用域：eval(..)和with�
 
 The downside to these mechanisms is that it defeats the *Engine*'s ability to perform compile-time optimizations regarding scope look-up, because the *Engine* has to assume pessimistically that such optimizations will be invalid. Code *will* run slower as a result of using either feature. **Don't use them.**
 
-词 法 作 用 域 意 味 着 作 用 域 是 由 书 写 代 码 时 函 数 声 明 的 位 置 来 决 定 的。 编 译 的 词 法 分 析 阶 段 基 本 能 够 知 道 全 部 标 识 符 在 哪 里 以 及 是 如 何 声 明 的， 从 而 能 够 预 测 在 执 行 过 程 中 如 何 对 它 们 进 行 查 找。 JavaScript 中 有 两 个 机 制 可 以“ 欺 骗” 词 法 作 用 域： eval(..) 和 with。 前 者 可 以 对 一 段 包 含 一 个 或 多 个 声 明 的“ 代 码” 字 符 串 进 行 演 算， 并 借 此 来 修 改 已 经 存 在 的 词 法 作 用 域（ 在 运 行 时）。 后 者 本 质 上 是 通 过 将 一 个 对 象 的 引 用 当 作 作 用 域 来 处 理， 将 对 象 的 属 性 当 作 作 用 域 中 的 标 识 符 来 处 理， 从 而 创 建 了 一 个 新 的 词 法 作 用 域（ 同 样 是 在 运 行 时）。 这 两 个 机 制 的 副 作 用 是 引 擎 无 法 在 编 译 时 对 作 用 域 查 找 进 行 优 化， 因 为 引 擎 只 能 谨 慎 地 认 为 这 样 的 优 化 是 无 效 的。 使 用 这 其 中 任 何 一 个 机 制 都 将 导 致 代 码 运 行 变 慢。 不 要 使用他们
+词 法 作 用 域 意 味 着 作 用 域 是 由 书 写 代 码 时 函 数 声 明 的 位 置 来 决 定 的。 编 译 的 词 法 分 析 阶 段 基 本 能 够 知 道 全 部 标 识 符 在 哪 里 以 及 是 如 何 声 明 的， 从 而 能 够 预 测 在 执 行 过 程 中 如 何 对 它 们 进 行 查 找。 JavaScript 中 有 两 个 机 制 可 以“ 欺 骗” 词 法 作 用 域： eval(..) 和 with。 前 者 可 以 对 一 段 包 含 一 个 或 多 个 声 明 的“ 代 码” 字 符 串 进 行 演 算， 并 借 此 来 修 改 已 经 存 在 的 词 法 作 用 域（ 在 运 行 时）。 后 者 本 质 上 是 通 过 将 一 个 对 象 的 引 用 当 作 作 用 域 来 处 理， 将 对 象 的 属 性 当 作 作 用 域 中 的 标 识 符 来 处 理， 从 而 创 建 了 一 个 新 的 词 法 作 用 域（ 同 样 是 在 运 行 时）。 这 两 个 机 制 的 副 作 用 是 引 擎 无 法 在 编 译 时 对 作 用 域 查 找 进 行 优 化， 因 为 引 擎 只 能 谨 慎 地 认 为 这 样 的 优 化 是 无 效 的。 使 用 这 其 中 任 何 一 个 机 制 都 将 导 致 代 码 运 行 变 慢。 不 要 使用他们   
+
+It is considered best practice to treat lexical scope as, in fact, lexical-only, and thus entirely author-time in nature.  
+我的翻译：最好的做法是将词汇作为事实上的词法作用域来处理。   
+官方翻译：事实上，让词法作用域根据词法关系保持书写时的自然关系不变，是一个非常好的最佳实践。  
