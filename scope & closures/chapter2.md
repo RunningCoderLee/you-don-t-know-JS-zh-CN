@@ -39,38 +39,52 @@ There are three nested scopes inherent in this code example. It may be helpful t
 <img src="fig2.png" width="500">
 
 **Bubble 1** encompasses the global scope, and has just one identifier in it: `foo`. --(张静)
+***气泡1*包含了“包含着整个全局作用域，其中只有一个标识符：foo。
 
 **Bubble 2** encompasses the scope of `foo`, which includes the three identifiers: `a`, `bar` and `b`.
+**气泡2**包含着`foo`所创建的作用域，其中有三个标识符：`a`、`bar`h和`b`。
 
 **Bubble 3** encompasses the scope of `bar`, and it includes just one identifier: `c`.
+**气泡3**包含着`bar`所创建的作用域，其中只有一个标识符：`c`。
 
 Scope bubbles are defined by where the blocks of scope are written, which one is nested inside the other, etc. In the next chapter, we'll discuss different units of scope, but for now, let's just assume that each function creates a new bubble of scope.
+作用域气泡由其对应的作用域块代码写在哪里决定，它们是逐级包含的。下一章会讨论不同类型的作用域，但现在，只要假设每一个函数都会创建一个新的作用域气泡就好了。
 
 The bubble for `bar` is entirely contained within the bubble for `foo`, because (and only because) that's where we chose to define the function `bar`.
+`bar`的气泡被完全包含在`foo`所创建的气泡中，唯一的原因是那里就是我们希望定义函数`bar`的位置。
 
 Notice that these nested bubbles are strictly nested. We're not talking about Venn diagrams where the bubbles can cross boundaries. In other words, no bubble for some function can simultaneously exist (partially) inside two other outer scope bubbles, just as no function can partially be inside each of two parent functions.
+注意，这里所说的气泡是严格包含的。我们并不是在讨论（Venn diagrams）文氏图1这种可以跨越边界的气泡。换句话说，没有任何函数的气泡可以（部分地）同时出现在两个外部作用域的气泡中，就如同没有任何函数可以部分地同时出现在两个父级函数中一样。
 
-### Look-ups
+### 查找（Look-ups）
 
 The structure and relative placement of these scope bubbles fully explains to the *Engine* all the places it needs to look to find an identifier.
+这些作用域气泡的结构和位置关系给引擎提供了足够的用于查找标识符的位置的信息。
 
 In the above code snippet, the *Engine* executes the `console.log(..)` statement and goes looking for the three referenced variables `a`, `b`, and `c`. It first starts with the innermost scope bubble, the scope of the `bar(..)` function. It won't find `a` there, so it goes up one level, out to the next nearest scope bubble, the scope of `foo(..)`. It finds `a` there, and so it uses that `a`. Same thing for `b`. But `c`, it does find inside of `bar(..)`.
+在上一个代码片段中，引擎执行`console.log(..)`声明，并查找`a`、`b`和`c`三个变量的引用。它首先从最内部的作用域，也就是`bar(..)`函数的作用域气泡开始查找。引擎将在这找不到`a`，因此会去上一级，到所嵌套的`foo(..)`的作用域中继续查找。在这里找到了`a`，因此引擎使用了这个引用。对`b`来讲也是一样的。而对`c`来说，引擎在`bar(..)`中就找到了它。
 
 Had there been a `c` both inside of `bar(..)` and inside of `foo(..)`, the `console.log(..)` statement would have found and used the one in `bar(..)`, never getting to the one in `foo(..)`.
+如果a、c都存在于bar(..)和foo(..)的内部，`console.log(..)`就可以直接使用`bar(..)`中的变量，而不用到外面的`foo(..)`中查找。
 
 **Scope look-up stops once it finds the first match**. The same identifier name can be specified at multiple layers of nested scope, which is called "shadowing" (the inner identifier "shadows" the outer identifier). Regardless of shadowing, scope look-up always starts at the innermost scope being executed at the time, and works its way outward/upward until the first match, and stops.
+**作用域查找会在找到第一个匹配的标识符时停止**。在多层的嵌套作用域中可以定义同名的标识符，这叫作“遮蔽效应（shadowing）”（内部的标识符“遮蔽”了外部的标识符）。抛开遮蔽效应，作用域查找始终从运行时所处的最内部作用域开始，逐级向外或者说向上进行，直到遇见第一个匹配的标识符为止。 
 
 **Note:** Global variables are also automatically properties of the global object (`window` in browsers, etc.), so it *is* possible to reference a global variable not directly by its lexical name, but instead indirectly as a property reference of the global object.
+**笔记:** 全局变量会自动成为全局对象（比如浏览器中的window对象）的属性，因此可以不直接通过全局对象的词法名称，而是间接地通过对全局对象属性的引用来对其进行访问。
 
 ```js
 window.a
 ```
 
 This technique gives access to a global variable which would otherwise be inaccessible due to it being shadowed. However, non-global shadowed variables cannot be accessed.
+通过这种技术可以访问那些被同名变量所遮蔽的全局变量。但非全局的变量如果被遮蔽了，无论如何都无法被访问到。
 
 No matter *where* a function is invoked from, or even *how* it is invoked, its lexical scope is **only** defined by where the function was declared.
+无论函数在哪里被调用，也无论它如何被调用，它的词法作用域都只由函数被声明时所处的位置决定。
 
 The lexical scope look-up process *only* applies to first-class identifiers, such as the `a`, `b`, and `c`. If you had a reference to `foo.bar.baz` in a piece of code, the lexical scope look-up would apply to finding the `foo` identifier, but once it locates that variable, object property-access rules take over to resolve the `bar` and `baz` properties, respectively.
+词法作用域查找只会查找一级标识符，比如a、b和c。如果代码中引用了｀foo.bar.baz｀，词法作用域查找只会试图查找｀foo｀标识符，找到这个变量后，对象属性访问规则会分别接管对｀bar｀和｀baz｀属性的访问。
 
 ## Cheating Lexical  --（翠翠）
 
