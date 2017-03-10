@@ -327,10 +327,10 @@ The `def` function expression is defined in the second-half of the snippet, and 
 While functions are the most common unit of scope, and certainly the most wide-spread of the design approaches in the majority of JS in circulation, other units of scope are possible, and the usage of these other scope units can lead to even better, cleaner to maintain code.		
 虽说函数是JS中最常见而且被广泛使用的作用域单元，但也有一些其他形式的作用域单元可以让你的代码更好维护，更整洁。
 
-Many languages other than JavaScript support Block Scope, and so developers from those languages are accustomed to the mindset, whereas those who've primarily only worked in JavaScript may find the concept slightly foreign.
+Many languages other than JavaScript support Block Scope, and so developers from those languages are accustomed to the mindset, whereas those who've primarily only worked in JavaScript may find the concept slightly foreign.		
 除了JavaScript之外的很多语言都支持块级作用域，所以从别的语言转到JS的开发者们对这个概念非常熟悉，但那些只用Javascript工作的开发者们可能会觉得这个概念有些陌生。
 
-But even if you've never written a single line of code in block-scoped fashion, you are still probably familiar with this extremely common idiom in JavaScript:
+But even if you've never written a single line of code in block-scoped fashion, you are still probably familiar with this extremely common idiom in JavaScript:		
 就算你从没有用写过一句块级作用域风格的代码，你也很可能熟悉下面这个JS中很常见的例子：
 
 ```js
@@ -340,9 +340,9 @@ for (var i=0; i<10; i++) {
 ```
 
 We declare the variable `i` directly inside the for-loop head, most likely because our *intent* is to use `i` only within the context of that for-loop, and essentially ignore the fact that the variable actually scopes itself to the enclosing scope (function or global).
-我们在for循环的顶部直接声明了变量 `i` ，因为我们想在for循环体中使用 `i` ，但忽略了变量本身是属于一个闭合的作用域的（函数或是全局作用域）。
+我们在for循环的顶部直接声明了变量 `i` ，因为我们想在for循环体中使用 `i` ，但忽略了变量本身是属于一个闭合的作用域的（函数或是全局作用域）。		
 
-That's what block-scoping is all about. Declaring variables as close as possible, as local as possible, to where they will be used. Another example:
+That's what block-scoping is all about. Declaring variables as close as possible, as local as possible, to where they will be used. Another example:		
 这也正是块级作用域存在的意义，就近声明变量，离变量被使用的地方越近越好。另一个例子：
 
 ```js
@@ -355,13 +355,13 @@ if (foo) {
 }
 ```
 
-We are using a `bar` variable only in the context of the if-statement, so it makes a kind of sense that we would declare it inside the if-block. However, where we declare variables is not relevant when using `var`, because they will always belong to the enclosing scope. This snippet is essentially "fake" block-scoping, for stylistic reasons, and relying on self-enforcement not to accidentally use `bar` in another place in that scope.
+We are using a `bar` variable only in the context of the if-statement, so it makes a kind of sense that we would declare it inside the if-block. However, where we declare variables is not relevant when using `var`, because they will always belong to the enclosing scope. This snippet is essentially "fake" block-scoping, for stylistic reasons, and relying on self-enforcement not to accidentally use `bar` in another place in that scope.		
 我们只在if语句的执行环境内部使用了变量`bar`，所以我们在if语句块内部声明这个变量是比较合理的。尽管我们声明变量的位置和我们何时使用变量并没有关系，因为他们必须总是在同一个作用域内，这个代码片段从风格上看是一个“假的”块级作用域，我们只能强制不在其他的地方使用变量`bar`。
 
-Block scope is a tool to extend the earlier "Principle of Least ~~Privilege~~ Exposure" [^note-leastprivilege] from hiding information in functions to hiding information in blocks of our code.
+Block scope is a tool to extend the earlier "Principle of Least ~~Privilege~~ Exposure" [^note-leastprivilege] from hiding information in functions to hiding information in blocks of our code.		
 块级作用域是“最小特权原则”的一种实现，把在函数内隐藏信息的方法扩展到了在代码区块中隐藏信息。
 
-Consider the for-loop example again:
+Consider the for-loop example again:		
 考虑下面的for循环例子：
 
 ```js
@@ -370,29 +370,29 @@ for (var i=0; i<10; i++) {
 }
 ```
 
-Why pollute the entire scope of a function with the `i` variable that is only going to be (or only *should be*, at least) used for the for-loop?
+Why pollute the entire scope of a function with the `i` variable that is only going to be (or only *should be*, at least) used for the for-loop?		
 为什么要用本该在for循环内部使用的`i`污染全局作用域呢？
 
-But more importantly, developers may prefer to *check* themselves against accidentally (re)using variables outside of their intended purpose, such as being issued an error about an unknown variable if you try to use it in the wrong place. Block-scoping (if it were possible) for the `i` variable would make `i` available only for the for-loop, causing an error if `i` is accessed elsewhere in the function. This helps ensure variables are not re-used in confusing or hard-to-maintain ways.
+But more importantly, developers may prefer to *check* themselves against accidentally (re)using variables outside of their intended purpose, such as being issued an error about an unknown variable if you try to use it in the wrong place. Block-scoping (if it were possible) for the `i` variable would make `i` available only for the for-loop, causing an error if `i` is accessed elsewhere in the function. This helps ensure variables are not re-used in confusing or hard-to-maintain ways.		
 更重要的是，开发者可能需要要检查这些变量，以免在作用范围外被意外使用。块级作用域（如果有效的话）会使得变量`i`值在for循环内有效，在别处访问`i`时会报错。这样就确保了变量不会被重复使用而导致的维护困难。
 
-But, the sad reality is that, on the surface, JavaScript has no facility for block scope.
+But, the sad reality is that, on the surface, JavaScript has no facility for block scope.		
 而且，悲剧的是，表面上看，JS没有块级作用域的功能。
 
-That is, until you dig a little further.
+That is, until you dig a little further.		
 除非你再深入研究一下。
 
 ### `with`
 
-We learned about `with` in Chapter 2. While it is a frowned upon construct, it *is* an example of (a form of) block scope, in that the scope that is created from the object only exists for the lifetime of that `with` statement, and not in the enclosing scope.
+We learned about `with` in Chapter 2. While it is a frowned upon construct, it *is* an example of (a form of) block scope, in that the scope that is created from the object only exists for the lifetime of that `with` statement, and not in the enclosing scope.		
 我们再第二章学到了`with`。它是一种难以理解的结构，一种块级作用域的形式，它从某个对象建立的块级作用域只会在`with`内部存在。
 
 ### `try/catch`
 
 It's a *very* little known fact that JavaScript in ES3 specified the variable declaration in the `catch` clause of a `try/catch` to be block-scoped to the `catch` block.
-这是ES3中鲜为人知的一个知识点：在`try/catch`的`catch`中声明的变量是属于`catch`块级作用域的。
+这是ES3中鲜为人知的一个知识点：在`try/catch`的`catch`中声明的变量是属于`catch`块级作用域的。		
 
-For instance:
+For instance:		
 例如：
 
 ```js
@@ -407,15 +407,15 @@ console.log( err ); // ReferenceError: `err` not found 外部无法访问`err`
 ```
 
 As you can see, `err` exists only in the `catch` clause, and throws an error when you try to reference it elsewhere.
-正如你所看到的，`err`值存在于`catch`的语句中，你在别处引用就会抛出错误。
+正如你所看到的，`err`值存在于`catch`的语句中，你在别处引用就会抛出错误。		
 
-**Note:** While this behavior has been specified and true of practically all standard JS environments (except perhaps old IE), many linters seem to still complain if you have two or more `catch` clauses in the same scope which each declare their error variable with the same identifier name. This is not actually a re-definition, since the variables are safely block-scoped, but the linters still seem to, annoyingly, complain about this fact.
+**Note:** While this behavior has been specified and true of practically all standard JS environments (except perhaps old IE), many linters seem to still complain if you have two or more `catch` clauses in the same scope which each declare their error variable with the same identifier name. This is not actually a re-definition, since the variables are safely block-scoped, but the linters still seem to, annoyingly, complain about this fact.		
 **注意:** 虽然该特性已经成为标准且适用于所有的JS运行环境（可能除了某些老版本的IE），当在同一个作用域内的两个或多个`catch`语句中声明名称相同的变量时，许多静态语法检查器依然会报错。实际上这并没有重新声明变量，因为变量可以在其块级作用域中安全使用，但静态语法检查器依然会报错。
 
-To avoid these unnecessary warnings, some devs will name their `catch` variables `err1`, `err2`, etc. Other devs will simply turn off the linting check for duplicate variable names.
+To avoid these unnecessary warnings, some devs will name their `catch` variables `err1`, `err2`, etc. Other devs will simply turn off the linting check for duplicate variable names.		
 为了避免不必要的警告，一些开发者将`catch`中的变量命名成`err1`, `err2`等等。其他开发者可能会简单地吧静态检查器中检查重名变量的功能给关了。
 
-The block-scoping nature of `catch` may seem like a useless academic fact, but see Appendix B for more information on just how useful it might be.
+The block-scoping nature of `catch` may seem like a useless academic fact, but see Appendix B for more information on just how useful it might be.		
 `catch`的块级作用域特性看起来好像偏学术，用处不大，但附录B中有这方面很多有用的信息。
 
 ### `let`  --（张润）
