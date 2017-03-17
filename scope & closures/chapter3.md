@@ -203,27 +203,34 @@ Compare the previous two snippets. In the first snippet, the name `foo` is bound
 
 In other words, `(function foo(){ .. })` as an expression means the identifier `foo` is found *only* in the scope where the `..` indicates, not in the outer scope. Hiding the name `foo` inside itself means it does not pollute the enclosing scope unnecessarily.
 
-### Anonymous vs. Named   --（翠翠）
+### Anonymous vs. Named   --（翠翠）         
+### 匿名和命名
 
-You are probably most familiar with function expressions as callback parameters, such as:
-
+You are probably most familiar with function expressions as callback parameters, such as:                    
+也许你最熟悉的函数表达式就是回调参数的形式,例如:                
 ```js
 setTimeout( function(){
 	console.log("I waited 1 second!");
 }, 1000 );
 ```
 
-This is called an "anonymous function expression", because `function()...` has no name identifier on it. Function expressions can be anonymous, but function declarations cannot omit the name -- that would be illegal JS grammar.
+This is called an "anonymous function expression", because `function()...` has no name identifier on it. Function expressions can be anonymous, but function declarations cannot omit the name -- that would be illegal JS grammar.                         
+这叫做"匿名函数表达式",因为函数`function()...`没有名称标识符.函数表达式可以是匿名的,但是函数声明式不能省略名字,那是非法的JS语法.                                
 
-Anonymous function expressions are quick and easy to type, and many libraries and tools tend to encourage this idiomatic style of code. However, they have several draw-backs to consider:
+Anonymous function expressions are quick and easy to type, and many libraries and tools tend to encourage this idiomatic style of code. However, they have several draw-backs to consider:              
+匿名函数表达式书写起来简单快捷,许多库和工具倾向于鼓励使用这种惯用的代码风格.但是,他们也有几个缺点要考虑:                                
 
-1. Anonymous functions have no useful name to display in stack traces, which can make debugging more difficult.
+1. Anonymous functions have no useful name to display in stack traces, which can make debugging more difficult.                                
+1. 在堆栈跟踪中匿名函数没有有用的名字去显示,这使得调试更困难.                                
 
-2. Without a name, if the function needs to refer to itself, for recursion, etc., the **deprecated** `arguments.callee` reference is unfortunately required. Another example of needing to self-reference is when an event handler function wants to unbind itself after it fires.
+2. Without a name, if the function needs to refer to itself, for recursion, etc., the **deprecated** `arguments.callee` reference is unfortunately required. Another example of needing to self-reference is when an event handler function wants to unbind itself after it fires.                             
+2. 函数没有名字,如果这个函数需要引用它自己时只能使用已经过期的`argument.callee`引用,如递归等.函数需要引用自身的另一个例子是当一个事件触发后函数想解绑它自己.                             
 
-3. Anonymous functions omit a name that is often helpful in providing more readable/understandable code. A descriptive name helps self-document the code in question.
+3. Anonymous functions omit a name that is often helpful in providing more readable/understandable code. A descriptive name helps self-document the code in question.                     
+3. 匿名函数省略名字有助于提高代码的可读/可理解性.一个描述性的名字有助于理解代码的含义.                           
 
-**Inline function expressions** are powerful and useful -- the question of anonymous vs. named doesn't detract from that. Providing a name for your function expression quite effectively addresses all these draw-backs, but has no tangible downsides. The best practice is to always name your function expressions:
+**Inline function expressions** are powerful and useful -- the question of anonymous vs. named doesn't detract from that. Providing a name for your function expression quite effectively addresses all these draw-backs, but has no tangible downsides. The best practice is to always name your function expressions:                         
+**行内函数表达式** 非常强大且有用,匿名和命名的问题并不会影响它.给你的函数表达式提供一个名字可以非常有用的解决所有的这些问题,但是没有切实的缺点.最佳实践方式就是始终命名你的函数表达式:                
 
 ```js
 setTimeout( function timeoutHandler(){ // <-- Look, I have a name!
@@ -231,7 +238,8 @@ setTimeout( function timeoutHandler(){ // <-- Look, I have a name!
 }, 1000 );
 ```
 
-### Invoking Function Expressions Immediately
+### Invoking Function Expressions Immediately                   
+### 立即执行函数表达式                         
 
 ```js
 var a = 2;
@@ -246,11 +254,14 @@ var a = 2;
 console.log( a ); // 2
 ```
 
-Now that we have a function as an expression by virtue of wrapping it in a `( )` pair, we can execute that function by adding another `()` on the end, like `(function foo(){ .. })()`. The first enclosing `( )` pair makes the function an expression, and the second `()` executes the function.
+Now that we have a function as an expression by virtue of wrapping it in a `( )` pair, we can execute that function by adding another `()` on the end, like `(function foo(){ .. })()`. The first enclosing `( )` pair makes the function an expression, and the second `()` executes the function.                       
+现在我们有一个函数表达式并由一对`()`包含,我们可以执行该函数通过在其末尾添加另一个`()`,像`(function foo(){ .. })()`.第一个封闭的一对`()`使得函数成为一个表达式,第二个`()`则表示执行该函数.                
 
-This pattern is so common, a few years ago the community agreed on a term for it: **IIFE**, which stands for **I**mmediately **I**nvoked **F**unction **E**xpression.
+This pattern is so common, a few years ago the community agreed on a term for it: **IIFE**, which stands for **I**mmediately **I**nvoked **F**unction **E** xpression.               
+这种模式是很常见的,几年前社区达成了一个术语:**IIFE**,代表立即执行函数表达式(Invoking Function Expressions Immediately)                   
 
-Of course, IIFE's don't need names, necessarily -- the most common form of IIFE is to use an anonymous function expression. While certainly less common, naming an IIFE has all the aforementioned benefits over anonymous function expressions, so it's a good practice to adopt.
+Of course, IIFE's don't need names, necessarily -- the most common form of IIFE is to use an anonymous function expression. While certainly less common, naming an IIFE has all the aforementioned benefits over anonymous function expressions, so it's a good practice to adopt.                         
+当然,IIFE不是必须有函数名的,相反,最常见的IIFE是使用匿名函数表达式.而更常见的,命名一个IIFE比前面提到的匿名函数表达式更有好处,因此这也是一个好的采用实践方式.                            
 
 ```js
 var a = 2;
@@ -265,13 +276,17 @@ var a = 2;
 console.log( a ); // 2
 ```
 
-There's a slight variation on the traditional IIFE form, which some prefer: `(function(){ .. }())`. Look closely to see the difference. In the first form, the function expression is wrapped in `( )`, and then the invoking `()` pair is on the outside right after it. In the second form, the invoking `()` pair is moved to the inside of the outer `( )` wrapping pair.
+There's a slight variation on the traditional IIFE form, which some prefer: `(function(){ .. }())`. Look closely to see the difference. In the first form, the function expression is wrapped in `( )`, and then the invoking `()` pair is on the outside right after it. In the second form, the invoking `()` pair is moved to the inside of the outer `( )` wrapping pair.                     
+对于传统的IIFE这里有一些轻微变化,一些更喜欢这样的`(function(){..}())`.仔细的看下不同.在第一种形式中,函数表达式被`()`包含着,然后在后面用一对`()`来调用.在第二种形式中,调用的一对`()`被移动到外部的`()`括号内包含着.               
 
-These two forms are identical in functionality. **It's purely a stylistic choice which you prefer.**
+These two forms are identical in functionality. **It's purely a stylistic choice which you prefer.**            
+两种形式都有着同样的功能.**哪种风格的选择看你自己喜好**                            
 
-Another variation on IIFE's which is quite common is to use the fact that they are, in fact, just function calls, and pass in argument(s).
+Another variation on IIFE's which is quite common is to use the fact that they are, in fact, just function calls, and pass in argument(s).                     
+IIFE的另一种不同是非常常见的使用方法当作函数调用，并传递参数.              
 
-For instance:
+For instance:          
+例如:            
 
 ```js
 var a = 2;
@@ -287,12 +302,14 @@ var a = 2;
 console.log( a ); // 2
 ```
 
-We pass in the `window` object reference, but we name the parameter `global`, so that we have a clear stylistic delineation for global vs. non-global references. Of course, you can pass in anything from an enclosing scope you want, and you can name the parameter(s) anything that suits you. This is mostly just stylistic choice.
+We pass in the `window` object reference, but we name the parameter `global`, so that we have a clear stylistic delineation for global vs. non-global references. Of course, you can pass in anything from an enclosing scope you want, and you can name the parameter(s) anything that suits you. This is mostly just stylistic choice.                       
+我们传递`window`这个对象引用,但是我们把这个参数命名为`global`,因此在代码风格上对全局对象的引用变得比引用一个没有全局字样的变量更加清晰.当然,你可以从封闭的作用域传递任何你想要的,你可以任意命名参数只有是适合你的.这仅仅是风格的选择.                         
 
-Another application of this pattern addresses the (minor niche) concern that the default `undefined` identifier might have its value incorrectly overwritten, causing unexpected results. By naming a parameter `undefined`, but not passing any value for that argument, we can guarantee that the `undefined` identifier is in fact the undefined value in a block of code:
+Another application of this pattern addresses the (minor niche) concern that the default `undefined` identifier might have its value incorrectly overwritten, causing unexpected results. By naming a parameter `undefined`, but not passing any value for that argument, we can guarantee that the `undefined` identifier is in fact the undefined value in a block of code:                 
+另一种应用模式(次要的场景)是解决`undefined`标识符的默认值可能错误的被覆盖,导致意想不到的结果.通过命名一个参数`undefind`,但是不对参数传递任何值,我们可以确保`undefind`标识符的值是undefined在代码片段中                
 
 ```js
-undefined = true; // setting a land-mine for other code! avoid!
+undefined = true; // setting a land-mine for other code! avoid! //  为其他代码设置了一个坑,不允许    
 
 (function IIFE( undefined ){
 
@@ -304,7 +321,8 @@ undefined = true; // setting a land-mine for other code! avoid!
 })();
 ```
 
-Still another variation of the IIFE inverts the order of things, where the function to execute is given second, *after* the invocation and parameters to pass to it. This pattern is used in the UMD (Universal Module Definition) project. Some people find it a little cleaner to understand, though it is slightly more verbose.
+Still another variation of the IIFE inverts the order of things, where the function to execute is given second, *after* the invocation and parameters to pass to it. This pattern is used in the UMD (Universal Module Definition) project. Some people find it a little cleaner to understand, though it is slightly more verbose.                         
+IIFE还有一种变化的用途是倒置代码的运行顺序,将需要运行的函数放在第二位,在IIFE执行之后当作参数传递进去.这个模式被用于UMD(Universal Module Definition)项目中.一些人觉得它更容易理解,尽管它稍微冗长.                         
 
 ```js
 var a = 2;
@@ -320,7 +338,8 @@ var a = 2;
 });
 ```
 
-The `def` function expression is defined in the second-half of the snippet, and then passed as a parameter (also called `def`) to the `IIFE` function defined in the first half of the snippet. Finally, the parameter `def` (the function) is invoked, passing `window` in as the `global` parameter.
+The `def` function expression is defined in the second-half of the snippet, and then passed as a parameter (also called `def`) to the `IIFE` function defined in the first half of the snippet. Finally, the parameter `def` (the function) is invoked, passing `window` in as the `global` parameter.                         
+`def`函数表达式被定义在代码片段的第二部分,然后作为一个参数(也叫`def`)传递`IIFE`函数定义在代码片段的第一部分.最后,参数`def`(`def`函数)被执行,传递`window`作为`global`参数.                  
 
 ## Blocks As Scopes  --（张雪）
 
@@ -614,8 +633,21 @@ Though some seem to believe so, block scope should not be taken as an outright r
 
 | 单词 | 音标 | 释义 |
 | ---- | ---- | ---- |
-|  |  |  |
-
+| omit | [ə'mɪt] | vt. 省略；遗漏；删除；疏忽 |
+| illegal | [ɪ'ligl] | adj.[法]非法的；违法的；违反规则的n.非法移民，非法劳工 |
+| idiomatic | [,ɪdɪə'mætɪk] | adj. 惯用的；符合语言习惯的；通顺的 |
+| slightly | ['slaɪtli] | adv. 些微地，轻微地；纤细地 |
 ## 疑难杂句
-* xxx
-  - 官方翻译：xxx。
+
+1.Anonymous function expressions are quick and easy to type
+官译:匿名函数表达式书写起来简单快捷
+匿名函数表达式是快速且简单的类型(李翠翠)
+2.if the function needs to refer to itself, for recursion, etc., the **deprecated** `arguments.callee` reference is unfortunately required
+官译:如果这个函数需要引用它自己时,**不赞成** `arguments.callee`引用是不幸的需求,如递归等
+如果这个函数需要引用它自己时只能使用已经过期的`argument.callee`引用,如递归等(李翠翠)
+3.so that we have a clear stylistic delineation for global vs. non-global references
+官译:因此在代码风格上对全局对象的引用变得比引用一个没有全局字样的变量更加清晰
+以便我们有一个清楚的风格去描述全局对象的引用比没有全局对象的引用(李翠翠)
+Still another variation of the IIFE inverts the order of things, where the function to execute is given second, *after* the invocation and parameters to pass to it.
+官译:IIFE还有一种变化的用途是倒置代码的运行顺序,将需要运行的函数放在第二位,在IIFE执行之后当作参数传递进去.
+IIFE还有一个变化是使事物命令颠倒,函数执行放在第二个,在调用后才传递参数（李翠翠）
