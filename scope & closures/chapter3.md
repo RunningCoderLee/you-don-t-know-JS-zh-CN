@@ -99,11 +99,14 @@ doSomething( 2 ); // 15
 
 Now, `b` and `doSomethingElse(..)` are not accessible to any outside influence, instead controlled only by `doSomething(..)`. The functionality and end-result has not been affected, but the design keeps private details private, which is usually considered better software.
 
-### Collision Avoidance   --（张静）
+### 避免冲突（Collision Avoidance）   --（张静）
 
-Another benefit of "hiding" variables and functions inside a scope is to avoid unintended collision between two different identifiers with the same name but different intended usages. Collision results often in unexpected overwriting of values.
+Another benefit of "hiding" variables and functions inside a scope is to avoid unintended collision between two different identifiers with the same name but different intended usages. Collision results often in unexpected overwriting of values.                                                                                
+"隐藏"作用域内的变量和函数的另一个好处，就是避免两个不同标识符之间同名字但不同用途的无意识的冲突。冲突经常导致变量的值被意外覆盖。
 
-For example:
+For example:                                                                             
+例如：                                                                   
+
 
 ```js
 function foo() {
@@ -120,17 +123,22 @@ function foo() {
 foo();
 ```
 
-The `i = 3` assignment inside of `bar(..)` overwrites, unexpectedly, the `i` that was declared in `foo(..)` at the for-loop. In this case, it will result in an infinite loop, because `i` is set to a fixed value of `3` and that will forever remain `< 10`.
+The `i = 3` assignment inside of `bar(..)` overwrites, unexpectedly, the `i` that was declared in `foo(..)` at the for-loop. In this case, it will result in an infinite loop, because `i` is set to a fixed value of `3` and that will forever remain `< 10`.                                               
+很不幸，`bar(..)`内部的赋值表达式`i = 3`，覆盖了在`foo(..)`循环中声明的`i`。在这个例子中将导致无限循环，因为`i`被设置成固定值`3`，永远满足小于`< 10`这个条件。
 
-The assignment inside `bar(..)` needs to declare a local variable to use, regardless of what identifier name is chosen. `var i = 3;` would fix the problem (and would create the previously mentioned "shadowed variable" declaration for `i`). An *additional*, not alternate, option is to pick another identifier name entirely, such as `var j = 3;`. But your software design may naturally call for the same identifier name, so utilizing scope to "hide" your inner declaration is your best/only option in that case.
+The assignment inside `bar(..)` needs to declare a local variable to use, regardless of what identifier name is chosen. `var i = 3;` would fix the problem (and would create the previously mentioned "shadowed variable" declaration for `i`). An *additional*, not alternate, option is to pick another identifier name entirely, such as `var j = 3;`. But your software design may naturally call for the same identifier name, so utilizing scope to "hide" your inner declaration is your best/only option in that case.                                                                                     
+`bar(..)`表达式的内部需要声明一个本地变量来使用，采用什么名字都行。`var i = 3;`就可以解决这个问题(同时也为`i`声明一个前面提到过的“遮蔽变量”)。另外一种方法，就是采用一个完全不同的标识符命名，例如`var j = 3;`。但是软件设计可能要求使用同样的标识符名称，因此在这种情况下使用作用域来“隐藏”内部声明是最佳选择。
 
-#### Global "Namespaces"
+#### 全局命名空间 (Global "Namespaces")
 
-A particularly strong example of (likely) variable collision occurs in the global scope. Multiple libraries loaded into your program can quite easily collide with each other if they don't properly hide their internal/private functions and variables.
+A particularly strong example of (likely) variable collision occurs in the global scope. Multiple libraries loaded into your program can quite easily collide with each other if they don't properly hide their internal/private functions and variables.                                                           
+变量冲突的一个典型例子存在于全局作用域中。当你的程序中加载多个库时，如果他们没有适当地将内部函数和变量隐藏起来，就会很容易引起冲突。
 
-Such libraries typically will create a single variable declaration, often an object, with a sufficiently unique name, in the global scope. This object is then used as a "namespace" for that library, where all specific exposures of functionality are made as properties off that object (namespace), rather than as top-level lexically scoped identifiers themselves.
+Such libraries typically will create a single variable declaration, often an object, with a sufficiently unique name, in the global scope. This object is then used as a "namespace" for that library, where all specific exposures of functionality are made as properties off that object (namespace), rather than as top-level lexically scoped identifiers themselves.                                                       
+这些库会在全局作用域中创建一个名字够特别的变量声明，通常是一个对象。这个对象被用作库的命名空间，所有需要暴露给外界的功能都会成为这个对象的属性，而不是将自己的标识符暴露在顶级的词法作用域中。
 
 For example:
+例如：
 
 ```js
 var MyReallyCoolLibrary = {
@@ -144,24 +152,29 @@ var MyReallyCoolLibrary = {
 };
 ```
 
-#### Module Management
+#### 模块管理（Module Management）
 
-Another option for collision avoidance is the more modern "module" approach, using any of various dependency managers. Using these tools, no libraries ever add any identifiers to the global scope, but are instead required to have their identifier(s) be explicitly imported into another specific scope through usage of the dependency manager's various mechanisms.
+Another option for collision avoidance is the more modern "module" approach, using any of various dependency managers. Using these tools, no libraries ever add any identifiers to the global scope, but are instead required to have their identifier(s) be explicitly imported into another specific scope through usage of the dependency manager's various mechanisms.                                                                          
+另外一个避免冲突的办法和现代的模块机制很像，就是使用任意一个依赖管理器。使用这些工具，没有库再需要添加任何标识符到全局作用域中，而是通过依赖管理器的机制将库的标识符显式的导入到另一个特定的作用域中。
 
-It should be observed that these tools do not possess "magic" functionality that is exempt from lexical scoping rules. They simply use the rules of scoping as explained here to enforce that no identifiers are injected into any shared scope, and are instead kept in private, non-collision-susceptible scopes, which prevents any accidental scope collisions.
+It should be observed that these tools do not possess "magic" functionality that is exempt from lexical scoping rules. They simply use the rules of scoping as explained here to enforce that no identifiers are injected into any shared scope, and are instead kept in private, non-collision-susceptible scopes, which prevents any accidental scope collisions.                                               
+很明显，这些工具没有能免除词法作用域规则的“魔力”。他们仅仅使用作用域的规则强制所有标识符都不能注入到共享作用域中，而是保持私有，无冲突的作用域中，这样可以有效的规避所有的意外冲突。
 
-As such, you can code defensively and achieve the same results as the dependency managers do without actually needing to use them, if you so choose. See the Chapter 5 for more information about the module pattern.
+As such, you can code defensively and achieve the same results as the dependency managers do without actually needing to use them, if you so choose. See the Chapter 5 for more information about the module pattern.                                                                                           
+因此，只要你愿意，你可以不使用依赖管理工具而实现相同的结果，关于模块模式详见第五章。
 
-## Functions As Scopes
+## 函数作用域（Functions As Scopes）
 
-We've seen that we can take any snippet of code and wrap a function around it, and that effectively "hides" any enclosed variable or function declarations from the outside scope inside that function's inner scope.
+We've seen that we can take any snippet of code and wrap a function around it, and that effectively "hides" any enclosed variable or function declarations from the outside scope inside that function's inner scope.                                                                                                 
+我们明白我们能在任意代码段外部添加包装函数，有效的隐藏任何内部变量和函数声明，外部作用域无法访问包装函数内部的任何内容。
 
-For example:
+For example:     
+例如：
 
 ```js
 var a = 2;
 
-function foo() { // <-- insert this
+function foo() { // <-- insert this   添加这一行
 
 	var a = 3;
 	console.log( a ); // 3
@@ -172,16 +185,19 @@ foo(); // <-- and this
 console.log( a ); // 2
 ```
 
-While this technique "works", it is not necessarily very ideal. There are a few problems it introduces. The first is that we have to declare a named-function `foo()`, which means that the identifier name `foo` itself "pollutes" the enclosing scope (global, in this case). We also have to explicitly call the function by name (`foo()`) so that the wrapped code actually executes.
+While this technique "works", it is not necessarily very ideal. There are a few problems it introduces. The first is that we have to declare a named-function `foo()`, which means that the identifier name `foo` itself "pollutes" the enclosing scope (global, in this case). We also have to explicitly call the function by name (`foo()`) so that the wrapped code actually executes.                                                                                                    
+虽然这种技术可以解决一些问题，但是它并不理想。还会产生一些问题。首先是我们必须声明一个具名函数（named-function）`foo()`，意味着这个标识名称`foo`本身污染了所在的作用域(在这个例子中是全局)。我们也必须显式的通过函数名调用这个函数才能运行其中的代码。
 
-It would be more ideal if the function didn't need a name (or, rather, the name didn't pollute the enclosing scope), and if the function could automatically be executed.
+It would be more ideal if the function didn't need a name (or, rather, the name didn't pollute the enclosing scope), and if the function could automatically be executed.                                                                
+如果这个函数不需要名字(或者名字至少能不污染所在作用域)，并且能自动运行，这将更理想。
 
-Fortunately, JavaScript offers a solution to both problems.
+Fortunately, JavaScript offers a solution to both problems.                                                   
+幸好，JavaScript提供了一种能同时解决这两个问题的方法。
 
 ```js
 var a = 2;
 
-(function foo(){ // <-- insert this
+(function foo(){ // <-- insert this  添加这行
 
 	var a = 3;
 	console.log( a ); // 3
@@ -191,17 +207,23 @@ var a = 2;
 console.log( a ); // 2
 ```
 
-Let's break down what's happening here.
+Let's break down what's happening here.                                                                      
+让我们来看一下这里发生了什么。
 
-First, notice that the wrapping function statement starts with `(function...` as opposed to just `function...`. While this may seem like a minor detail, it's actually a major change. Instead of treating the function as a standard declaration, the function is treated as a function-expression.
+First, notice that the wrapping function statement starts with `(function...` as opposed to just `function...`. While this may seem like a minor detail, it's actually a major change. Instead of treating the function as a standard declaration, the function is treated as a function-expression.                                                                                                 
+首先，注意这个包装函数声明是以`(function...`开头的，而不仅仅是`function...`。虽然这看上去是个次要的细节，但事实上是一个重要的改变。函数会被当成函数表达式而不是一个标准的函数声明来处理。
 
-**Note:** The easiest way to distinguish declaration vs. expression is the position of the word "function" in the statement (not just a line, but a distinct statement). If "function" is the very first thing in the statement, then it's a function declaration. Otherwise, it's a function expression.
+**Note:** The easiest way to distinguish declaration vs. expression is the position of the word "function" in the statement (not just a line, but a distinct statement). If "function" is the very first thing in the statement, then it's a function declaration. Otherwise, it's a function expression.                                                                                           
+**注意:** 区分函数表达式和函数声明最简单的办法是看声明中"function"出现的位置（不仅仅是一行代码中，而是在整个声明中的位置）。如果"function"是在声明中的第一个词，则是一个函数声明。否则，它是一个函数表达式。
 
-The key difference we can observe here between a function declaration and a function expression relates to where its name is bound as an identifier.
+The key difference we can observe here between a function declaration and a function expression relates to where its name is bound as an identifier.                                                      
+函数表达式和函数声明之间最重要的不同就是他们的名字作为一个标识符被绑定在哪里。
 
-Compare the previous two snippets. In the first snippet, the name `foo` is bound in the enclosing scope, and we call it directly with `foo()`. In the second snippet, the name `foo` is not bound in the enclosing scope, but instead is bound only inside of its own function.
+Compare the previous two snippets. In the first snippet, the name `foo` is bound in the enclosing scope, and we call it directly with `foo()`. In the second snippet, the name `foo` is not bound in the enclosing scope, but instead is bound only inside of its own function.                                                                                        
+比较之前两个代码段。第一个中，`foo`绑定在整个作用域中，可以直接通过`foo()`来调用它。第二个中，`foo`不是绑定在整个作用域中，而仅仅是绑定在自身的函数中。
 
-In other words, `(function foo(){ .. })` as an expression means the identifier `foo` is found *only* in the scope where the `..` indicates, not in the outer scope. Hiding the name `foo` inside itself means it does not pollute the enclosing scope unnecessarily.
+In other words, `(function foo(){ .. })` as an expression means the identifier `foo` is found *only* in the scope where the `..` indicates, not in the outer scope. Hiding the name `foo` inside itself means it does not pollute the enclosing scope unnecessarily.                                                                   
+换句话说，`(function foo(){ .. })`作为一个表达式意味着标识符`foo`只能在`..`所代表的位置中被访问，外部则不行。`foo`被隐藏在自身中意味着不会非必要地污染外部作用域(the enclosing scope)。
 
 ### Anonymous vs. Named   --（翠翠）
 
@@ -614,7 +636,14 @@ Though some seem to believe so, block scope should not be taken as an outright r
 
 | 单词 | 音标 | 释义 |
 | ---- | ---- | ---- |
-|  |  |  |
+| collision | [kə'lɪʒən] | n.（意见，看法）的抵触，冲突 |
+| avoidance | [ə'vɔɪdəns] | n. 逃避；废止；职位空缺 |
+| minor | ['maɪnɚ] | adj. 未成年的；次要的；较小的；小调的；二流的 n. 未成年人；小调；副修科目 vi. 副修 |
+| injected | 充血的 注入的 |
+| exempt | [ɪg'zɛmpt] | vt. 免除；豁免  adj. 被免除的；被豁免的  n. 免税者；被免除义务者 |
+| as such | 同样地；本身；就其本身而论 |
+| utilizing | [ˈjuːtɪˌlaɪzɪŋ] | v. 利用（utilize的ing形式） |
+
 
 ## 疑难杂句
 * xxx
