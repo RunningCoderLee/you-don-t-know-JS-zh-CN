@@ -403,9 +403,15 @@ The block-scoping nature of `catch` may seem like a useless academic fact, but s
 
 Thus far, we've seen that JavaScript only has some strange niche behaviors which expose block scope functionality. If that were all we had, and *it was* for many, many years, then block scoping would not be terribly useful to the JavaScript developer.
 
+截止到目前为止,我们知道JavaScript仅仅在暴露块作用域的功能方面有一些奇怪的行为。如果这是我们知道的全部,那么块作用域就不会成为多年来JavaScript开发者最常用的开发机制了.
+
 Fortunately, ES6 changes that, and introduces a new keyword `let` which sits alongside `var` as another way to declare variables.
 
+不幸的是,ES6改变了这些,它引进了一个新的单词`let`,提供作为`var`之外的另一种变量的声明方式.
+
 The `let` keyword attaches the variable declaration to the scope of whatever block (commonly a `{ .. }` pair) it's contained in. In other words, `let` implicitly hijacks any block's scope for its variable declaration.
+
+`let`关键字可以将变量绑定到任何一个包含它的作用域中(通常来说是一个{..}内部).换句话说,`let`为声明的变量隐式的劫持了一个块作用域.
 
 ```js
 var foo = true;
@@ -421,7 +427,11 @@ console.log( bar ); // ReferenceError
 
 Using `let` to attach a variable to an existing block is somewhat implicit. It can confuse you if you're not paying close attention to which blocks have variables scoped to them, and are in the habit of moving blocks around, wrapping them in other blocks, etc., as you develop and evolve code.
 
+
+
 Creating explicit blocks for block-scoping can address some of these concerns, making it more obvious where variables are attached and not. Usually, explicit code is preferable over implicit or subtle code. This explicit block-scoping style is easy to achieve, and fits more naturally with how block-scoping works in other languages:
+
+
 
 ```js
 var foo = true;
@@ -439,11 +449,19 @@ console.log( bar ); // ReferenceError
 
 We can create an arbitrary block for `let` to bind to by simply including a `{ .. }` pair anywhere a statement is valid grammar. In this case, we've made an explicit block *inside* the if-statement, which may be easier as a whole block to move around later in refactoring, without affecting the position and semantics of the enclosing if-statement.
 
+
+
 **Note:** For another way to express explicit block scopes, see Appendix B.
+
+
 
 In Chapter 4, we will address hoisting, which talks about declarations being taken as existing for the entire scope in which they occur.
 
+
+
 However, declarations made with `let` will *not* hoist to the entire scope of the block they appear in. Such declarations will not observably "exist" in the block until the declaration statement.
+
+
 
 ```js
 {
@@ -455,6 +473,8 @@ However, declarations made with `let` will *not* hoist to the entire scope of th
 #### Garbage Collection
 
 Another reason block-scoping is useful relates to closures and garbage collection to reclaim memory. We'll briefly illustrate here, but the closure mechanism is explained in detail in Chapter 5.
+
+
 
 Consider:
 
@@ -476,7 +496,11 @@ btn.addEventListener( "click", function click(evt){
 
 The `click` function click handler callback doesn't *need* the `someReallyBigData` variable at all. That means, theoretically, after `process(..)` runs, the big memory-heavy data structure could be garbage collected. However, it's quite likely (though implementation dependent) that the JS engine will still have to keep the structure around, since the `click` function has a closure over the entire scope.
 
+
+
 Block-scoping can address this concern, making it clearer to the engine that it does not need to keep `someReallyBigData` around:
+
+
 
 ```js
 function process(data) {
@@ -498,6 +522,8 @@ btn.addEventListener( "click", function click(evt){
 ```
 
 Declaring explicit blocks for variables to locally bind to is a powerful tool that you can add to your code toolbox.
+
+
 
 #### `let` Loops  --（李欣）
 
