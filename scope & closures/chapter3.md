@@ -449,19 +449,19 @@ console.log( bar ); // ReferenceError
 
 We can create an arbitrary block for `let` to bind to by simply including a `{ .. }` pair anywhere a statement is valid grammar. In this case, we've made an explicit block *inside* the if-statement, which may be easier as a whole block to move around later in refactoring, without affecting the position and semantics of the enclosing if-statement.
 
-
+只要声明的语法是有效的,我们可以用一个{..}为`let`绑定任意一个块.在这个例子中,我们在if内部显示的声明了一个块,如果需要重构,移动整个块都可以被很方便的移动,而不影响if声明范围内的块所在的位置和语法.
 
 **Note:** For another way to express explicit block scopes, see Appendix B.
 
-
+**注意:**另外一种显示块作用域的表达请参照附录B.
 
 In Chapter 4, we will address hoisting, which talks about declarations being taken as existing for the entire scope in which they occur.
 
-
+在第四章,我们会讨论提升这个概念,即其声明将会存在其所发生的整个作用域内.
 
 However, declarations made with `let` will *not* hoist to the entire scope of the block they appear in. Such declarations will not observably "exist" in the block until the declaration statement.
 
-
+然而,`let`的声明*不会*提升至其所存在的整个作用域块中.除非提前声明,否则声明不会显示的"存在"于块中.
 
 ```js
 {
@@ -474,7 +474,7 @@ However, declarations made with `let` will *not* hoist to the entire scope of th
 
 Another reason block-scoping is useful relates to closures and garbage collection to reclaim memory. We'll briefly illustrate here, but the closure mechanism is explained in detail in Chapter 5.
 
-
+另一方面,块作用域对于内存回收机制相关的闭包和垃圾回收有关.我们会在这里简要的说明一下,但是闭包机制的具体内容是在第五章.
 
 Consider:
 
@@ -496,11 +496,11 @@ btn.addEventListener( "click", function click(evt){
 
 The `click` function click handler callback doesn't *need* the `someReallyBigData` variable at all. That means, theoretically, after `process(..)` runs, the big memory-heavy data structure could be garbage collected. However, it's quite likely (though implementation dependent) that the JS engine will still have to keep the structure around, since the `click` function has a closure over the entire scope.
 
-
+`click`这个函数的处理器的回调函数根本不*需要*`someReallyBigData`.这意味着,理论上来说,`process(..)`运行过后,大量占用空间的数据结构就可以被垃圾回收了.然而,尽管`click`函数已经在其作用域中形成了一个闭包,JS引擎很可能(也可能运行环境决定)将会继续履行职责.
 
 Block-scoping can address this concern, making it clearer to the engine that it does not need to keep `someReallyBigData` around:
 
-
+块作用域可以为你解决这些顾虑,使你的机器清楚的知道无需再保留`someReallyBigData`这样的数据:
 
 ```js
 function process(data) {
@@ -523,7 +523,7 @@ btn.addEventListener( "click", function click(evt){
 
 Declaring explicit blocks for variables to locally bind to is a powerful tool that you can add to your code toolbox.
 
-
+在你的代码工具箱中为变量显示的声明块或者将变量绑定到本地都是一种很有效的方法.
 
 #### `let` Loops  --（李欣）
 
