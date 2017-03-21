@@ -427,11 +427,11 @@ console.log( bar ); // ReferenceError
 
 Using `let` to attach a variable to an existing block is somewhat implicit. It can confuse you if you're not paying close attention to which blocks have variables scoped to them, and are in the habit of moving blocks around, wrapping them in other blocks, etc., as you develop and evolve code.
 
-
+使用`let`将变量绑定到一个已经存在的作用域中的过程是一个隐式的操作.在开发和修改代码中,如果你没有注意到哪个作用域包含这个变量,或者习惯性的移动这些作用域,将这些作用域包含在另一个作用域中,
 
 Creating explicit blocks for block-scoping can address some of these concerns, making it more obvious where variables are attached and not. Usually, explicit code is preferable over implicit or subtle code. This explicit block-scoping style is easy to achieve, and fits more naturally with how block-scoping works in other languages:
 
-
+为一个块创建一个显示的作用域能够解决这个问题,可以显示的展示变量所属的作用域.通常来说,显示的代码优于隐式的或者一些不够清晰的代码.这种隐式的块作用域风格很容易书写,而且也更适用于其他语言中的块作用域的实现.
 
 ```js
 var foo = true;
