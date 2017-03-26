@@ -576,12 +576,10 @@ btn.addEventListener( "click", function click(evt){
 }, /*capturingPhase=*/false );
 ```
 
-The `click` function click handler callback doesn't *need* the `someReallyBigData` variable at all. That means, theoretically, after `process(..)` runs, the big memory-heavy data structure could be garbage collected. However, it's quite likely (though implementation dependent) that the JS engine will still have to keep the structure around, since the `click` function has a closure over the entire scope.
-
+The `click` function click handler callback doesn't *need* the `someReallyBigData` variable at all. That means, theoretically, after `process(..)` runs, the big memory-heavy data structure could be garbage collected. However, it's quite likely (though implementation dependent) that the JS engine will still have to keep the structure around, since the `click` function has a closure over the entire scope.   
 `click`这个函数的处理器的回调函数根本不*需要*`someReallyBigData`.这意味着,理论上来说,`process(..)`运行过后,大量占用空间的数据结构就可以被垃圾回收了.然而,尽管`click`函数已经在其作用域中形成了一个闭包,JS引擎很可能(也可能运行环境决定)将会继续履行职责.
 
-Block-scoping can address this concern, making it clearer to the engine that it does not need to keep `someReallyBigData` around:
-
+Block-scoping can address this concern, making it clearer to the engine that it does not need to keep `someReallyBigData` around:   
 块作用域可以为你解决这些顾虑,使你的机器清楚的知道无需再保留`someReallyBigData`这样的数据:
 
 ```js
@@ -604,12 +602,13 @@ btn.addEventListener( "click", function click(evt){
 ```
 
 Declaring explicit blocks for variables to locally bind to is a powerful tool that you can add to your code toolbox.
-
 在你的代码工具箱中为变量显示的声明块或者将变量绑定到本地都是一种很有效的方法.
 
 #### `let` Loops  --（李欣）
+#### `let` 循环
 
-A particular case where `let` shines is in the for-loop case as we discussed previously.
+A particular case where `let` shines is in the for-loop case as we discussed previously.   
+一个`let`可以发挥优势的典型例子就是之前讨论的for循环
 
 ```js
 for (let i=0; i<10; i++) {
@@ -619,9 +618,11 @@ for (let i=0; i<10; i++) {
 console.log( i ); // ReferenceError
 ```
 
-Not only does `let` in the for-loop header bind the `i` to the for-loop body, but in fact, it **re-binds it** to each *iteration* of the loop, making sure to re-assign it the value from the end of the previous loop iteration.
+Not only does `let` in the for-loop header bind the `i` to the for-loop body, but in fact, it **re-binds it** to each *iteration* of the loop, making sure to re-assign it the value from the end of the previous loop iteration.   
+for循环头部的`let`不仅将`i`绑定到了for循环体中，事实上，它将其**重新绑定**到了每一个*迭代*中，确保使用上一个循环迭代结束时的值重新进行赋值。
 
-Here's another way of illustrating the per-iteration binding behavior that occurs:
+Here's another way of illustrating the per-iteration binding behavior that occurs:   
+这里是另一种用来说明每次迭代时进行重新绑定的行为
 
 ```js
 {
@@ -633,11 +634,15 @@ Here's another way of illustrating the per-iteration binding behavior that occur
 }
 ```
 
-The reason why this per-iteration binding is interesting will become clear in Chapter 5 when we discuss closures.
+The reason why this per-iteration binding is interesting will become clear in Chapter 5 when we discuss closures.   
+每个迭代进行重新绑定的原因很有趣，我们会在第5章讨论闭包的时候进行说明。
 
-Because `let` declarations attach to arbitrary blocks rather than to the enclosing function's scope (or global), there can be gotchas where existing code has a hidden reliance on function-scoped `var` declarations, and replacing the `var` with `let` may require additional care when refactoring code.
+Because `let` declarations attach to arbitrary blocks rather than to the enclosing function's scope (or global), there can be gotchas where existing code has a hidden reliance on function-scoped `var` declarations, and replacing the `var` with `let` may require additional care when refactoring code.   
+由于`let`声明附属于一个新的作用域而不是当前的函数作用域（也不是全局作用域），当代码中存在对于函数作用域中var声明的隐式依赖时，就会有很多隐藏的陷阱，如果用`let`来替代var
+则需要在代码重构的过程中付出额外的精力。
 
-Consider:
+Consider:   
+考虑以下代码
 
 ```js
 var foo = true, baz = 10;
@@ -653,7 +658,8 @@ if (foo) {
 }
 ```
 
-This code is fairly easily re-factored as:
+This code is fairly easily re-factored as:   
+这段代码可以简单的重构成下面的形式
 
 ```js
 var foo = true, baz = 10;
@@ -669,7 +675,8 @@ if (baz > bar) {
 }
 ```
 
-But, be careful of such changes when using block-scoped variables:
+But, be careful of such changes when using block-scoped variables:   
+但是在使用块级作用域的变量时需要注意以下变化：
 
 ```js
 var foo = true, baz = 10;
@@ -683,11 +690,16 @@ if (foo) {
 }
 ```
 
-See Appendix B for an alternate (more explicit) style of block-scoping which may provide easier to maintain/refactor code that's more robust to these scenarios.
+See Appendix B for an alternate (more explicit) style of block-scoping which may provide easier 
+to maintain/refactor code that's more robust to these scenarios.   
+参考附录，其中介绍了另外一种块作用域形式，可以用更健壮的方式实现目的，并且写出的代码更易维护和重构。
 
 ### `const`
 
-In addition to `let`, ES6 introduces `const`, which also creates a block-scoped variable, but whose value is fixed (constant). Any attempt to change that value at a later time results in an error.
+In addition to `let`, ES6 introduces `const`, which also creates a block-scoped variable, but 
+whose value is fixed (constant). Any attempt to change that value at a later time results in an 
+error.   
+除了`let`以外，ES6还引入了`const`，通欧阳可以用来创建作用域变量，但其值是固定的（常量）。之后任何试图修改值的操作都会引起错误。
 
 ```js
 var foo = true;
@@ -705,16 +717,32 @@ console.log( b ); // ReferenceError!
 ```
 
 ## Review (TL;DR)
+## 回顾（TL；DR）
 
-Functions are the most common unit of scope in JavaScript. Variables and functions that are declared inside another function are essentially "hidden" from any of the enclosing "scopes", which is an intentional design principle of good software.
+Functions are the most common unit of scope in JavaScript. Variables and functions that are 
+declared inside another function are essentially "hidden" from any of the enclosing "scopes", 
+which is an intentional design principle of good software.   
+函数是JavaScript中最常见的作用域单元。本质上，声明在一个函数内部的变量或函数会在所处的作用域中"隐藏"起来，这是有意为之的良好的软件设计原则
 
-But functions are by no means the only unit of scope. Block-scope refers to the idea that variables and functions can belong to an arbitrary block (generally, any `{ .. }` pair) of code, rather than only to the enclosing function.
+But functions are by no means the only unit of scope. Block-scope refers to the idea that 
+variables and functions can belong to an arbitrary block (generally, any `{ .. }` pair) of code, 
+rather than only to the enclosing function.   
+但函数不是唯一的作用域单元。块作用域指的是变量和函数不仅可以属于所处的作用域，也可以属于某个代码块（一般指`{ .. }`内部）
 
-Starting with ES3, the `try/catch` structure has block-scope in the `catch` clause.
+Starting with ES3, the `try/catch` structure has block-scope in the `catch` clause.   
+从ES3开始，`try/catch`结构在`catch`分句中具有块作用域。
 
-In ES6, the `let` keyword (a cousin to the `var` keyword) is introduced to allow declarations of variables in any arbitrary block of code. `if (..) { let a = 2; }` will declare a variable `a` that essentially hijacks the scope of the `if`'s `{ .. }` block and attaches itself there.
+In ES6, the `let` keyword (a cousin to the `var` keyword) is introduced to allow declarations of 
+variables in any arbitrary block of code. `if (..) { let a = 2; }` will declare a variable `a` 
+that essentially hijacks the scope of the `if`'s `{ .. }` block and attaches itself there.   
+在ES6中引入了`let`关键字（`var`关键字的表亲），用来在任意代码块中声明变量。`if (..) { let a = 2; }`会声明一个劫持了`if`的 `{ .. 
+}`块的变量`a`，并且将其添加到这个块中。
 
-Though some seem to believe so, block scope should not be taken as an outright replacement of `var` function scope. Both functionalities co-exist, and developers can and should use both function-scope and block-scope techniques where respectively appropriate to produce better, more readable/maintainable code.
+Though some seem to believe so, block scope should not be taken as an outright replacement of 
+`var` function scope. Both functionalities co-exist, and developers can and should use both 
+function-scope and block-scope techniques where respectively appropriate to produce better, more 
+readable/maintainable code.   
+有些人认为块作用域不应该完全作为函数作用域的替代方案。两种功能应该同时存在，开发者可以并且也应该根据需要选择使用何种作用域，创造可读的，可维护的优良代码。
 
 [^note-leastprivilege]: [Principle of Least Privilege](http://en.wikipedia.org/wiki/Principle_of_least_privilege)
 
@@ -735,6 +763,11 @@ Though some seem to believe so, block scope should not be taken as an outright r
 | exempt | [ɪg'zɛmpt] | vt. 免除；豁免  adj. 被免除的；被豁免的  n. 免税者；被免除义务者 |
 | as such | | 同样地；本身；就其本身而论 |
 | utilizing | [ˈjuːtɪˌlaɪzɪŋ] | v. 利用（utilize的ing形式） |
+| illustrating | ['ɪləstret] | vt. 阐明，举例说明；图解 vi. 举例 |
+| arbitrary | [ˈɑːrbətreri] | adj. [数] 任意的；武断的；专制的 |
+| gotchas | | int. 明白了（等于got you） |
+| fairly | ['fɛrli] | adv. 相当地；公平地；简直 |
+| Appendix | [ə'pɛndɪks] | n. 附录；阑尾；附加物 |
 
 
 ## 疑难杂句
