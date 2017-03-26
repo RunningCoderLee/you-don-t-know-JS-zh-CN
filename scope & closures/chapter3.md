@@ -1,17 +1,22 @@
-# You Don't Know JS: Scope & Closures  --(罗尧)
-# Chapter 3: Function vs. Block Scope
+# 你不知道的JS：作用域和闭包（You Don't Know JS: Scope & Closures） --(罗尧)
+# 第三章：函数作用域和块作用域（Chapter 3: Function vs. Block Scope）
 
-As we explored in Chapter 2, scope consists of a series of "bubbles" that each act as a container or bucket, in which identifiers (variables, functions) are declared. These bubbles nest neatly inside each other, and this nesting is defined at author-time.
+As we explored in Chapter 2, scope consists of a series of "bubbles" that each act as a container or bucket, in which identifiers (variables, functions) are declared. These bubbles nest neatly inside each other, and this nesting is defined at author-time.  
+正如我们在第2章中所探讨的，作用域由一系列“气泡”组成，每个气泡用作容器或桶，在其中声明标识符（变量，函数）。这些气泡整齐地嵌套在彼此内部，并且这种嵌套在创建时就被定义。
 
-But what exactly makes a new bubble? Is it only the function? Can other structures in JavaScript create bubbles of scope?
+But what exactly makes a new bubble? Is it only the function? Can other structures in JavaScript create bubbles of scope?   
+但是到底是什么创建了一个新的泡沫？就是函数创建的吗？JavaScript中的其他结构可以创建作用域气泡吗？
 
-## Scope From Functions
+## 函数中的作用域（Scope From Functions）
 
-The most common answer to those questions is that JavaScript has function-based scope. That is, each function you declare creates a bubble for itself, but no other structures create their own scope bubbles. As we'll see in just a little bit, this is not quite true.
+The most common answer to those questions is that JavaScript has function-based scope. That is, each function you declare creates a bubble for itself, but no other structures create their own scope bubbles. As we'll see in just a little bit, this is not quite true.  
+这些问题最常见的答案是JavaScript具有基于函数的作用域。也就是说，你声明的每个函数为自己创建一个气泡，没有其他结构创建自己的作用域气泡。这是错误的，我们会在稍后解释。
 
-But first, let's explore function scope and its implications.
+But first, let's explore function scope and its implications.    
+首先让我们探讨函数作用域及其影响。
 
-Consider this code:
+Consider this code:  
+思考以下的代码：
 
 ```js
 function foo(a) {
@@ -29,37 +34,51 @@ function foo(a) {
 }
 ```
 
-In this snippet, the scope bubble for `foo(..)` includes identifiers `a`, `b`, `c` and `bar`. **It doesn't matter** *where* in the scope a declaration appears, the variable or function belongs to the containing scope bubble, regardless. We'll explore how exactly *that* works in the next chapter.
+In this snippet, the scope bubble for `foo(..)` includes identifiers `a`, `b`, `c` and `bar`. **It doesn't matter** *where* in the scope a declaration appears, the variable or function belongs to the containing scope bubble, regardless. We'll explore how exactly *that* works in the next chapter.   
+在这个代码片段中，`foo(..)`的作用域气泡包括标识符`a`，`b`，`c`和`bar`。不管在作用域中的哪里声明的函数和变量都属于这个作用域气泡。我们将在下一章中探讨具体的工作原理。
 
-`bar(..)` has its own scope bubble. So does the global scope, which has just one identifier attached to it: `foo`.
 
-Because `a`, `b`, `c`, and `bar` all belong to the scope bubble of `foo(..)`, they are not accessible outside of `foo(..)`. That is, the following code would all result in `ReferenceError` errors, as the identifiers are not available to the global scope:
+`bar(..)` has its own scope bubble. So does the global scope, which has just one identifier attached to it: `foo`.   
+`bar(..)`有自己的作用域气泡。全局作用域也是这样，它只有一个标识符：`foo`。
+
+Because `a`, `b`, `c`, and `bar` all belong to the scope bubble of `foo(..)`, they are not accessible outside of `foo(..)`. That is, the following code would all result in `ReferenceError` errors, as the identifiers are not available to the global scope:   
+因为`a`，`b`，`c`和`bar`都属于`foo(..)`的作用域气泡，它们不能在`foo(..)`外面访问。也就是说，以下代码将导致`ReferenceError`错误，全局作用域不能访问这些标识符：
 
 ```js
-bar(); // fails
+bar(); // 失败
 
-console.log( a, b, c ); // all 3 fail
+console.log( a, b, c ); // 3个全失败
 ```
 
-However, all these identifiers (`a`, `b`, `c`, `foo`, and `bar`) are accessible *inside* of `foo(..)`, and indeed also available inside of `bar(..)` (assuming there are no shadow identifier declarations inside `bar(..)`).
+However, all these identifiers (`a`, `b`, `c`, `foo`, and `bar`) are accessible *inside* of `foo(..)`, and indeed also available inside of `bar(..)` (assuming there are no shadow identifier declarations inside `bar(..)`).    
+但是，所有这些标识符（`a`，`b`，`c`，`foo`和`bar`）都可以访问`foo(..)`的*内部*被访问，同样也能在 `bar(..)`的内部被访问（这里假设在`bar(..)`内部没有同名的标识符）。
 
-Function scope encourages the idea that all variables belong to the function, and can be used and reused throughout the entirety of the function (and indeed, accessible even to nested scopes). This design approach can be quite useful, and certainly can make full use of the "dynamic" nature of JavaScript variables to take on values of different types as needed.
+Function scope encourages the idea that all variables belong to the function, and can be used and reused throughout the entirety of the function (and indeed, accessible even to nested scopes). This design approach can be quite useful, and certainly can make full use of the "dynamic" nature of JavaScript variables to take on values of different types as needed.   
+函数作用域的含义是指，属于函数的全部变量都在整个函数中使用和重用（甚至可以在嵌套的作用域中被访问）。这种设计方法非常有用，并且可以充分利用JavaScript变量的“动态”性质，根据需要接受不同类型的值。
 
-On the other hand, if you don't take careful precautions, variables existing across the entirety of a scope can lead to some unexpected pitfalls.
+On the other hand, if you don't take careful precautions, variables existing across the entirety of a scope can lead to some unexpected pitfalls.     
+另一方方面，如果你谨慎处理那些在整个作用域范围内存被访问的变量可能会导致一些意想不到的问题。
 
-## Hiding In Plain Scope
 
-The traditional way of thinking about functions is that you declare a function, and then add code inside it. But the inverse thinking is equally powerful and useful: take any arbitrary section of code you've written, and wrap a function declaration around it, which in effect "hides" the code.
+## 隐藏内部实现（Hiding In Plain Scope）
 
-The practical result is to create a scope bubble around the code in question, which means that any declarations (variable or function) in that code will now be tied to the scope of the new wrapping function, rather than the previously enclosing scope. In other words, you can "hide" variables and functions by enclosing them in the scope of a function.
+The traditional way of thinking about functions is that you declare a function, and then add code inside it. But the inverse thinking is equally powerful and useful: take any arbitrary section of code you've written, and wrap a function declaration around it, which in effect "hides" the code.   
+传统的函数思维方式是声明一个函数，然后在其中添加代码。但是逆向思维同样是强大和有用的：在你编写的任意代码段周围包装一个函数声明会“隐藏”代码。
 
-Why would "hiding" variables and functions be a useful technique?
+The practical result is to create a scope bubble around the code in question, which means that any declarations (variable or function) in that code will now be tied to the scope of the new wrapping function, rather than the previously enclosing scope. In other words, you can "hide" variables and functions by enclosing them in the scope of a function.     
+实际上是在代码周围创建了一个作用域气泡，意味着在该代码中任何的声明（变量或函数）都会绑定到新的包装函数的作用域，而不是先前所在的作用域。换句话说，你可以通过将变量和函数包含在函数的作用域内来“隐藏”变量和函数。
 
-There's a variety of reasons motivating this scope-based hiding. They tend to arise from the software design principle "Principle of Least Privilege" [^note-leastprivilege], also sometimes called "Least Authority" or "Least Exposure". This principle states that in the design of software, such as the API for a module/object, you should expose only what is minimally necessary, and "hide" everything else.
+Why would "hiding" variables and functions be a useful technique?   
+为什么“隐藏”变量和函数是一个有用的技术？
 
-This principle extends to the choice of which scope to contain variables and functions. If all variables and functions were in the global scope, they would of course be accessible to any nested scope. But this would violate the "Least..." principle in that you are (likely) exposing many variables or functions which you should otherwise keep private, as proper use of the code would discourage access to those variables/functions.
+There's a variety of reasons motivating this scope-based hiding. They tend to arise from the software design principle "Principle of Least Privilege" [^note-leastprivilege], also sometimes called "Least Authority" or "Least Exposure". This principle states that in the design of software, such as the API for a module/object, you should expose only what is minimally necessary, and "hide" everything else.   
+提倡这种基于作用域的隐藏的原因有很多。它们大都引申自程序件设计原则中的“最低权限原则”[^note-leastprivilege]，有时也称为“最少权限”或“最少曝光”。这个原则声明，在程序设计中，例如某个模块或对象的API，你应该只暴露的必要的内容，并将其余部分“隐藏”起来。
 
-For example:
+This principle extends to the choice of which scope to contain variables and functions. If all variables and functions were in the global scope, they would of course be accessible to any nested scope. But this would violate the "Least..." principle in that you are (likely) exposing many variables or functions which you should otherwise keep private, as proper use of the code would discourage access to those variables/functions.     
+这个原则可以延伸为如何选择作用域来包含变量和函数。如果所有变量和函数都在全局作用域内，它们当然可以被任何嵌套的作用域访问。但是这会违反“最小特权”原则，因为你（可能）暴露了你应该保持私有的许多变量或函数，正确的代码应该可以阻止对这些变量和函数的访问。
+
+For example:  
+例如：
 
 ```js
 function doSomething(a) {
@@ -77,9 +96,11 @@ var b;
 doSomething( 2 ); // 15
 ```
 
-In this snippet, the `b` variable and the `doSomethingElse(..)` function are likely "private" details of how `doSomething(..)` does its job. Giving the enclosing scope "access" to `b` and `doSomethingElse(..)` is not only unnecessary but also possibly "dangerous", in that they may be used in unexpected ways, intentionally or not, and this may violate pre-condition assumptions of `doSomething(..)`.
+In this snippet, the `b` variable and the `doSomethingElse(..)` function are likely "private" details of how `doSomething(..)` does its job. Giving the enclosing scope "access" to `b` and `doSomethingElse(..)` is not only unnecessary but also possibly "dangerous", in that they may be used in unexpected ways, intentionally or not, and this may violate pre-condition assumptions of `doSomething(..)`.   
+在这个代码片段中，变量`b`和函数`doSomethingElse(..)`可能是`doSomething(..)`内部具体实现的“私有”的内容。给外面的作用域“访问”`b`和`doSomethingElse(..)`的权限不仅是不必要的，而且可能是“危险的”，因为它们可能以意想不到的方式被有意或无意地使用，从而导致超出了`doSomething(..)`的适用条件。
 
-A more "proper" design would hide these private details inside the scope of `doSomething(..)`, such as:
+A more "proper" design would hide these private details inside the scope of `doSomething(..)`, such as:     
+一个更合理的设计应该是将这些私有的细节隐藏在`doSomething(..)`内部，例如：
 
 ```js
 function doSomething(a) {
@@ -97,7 +118,8 @@ function doSomething(a) {
 doSomething( 2 ); // 15
 ```
 
-Now, `b` and `doSomethingElse(..)` are not accessible to any outside influence, instead controlled only by `doSomething(..)`. The functionality and end-result has not been affected, but the design keeps private details private, which is usually considered better software.
+Now, `b` and `doSomethingElse(..)` are not accessible to any outside influence, instead controlled only by `doSomething(..)`. The functionality and end-result has not been affected, but the design keeps private details private, which is usually considered better software.    
+现在，`b`和`doSomethingElse（..）`都不能从外部访问，而只能由`doSomething（..）`控制。功能和最终结果没有受到影响，但设计上保持了私有实现细节，这通常被认为是更好的程序。
 
 ### Collision Avoidance   --（张静）
 
