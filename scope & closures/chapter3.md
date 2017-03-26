@@ -485,9 +485,15 @@ The block-scoping nature of `catch` may seem like a useless academic fact, but s
 
 Thus far, we've seen that JavaScript only has some strange niche behaviors which expose block scope functionality. If that were all we had, and *it was* for many, many years, then block scoping would not be terribly useful to the JavaScript developer.
 
+截止到目前为止,我们知道JavaScript仅仅在暴露块作用域的功能方面有一些奇怪的行为。如果这是我们知道的全部,那么块作用域就不会成为多年来JavaScript开发者最常用的开发机制了.
+
 Fortunately, ES6 changes that, and introduces a new keyword `let` which sits alongside `var` as another way to declare variables.
 
+不幸的是,ES6改变了这些,它引进了一个新的单词`let`,提供作为`var`之外的另一种变量的声明方式.
+
 The `let` keyword attaches the variable declaration to the scope of whatever block (commonly a `{ .. }` pair) it's contained in. In other words, `let` implicitly hijacks any block's scope for its variable declaration.
+
+`let`关键字可以将变量绑定到任何一个包含它的作用域中(通常来说是一个{..}内部).换句话说,`let`为声明的变量隐式的劫持了一个块作用域.
 
 ```js
 var foo = true;
@@ -503,7 +509,11 @@ console.log( bar ); // ReferenceError
 
 Using `let` to attach a variable to an existing block is somewhat implicit. It can confuse you if you're not paying close attention to which blocks have variables scoped to them, and are in the habit of moving blocks around, wrapping them in other blocks, etc., as you develop and evolve code.
 
+使用`let`将变量绑定到一个已经存在的作用域中的过程是一个隐式的操作.在开发和修改代码中,如果你没有注意到哪个作用域包含这个变量,或者习惯性的移动这些作用域,将这些作用域包含在另一个作用域中,
+
 Creating explicit blocks for block-scoping can address some of these concerns, making it more obvious where variables are attached and not. Usually, explicit code is preferable over implicit or subtle code. This explicit block-scoping style is easy to achieve, and fits more naturally with how block-scoping works in other languages:
+
+为一个块创建一个显示的作用域能够解决这个问题,可以显示的展示变量所属的作用域.通常来说,显示的代码优于隐式的或者一些不够清晰的代码.这种隐式的块作用域风格很容易书写,而且也更适用于其他语言中的块作用域的实现.
 
 ```js
 var foo = true;
@@ -521,11 +531,19 @@ console.log( bar ); // ReferenceError
 
 We can create an arbitrary block for `let` to bind to by simply including a `{ .. }` pair anywhere a statement is valid grammar. In this case, we've made an explicit block *inside* the if-statement, which may be easier as a whole block to move around later in refactoring, without affecting the position and semantics of the enclosing if-statement.
 
+只要声明的语法是有效的,我们可以用一个{..}为`let`绑定任意一个块.在这个例子中,我们在if内部显示的声明了一个块,如果需要重构,移动整个块都可以被很方便的移动,而不影响if声明范围内的块所在的位置和语法.
+
 **Note:** For another way to express explicit block scopes, see Appendix B.
+
+**注意:**另外一种显示块作用域的表达请参照附录B.
 
 In Chapter 4, we will address hoisting, which talks about declarations being taken as existing for the entire scope in which they occur.
 
+在第四章,我们会讨论提升这个概念,即其声明将会存在其所发生的整个作用域内.
+
 However, declarations made with `let` will *not* hoist to the entire scope of the block they appear in. Such declarations will not observably "exist" in the block until the declaration statement.
+
+然而,`let`的声明*不会*提升至其所存在的整个作用域块中.除非提前声明,否则声明不会显示的"存在"于块中.
 
 ```js
 {
@@ -537,6 +555,8 @@ However, declarations made with `let` will *not* hoist to the entire scope of th
 #### Garbage Collection
 
 Another reason block-scoping is useful relates to closures and garbage collection to reclaim memory. We'll briefly illustrate here, but the closure mechanism is explained in detail in Chapter 5.
+
+另一方面,块作用域对于内存回收机制相关的闭包和垃圾回收有关.我们会在这里简要的说明一下,但是闭包机制的具体内容是在第五章.
 
 Consider:
 
@@ -558,7 +578,11 @@ btn.addEventListener( "click", function click(evt){
 
 The `click` function click handler callback doesn't *need* the `someReallyBigData` variable at all. That means, theoretically, after `process(..)` runs, the big memory-heavy data structure could be garbage collected. However, it's quite likely (though implementation dependent) that the JS engine will still have to keep the structure around, since the `click` function has a closure over the entire scope.
 
+`click`这个函数的处理器的回调函数根本不*需要*`someReallyBigData`.这意味着,理论上来说,`process(..)`运行过后,大量占用空间的数据结构就可以被垃圾回收了.然而,尽管`click`函数已经在其作用域中形成了一个闭包,JS引擎很可能(也可能运行环境决定)将会继续履行职责.
+
 Block-scoping can address this concern, making it clearer to the engine that it does not need to keep `someReallyBigData` around:
+
+块作用域可以为你解决这些顾虑,使你的机器清楚的知道无需再保留`someReallyBigData`这样的数据:
 
 ```js
 function process(data) {
@@ -580,6 +604,8 @@ btn.addEventListener( "click", function click(evt){
 ```
 
 Declaring explicit blocks for variables to locally bind to is a powerful tool that you can add to your code toolbox.
+
+在你的代码工具箱中为变量显示的声明块或者将变量绑定到本地都是一种很有效的方法.
 
 #### `let` Loops  --（李欣）
 
@@ -713,7 +739,7 @@ Though some seem to believe so, block scope should not be taken as an outright r
 
 ## 疑难杂句
 
-* Anonymous function expressions are quick and easy to type
+  * Anonymous function expressions are quick and easy to type
   - 官译:匿名函数表达式书写起来简单快捷
   - 匿名函数表达式是快速且简单的类型(李翠翠)
 * if the function needs to refer to itself, for recursion, etc., the **deprecated** `arguments.callee` reference is unfortunately required
