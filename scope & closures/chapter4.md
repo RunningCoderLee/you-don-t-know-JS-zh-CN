@@ -162,6 +162,8 @@ foo = function() {
 --(张润)
 `1` is printed instead of `2`! This snippet is interpreted by the *Engine* as:
 
+输出`1`而不是`2`!这段代码片段被机器解释为一下几行:
+
 ```js
 function foo() {
 	console.log( 1 );
@@ -176,7 +178,11 @@ foo = function() {
 
 Notice that `var foo` was the duplicate (and thus ignored) declaration, even though it came before the `function foo()...` declaration, because function declarations are hoisted before normal variables.
 
+我们注意到`var foo`实在重复的声明(因此被忽略了),但是它不会被提升到了`function foo()`声明的前面,因为函数的声明会在普通变量的声明之前被提前提升.
+
 While multiple/duplicate `var` declarations are effectively ignored, subsequent function declarations *do* override previous ones.
+
+尽管重复的声明`var`被有效的忽略了,然而后来的函数声明又会覆盖以前的函数声明.
 
 ```js
 foo(); // 3
@@ -196,7 +202,11 @@ function foo() {
 
 While this all may sound like nothing more than interesting academic trivia, it highlights the fact that duplicate definitions in the same scope are a really bad idea and will often lead to confusing results.
 
+尽管这些听起来都像是学术派的语言,却强调了一个事实就是在一个作用域中重复的定义绝对不是一个好事情,它可能会导致一些意想不到的结果.
+
 Function declarations that appear inside of normal blocks typically hoist to the enclosing scope, rather than being conditional as this code implies:
+
+函数的声明会显示的被提升至其所在的作用域的顶部,即便出现以下这种情况,它也不会受到任何影响.
 
 ```js
 foo(); // "b"
