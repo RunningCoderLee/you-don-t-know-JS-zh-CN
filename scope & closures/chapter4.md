@@ -95,9 +95,11 @@ function foo() {
 }
 ```
 -- (翠翠)
-The function `foo`'s declaration (which in this case *includes* the implied value of it as an actual function) is hoisted, such that the call on the first line is able to execute.
+The function `foo`'s declaration (which in this case *includes* the implied value of it as an actual function) is hoisted, such that the call on the first line is able to execute.                         
+函数`foo`的声明被提升了（这个例子还包括实际函数中的隐含值）,因此第一行的函数调用是可以执行的。                   
 
-It's also important to note that hoisting is **per-scope**. So while our previous snippets were simplified in that they only included global scope, the `foo(..)` function we are now examining itself exhibits that `var a` is hoisted to the top of `foo(..)` (not, obviously, to the top of the program). So the program can perhaps be more accurately interpreted like this:
+It's also important to note that hoisting is **per-scope**. So while our previous snippets were simplified in that they only included global scope, the `foo(..)` function we are now examining itself exhibits that `var a` is hoisted to the top of `foo(..)` (not, obviously, to the top of the program). So the program can perhaps be more accurately interpreted like this:                    
+同样重要的要注意的是**每个作用域**的提升.尽管我们之前的代码片段被简化了，因为它们只包含全局作用域，我们现在说的`foo(..)`函数它自己也会在内部将变量`var a`提升到函数`foo(..)`的顶部（并不是程序的顶部）.因此程序也许可以更准确的解释为这样:                     
 
 ```js
 function foo() {
@@ -111,7 +113,8 @@ function foo() {
 foo();
 ```
 
-Function declarations are hoisted, as we just saw. But function expressions are not.
+Function declarations are hoisted, as we just saw. But function expressions are not.                  
+正如我们看到的，函数声明会被提升，但是函数表达式不会被提升.                       
 
 ```js
 foo(); // not ReferenceError, but TypeError!
@@ -121,9 +124,11 @@ var foo = function bar() {
 };
 ```
 
-The variable identifier `foo` is hoisted and attached to the enclosing scope (global) of this program, so `foo()` doesn't fail as a `ReferenceError`. But `foo` has no value yet (as it would if it had been a true function declaration instead of expression). So, `foo()` is attempting to invoke the `undefined` value, which is a `TypeError` illegal operation.
+The variable identifier `foo` is hoisted and attached to the enclosing scope (global) of this program, so `foo()` doesn't fail as a `ReferenceError`. But `foo` has no value yet (as it would if it had been a true function declaration instead of expression). So, `foo()` is attempting to invoke the `undefined` value, which is a `TypeError` illegal operation.                       
+在这个程序中变量标识符`foo`被提升并且被附加到所在的作用域（全局作用域）,所以`foo()`不会抛出`ReferenceError`异常.但是`foo`依旧没有值(如果它是一个真的函数声明而不是函数表达式，那它就会被赋值).因此,`foo()`试图调用`undefined`值时,这是一个`TypeError`非法操作。                       
 
-Also recall that even though it's a named function expression, the name identifier is not available in the enclosing scope:
+Also recall that even though it's a named function expression, the name identifier is not available in the enclosing scope:                               
+同时也要记住即使它是一个命名函数表达式,名称标识符在赋值之前在其作用域中也不能使用:                               
 
 ```js
 foo(); // TypeError
