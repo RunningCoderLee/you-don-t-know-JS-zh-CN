@@ -47,15 +47,19 @@ Unfortunately, both guesses are incorrect. `undefined` is the output.
 **So, what's going on here?** It would appear we have a chicken-and-the-egg question. Which comes first, the declaration ("egg"), or the assignment ("chicken")?     
 **所以，这里发生了什么?** 就像是先有鸡还是蛋的问题。哪个在前面，声明（“蛋”）还是赋值（“鸡”）？
 
-## The Compiler Strikes Again  --(张静)
+## 编译器再度来袭(The Compiler Strikes Again)  --(张静)
 
-To answer this question, we need to refer back to Chapter 1, and our discussion of compilers. Recall that the *Engine* actually will compile your JavaScript code before it interprets it. Part of the compilation phase was to find and associate all declarations with their appropriate scopes. Chapter 2 showed us that this is the heart of Lexical Scope.
+To answer this question, we need to refer back to Chapter 1, and our discussion of compilers. Recall that the *Engine* actually will compile your JavaScript code before it interprets it. Part of the compilation phase was to find and associate all declarations with their appropriate scopes. Chapter 2 showed us that this is the heart of Lexical Scope.                                                   
+为了回答这个问题，我们需要回顾第一章关于编译器的讨论。回忆一下，引擎通常在解释你的代码之前先对其进行编译。编译阶段的一部分工作就是找到所有的声明，并用合适的作用域把它们关联起来。第二章展示了这个，也是词法作用域的核心。
 
-So, the best way to think about things is that all declarations, both variables and functions, are processed first, before any part of your code is executed.
+So, the best way to think about things is that all declarations, both variables and functions, are processed first, before any part of your code is executed.                                                                            
+所以，思考所有声明的最好方式是，变量和函数都在任何代码被执行前首先被处理。
 
-When you see `var a = 2;`, you probably think of that as one statement. But JavaScript actually thinks of it as two statements: `var a;` and `a = 2;`. The first statement, the declaration, is processed during the compilation phase. The second statement, the assignment, is left **in place** for the execution phase.
+When you see `var a = 2;`, you probably think of that as one statement. But JavaScript actually thinks of it as two statements: `var a;` and `a = 2;`. The first statement, the declaration, is processed during the compilation phase. The second statement, the assignment, is left **in place** for the execution phase.                                                                          
+当你看见`var a = 2;`，你可能会认为它是一个声明。但是javascript通常认为这是两个声明：`var a;` 和 `a = 2;`。第一个在编译阶段进行。第二个赋值声明会被留在原地等待执行阶段。
 
-Our first snippet then should be thought of as being handled like this:
+Our first snippet then should be thought of as being handled like this:                        
+我们的第一个代码段会以如下形式被思考：
 
 ```js
 var a;
@@ -66,9 +70,11 @@ a = 2;
 console.log( a );
 ```
 
-...where the first part is the compilation and the second part is the execution.
+...where the first part is the compilation and the second part is the execution.                                                                            
+第一部分是编译，第二部分是执行。
 
-Similarly, our second snippet is actually processed as:
+Similarly, our second snippet is actually processed as:                                  
+同样的，我们的第二个代码段通常如下进行：
 
 ```js
 var a;
@@ -79,11 +85,14 @@ console.log( a );
 a = 2;
 ```
 
-So, one way of thinking, sort of metaphorically, about this process, is that variable and function declarations are "moved" from where they appear in the flow of the code to the top of the code. This gives rise to the name "Hoisting".
+So, one way of thinking, sort of metaphorically, about this process, is that variable and function declarations are "moved" from where they appear in the flow of the code to the top of the code. This gives rise to the name "Hoisting".                                                                           
+所以，照这个思考的方式，打个比方，这个过程就好像变量和函数声明从他们在代码中出现的位置被“移动”到最上方。这叫“变量提升”。
 
-In other words, **the egg (declaration) comes before the chicken (assignment)**.
+In other words, **the egg (declaration) comes before the chicken (assignment)**.                                                                                      
+换句话说，先有蛋(声明)后有鸡(赋值)。
 
-**Note:** Only the declarations themselves are hoisted, while any assignments or other executable logic are left *in place*. If hoisting were to re-arrange the executable logic of our code, that could wreak havoc.
+**Note:** Only the declarations themselves are hoisted, while any assignments or other executable logic are left *in place*. If hoisting were to re-arrange the executable logic of our code, that could wreak havoc.                                
+**注意:** 只有声明本身会被提升，而赋值或者其他可运行的逻辑被留在原地。如果提升重新改变了代码执行的顺序，会造成非常严重的后果。
 
 ```js
 foo();
@@ -249,3 +258,12 @@ What this leads to is that all declarations in a scope, regardless of where they
 Declarations themselves are hoisted, but assignments, even assignments of function expressions, are *not* hoisted.
 
 Be careful about duplicate declarations, especially mixed between normal var declarations and function declarations -- peril awaits if you do!
+
+## 单词本
+
+| 单词 | 音标 | 释义 |
+|------|------|-----|
+| hoisting | ['hɔistiŋ] | n. 提升；起重 v. 升高；举起（hoist的ing形式） |
+| metaphorically | [,metə'fɔrikəli] | adv. 隐喻地；用比喻 |
+| interprets | 解释 作口译 |
+
