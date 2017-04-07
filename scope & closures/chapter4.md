@@ -136,6 +136,7 @@ var foo = function bar() {
 
 --(张雪)
 This snippet is more accurately interpreted (with hoisting) as:
+有了变量提升的感念，就能更加准确地理解下面的代码：
 
 ```js
 var foo;
@@ -149,9 +150,10 @@ foo = function() {
 }
 ```
 
-## Functions First
+## 函数在上（Functions First）
 
 Both function declarations and variable declarations are hoisted. But a subtle detail (that *can* show up in code with multiple "duplicate" declarations) is that functions are hoisted first, and then variables.
+函数声明和变量声明都有提升的作用，但有一个细微的区别（在代码中有重复定义时会显示出来）：函数先提升，然后才是变量。
 
 Consider:
 
