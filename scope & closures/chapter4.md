@@ -247,17 +247,24 @@ else {
 ```
 
 --(李欣)
-However, it's important to note that this behavior is not reliable and is subject to change in future versions of JavaScript, so it's probably best to avoid declaring functions in blocks.
+However, it's important to note that this behavior is not reliable and is subject to change in future versions of JavaScript, so it's probably best to avoid declaring functions in blocks.   
+可是，请注意这个行为并不可靠并且在未来的JavaScript版本中会更改它，因此最好避免在块中声明函数
 
 ## Review (TL;DR)
+## 回顾
 
-We can be tempted to look at `var a = 2;` as one statement, but the JavaScript *Engine* does not see it that way. It sees `var a` and `a = 2` as two separate statements, the first one a compiler-phase task, and the second one an execution-phase task.
+We can be tempted to look at `var a = 2;` as one statement, but the JavaScript *Engine* does not see it that way. It sees `var a` and `a = 2` as two separate statements, the first one a compiler-phase task, and the second one an execution-phase task.   
+我们可以尝试把`var a = 2`看成一条语句，但是JavaScript*引擎*并不这么认为。它会看成`var a`和`a = 2`2条语句，第一条是编译阶段的任务，第二条是执行阶段的任务。
 
-What this leads to is that all declarations in a scope, regardless of where they appear, are processed *first* before the code itself is executed. You can visualize this as declarations (variables and functions) being "moved" to the top of their respective scopes, which we call "hoisting".
+What this leads to is that all declarations in a scope, regardless of where they appear, are processed *first* before the code itself is executed. You can visualize this as declarations (variables and functions) being "moved" to the top of their respective scopes, which we call "hoisting".   
+这导致的结果是，范围内的所有声明（无论它们在哪里出现）都会在执行代码本身之前被*优先*处理。你可以将声明（变量和函数）看做被“移动”到其各自作用域的顶部，我们称之为“变量提升”。
 
-Declarations themselves are hoisted, but assignments, even assignments of function expressions, are *not* hoisted.
 
-Be careful about duplicate declarations, especially mixed between normal var declarations and function declarations -- peril awaits if you do!
+Declarations themselves are hoisted, but assignments, even assignments of function expressions, are *not* hoisted.   
+它们各自的声明被提升，但是赋值语句并没有，即使是函数表达式的赋值也*不会*被提升。
+
+Be careful about duplicate declarations, especially mixed between normal var declarations and function declarations -- peril awaits if you do!   
+要注意重复声明，特别是混合了正常的var声明和函数声明之间 - 如果你这样做，会很危险。
 
 ## 单词本
 
