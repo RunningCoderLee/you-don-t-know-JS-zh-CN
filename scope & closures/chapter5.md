@@ -302,6 +302,8 @@ for (var i=1; i<=5; i++) {
 --(张雪)
 *But, that's not all!* (in my best Bob Barker voice). There's a special behavior defined for `let` declarations used in the head of a for-loop. This behavior says that the variable will be declared not just once for the loop, **but each iteration**. And, it will, helpfully, be initialized at each subsequent iteration with the value from the end of the previous iteration.
 
+*不仅如此*（我用Bob Barker声音说道）。在for循环顶部使用`let`定义循环变量会产生一个特殊的行为：变量不会只被声明一次，而是每次循环的时候都会被声明，并且会将上一次循环末尾的值作为初始值。
+
 ```js
 for (let i=1; i<=5; i++) {
 	setTimeout( function timer(){
@@ -312,9 +314,12 @@ for (let i=1; i<=5; i++) {
 
 How cool is that? Block scoping and closure working hand-in-hand, solving all the world's problems. I don't know about you, but that makes me a happy JavaScripter.
 
-## Modules
+很酷吧？会级作用域和闭包一起解决了世界级难题，我不知道这对你来说怎么样，但这让我变成了一个更快乐的JS工程师。
+
+## 模块（Modules）
 
 There are other code patterns which leverage the power of closure but which do not on the surface appear to be about callbacks. Let's examine the most powerful of them: *the module*.
+一些其他的代码模式也使用到了闭包，但不想回调函数那样明显。让我们看看其中有用的一个：*模块*
 
 ```js
 function foo() {
@@ -333,7 +338,11 @@ function foo() {
 
 As this code stands right now, there's no observable closure going on. We simply have some private data variables `something` and `another`, and a couple of inner functions `doSomething()` and `doAnother()`, which both have lexical scope (and thus closure!) over the inner scope of `foo()`.
 
+以上代码中并没有闭包。我们只是简单地放入了私有变量`something` 和 `another`，以及内部函数`doSomething()` 和 `doAnother()`，他们在相同的词法作用域内（也可以看成是闭包），即在`foo()`的作用域内部。
+
 But now consider:
+
+考虑如下代码：
 
 ```js
 function CoolModule() {
@@ -362,27 +371,51 @@ foo.doAnother(); // 1 ! 2 ! 3
 
 This is the pattern in JavaScript we call *module*. The most common way of implementing the module pattern is often called "Revealing Module", and it's the variation we present here.
 
+这种模式在JS中叫做 *模块*，使用模块最常见的方法称作“暴露模块”，就像上面呈现的。
+
 Let's examine some things about this code.
+
+让我仔细看看这段代码。
 
 Firstly, `CoolModule()` is just a function, but it *has to be invoked* for there to be a module instance created. Without the execution of the outer function, the creation of the inner scope and the closures would not occur.
 
+首先，`CoolModule()`只是一个函数，但它必须被执行，因为模块必须要有一个实例。如果函数没有执行，其创建的内部作用域也不会存在。
+
 Secondly, the `CoolModule()` function returns an object, denoted by the object-literal syntax `{ key: value, ... }`. The object we return has references on it to our inner functions, but *not* to our inner data variables. We keep those hidden and private. It's appropriate to think of this object return value as essentially a **public API for our module**.
 
+其次，`CoolModule()`函数返回了一个对象，使用了对象的字面量语法表示`{ key: value, ... }`。我们返回的对象保持了对内部函数的引用，但没有对内部变量的引用。我们隐藏了这些变量。而被返回的对象自然地被当成 **模块的公共API**
+
 This object return value is ultimately assigned to the outer variable `foo`, and then we can access those property methods on the API, like `foo.doSomething()`.
+被返回的对象赋值给了我们的外部变量`foo`，我们可以访问它的方法属性。比如`foo.doSomething()`。
 
 **Note:** It is not required that we return an actual object (literal) from our module. We could just return back an inner function directly. jQuery is actually a good example of this. The `jQuery` and `$` identifiers are the public API for the jQuery "module", but they are, themselves, just a function (which can itself have properties, since all functions are objects).
 
+**注意：** 模块并不一定要返回一个对象，我们也可以直接返回一个内部函数。jQuery就是一个例子。`jQuery` 和 `$` 都是jQuery模块的公共API，但其本身只是一个函数（函数也有属性，毕竟所有函数都是对象）.
+
 The `doSomething()` and `doAnother()` functions have closure over the inner scope of the module "instance" (arrived at by actually invoking `CoolModule()`). When we transport those functions outside of the lexical scope, by way of property references on the object we return, we have now set up a condition by which closure can be observed and exercised.
+
+`doSomething()` 和 `doAnother()`是模块实例的闭包（在`CoolModule()`执行时创建）。当我们将这些函数转移到其词法作用域外，我们创建了可以被外部实践和观察的闭包。
+
 
 To state it more simply, there are two "requirements" for the module pattern to be exercised:
 
+简单来说，模块模式有两条实践要求：
+
 1. There must be an outer enclosing function, and it must be invoked at least once (each time creates a new module instance).
+
+1. 必须有一个外部包裹的函数，而且必须至少被执行一次（每次创建一个新实例）
 
 2. The enclosing function must return back at least one inner function, so that this inner function has closure over the private scope, and can access and/or modify that private state.
 
+2. 包裹函数必须至少返回一个内部函数，这样这个内部函数就是一个保持了私有作用域的闭包，而且这个函数也能够访问或修改内部状态。
+
 An object with a function property on it alone is not *really* a module. An object which is returned from a function invocation which only has data properties on it and no closured functions is not *really* a module, in the observable sense.
 
+一个单独的含有方法属性的对象并不一定是模块，一个被函数返回的只有数据属性的对象也不是模块。
+
 The code snippet above shows a standalone module creator called `CoolModule()` which can be invoked any number of times, each time creating a new module instance. A slight variation on this pattern is when you only care to have one instance, a "singleton" of sorts:
+
+这段代码说明了如何用`CoolModule()`创建一个独立的模块，这个函数可以被执行很多次，每次都会创建一个模块实例。这种模式的一个变体：单例，此时只用创建一个实例。
 
 ```js
 var foo = (function CoolModule() {
