@@ -617,5 +617,9 @@ Now we can see closures all around our existing code, and we have the ability to
 | 单词 | 音标 | 释义 |
 |------|------|-----|
 
+|instance identifier|------|实例标识符|
+｜module pattern｜------｜模块模式｜
+｜examine｜------｜研究｜
+｜wrapper function｜------｜包装函数｜
 ## 疑难杂句
 * 
