@@ -200,8 +200,10 @@ I'll wait.
 Now... you see!
 
 ## Loops + Closure  --（翠翠）
+## 循环和闭包 -- (翠翠)
 
-The most common canonical example used to illustrate closure involves the humble for-loop.
+The most common canonical example used to illustrate closure involves the humble for-loop.                    
+最常见的典型例子用来说明闭包就是for循环.     
 
 ```js
 for (var i=1; i<=5; i++) {
@@ -211,30 +213,40 @@ for (var i=1; i<=5; i++) {
 }
 ```
 
-**Note:** Linters often complain when you put functions inside of loops, because the mistakes of not understanding closure are **so common among developers**. We explain how to do so properly here, leveraging the full power of closure. But that subtlety is often lost on linters and they will complain regardless, assuming you don't *actually* know what you're doing.
+**Note:** Linters often complain when you put functions inside of loops, because the mistakes of not understanding closure are **so common among developers**. We explain how to do so properly here, leveraging the full power of closure. But that subtlety is often lost on linters and they will complain regardless, assuming you don't *actually* know what you're doing.           
+**注意:** 由于 **大多数的开发者** 不是很理解闭包，所以当循环内部包含函数定义时，代码格式检查器经常发出警告。在这里我们会解释如何正确的使用闭包并发挥它的全部威力。但是代码格式检查器没有那么灵敏，它会假设你并不 **真正** 了解你在做什么，所以无论如何他们会发出警告（Linters译成代码格式检查器，complain译成警告）              
+The spirit of this code snippet is that we would normally *expect* for the behavior to be that the numbers "1", "2", .. "5" would be printed out, one at a time, one per second, respectively.          
+正常情况，我们对这段代码片段行为的 **期望** 是输出数字“1”，“2”，..“5”，分别每秒一次，每次一个。             
 
-The spirit of this code snippet is that we would normally *expect* for the behavior to be that the numbers "1", "2", .. "5" would be printed out, one at a time, one per second, respectively.
+In fact, if you run this code, you get "6" printed out 5 times, at the one-second intervals.                
+但实际上,如果你运行那段代码，你会得到每隔一秒钟的频率输出5次“6”。
 
-In fact, if you run this code, you get "6" printed out 5 times, at the one-second intervals.
+**Huh?**                
+**这是为什么**                 
 
-**Huh?**
+Firstly, let's explain where `6` comes from. The terminating condition of the loop is when `i` is *not* `<=5`. The first time that's the case is when `i` is 6. So, the output is reflecting the final value of the `i` after the loop terminates.                   
+首先，我们解释`6`是从哪里来的。这个循环的结束条件是当`i`*不再*`<=5`。条件第一次成立是当`i`等于6时。所以，输出显示的是在循环结束后最终`i`的值。             
 
-Firstly, let's explain where `6` comes from. The terminating condition of the loop is when `i` is *not* `<=5`. The first time that's the case is when `i` is 6. So, the output is reflecting the final value of the `i` after the loop terminates.
+This actually seems obvious on second glance. The timeout function callbacks are all running well after the completion of the loop. In fact, as timers go, even if it was `setTimeout(.., 0)` on each iteration, all those function callbacks would still run strictly after the completion of the loop, and thus print `6` each time.                  
+仔细想一下又好像显而易见。延迟函数的回调会在循环完成时才执行。实际上，当定时器运行时，即使`setTimeout(..,0)`在每一次迭代，所有这些函数回调仍然严格运行在循环结束后，因此每一次都输出`6`.                  
 
-This actually seems obvious on second glance. The timeout function callbacks are all running well after the completion of the loop. In fact, as timers go, even if it was `setTimeout(.., 0)` on each iteration, all those function callbacks would still run strictly after the completion of the loop, and thus print `6` each time.
+But there's a deeper question at play here. What's *missing* from our code to actually have it behave as we semantically have implied?                 
+但是这里引入了一个更深入问题。我们的代码有什么*缺陷*导致它的行为与我们的语义暗示不一样？                     
 
-But there's a deeper question at play here. What's *missing* from our code to actually have it behave as we semantically have implied?
+What's missing is that we are trying to *imply* that each iteration of the loop "captures" its own copy of `i`, at the time of the iteration. But, the way scope works, all 5 of those functions, though they are defined separately in each loop iteration, all **are closed over the same shared global scope**, which has, in fact, only one `i` in it.                   
+*缺陷*是我们试图*假设* 每个循环迭代在迭代时都会*捕获*自己，然后复制一个`i`。但是，根据作用域的工作原理，尽管这5个函数被分别的定义每个循环迭代中，但是它们 **都被封闭在一个共享的全局作用域中**，事实上，只有一个`i`        
 
-What's missing is that we are trying to *imply* that each iteration of the loop "captures" its own copy of `i`, at the time of the iteration. But, the way scope works, all 5 of those functions, though they are defined separately in each loop iteration, all **are closed over the same shared global scope**, which has, in fact, only one `i` in it.
+Put that way, *of course* all functions share a reference to the same `i`. Something about the loop structure tends to confuse us into thinking there's something else more sophisticated at work. There is not. There's no difference than if each of the 5 timeout callbacks were just declared one right after the other, with no loop at all.               
+这样，*当然* 所有的函数共享引用一个`i`.一些关于循环结构往往会混淆我们去认为还有其他更复杂的机制。然而并没有。如果将延迟函数的回调重复定义5次，完全不使用循环，那它同这段代码没有什么不同。      
 
-Put that way, *of course* all functions share a reference to the same `i`. Something about the loop structure tends to confuse us into thinking there's something else more sophisticated at work. There is not. There's no difference than if each of the 5 timeout callbacks were just declared one right after the other, with no loop at all.
+OK, so, back to our burning question. What's missing? We need more ~~cowbell~~ closured scope. Specifically, we need a new closured scope for each iteration of the loop.                 
+好的，回到我们的正题、什么是缺陷？我们需要更多的闭包作用域。特别的，在每一个循环迭代中我们需要一个新的闭包作用域                     
 
-OK, so, back to our burning question. What's missing? We need more ~~cowbell~~ closured scope. Specifically, we need a new closured scope for each iteration of the loop.
+We learned in Chapter 3 that the IIFE creates scope by declaring a function and immediately executing it.                     
+在第3章我们知道IIFE通过声明一个函数并且立即执行它来创建作用域。                
 
-We learned in Chapter 3 that the IIFE creates scope by declaring a function and immediately executing it.
-
-Let's try:
-
+Let's try:             
+让我们试一下：          
 ```js
 for (var i=1; i<=5; i++) {
 	(function(){
@@ -245,13 +257,17 @@ for (var i=1; i<=5; i++) {
 }
 ```
 
-Does that work? Try it. Again, I'll wait.
+Does that work? Try it. Again, I'll wait.          
+这样能行吗？试一下，我等着你。          
 
-I'll end the suspense for you. **Nope.** But why? We now obviously have more lexical scope. Each timeout function callback is indeed closing over its own per-iteration scope created respectively by each IIFE.
+I'll end the suspense for you. **Nope.** But why? We now obviously have more lexical scope. Each timeout function callback is indeed closing over its own per-iteration scope created respectively by each IIFE.                     
+我不卖关子了。**这样不行** 但是为什么？我们现在显然的有更多的词法作用域。每个延迟函数回调都会将会IIFE在每次迭代中创建的作用域封闭起来。              
 
-It's not enough to have a scope to close over **if that scope is empty**. Look closely. Our IIFE is just an empty do-nothing scope. It needs *something* in it to be useful to us.
+It's not enough to have a scope to close over **if that scope is empty**. Look closely. Our IIFE is just an empty do-nothing scope. It needs *something* in it to be useful to us.               
+**如果作用域是空的** 那么将它们仅仅封闭是不够的。仔细看一下，IIFE只是个什么都没有的空作用域。它需要*一些实质内容*才能让我们使用。                
 
-It needs its own variable, with a copy of the `i` value at each iteration.
+It needs its own variable, with a copy of the `i` value at each iteration.           
+它需要有自己的变量，在每次迭代中复制`i`的值。         
 
 ```js
 for (var i=1; i<=5; i++) {
@@ -264,10 +280,11 @@ for (var i=1; i<=5; i++) {
 }
 ```
 
-**Eureka! It works!**
+**Eureka! It works!**          
+**有了，它能正常工作了***         
 
-A slight variation some prefer is:
-
+A slight variation some prefer is:                     
+可以改造成像下面这样
 ```js
 for (var i=1; i<=5; i++) {
 	(function(j){
@@ -278,17 +295,23 @@ for (var i=1; i<=5; i++) {
 }
 ```
 
-Of course, since these IIFEs are just functions, we can pass in `i`, and we can call it `j` if we prefer, or we can even call it `i` again. Either way, the code works now.
+Of course, since these IIFEs are just functions, we can pass in `i`, and we can call it `j` if we prefer, or we can even call it `i` again. Either way, the code works now.                
+当然，这些IIFE仅仅是函数，如果我们喜欢我们可以传进去`i`然后我们调用它时作为`j`，或者我们任然可以再次把它叫做`i`，无论哪种方法，这个代码现在都能执行。                   
 
-The use of an IIFE inside each iteration created a new scope for each iteration, which gave our timeout function callbacks the opportunity to close over a new scope for each iteration, one which had a variable with the right per-iteration value in it for us to access.
+The use of an IIFE inside each iteration created a new scope for each iteration, which gave our timeout function callbacks the opportunity to close over a new scope for each iteration, one which had a variable with the right per-iteration value in it for us to access.                      
+在迭代中使用IIFE会给每个迭代创建一个新的作用域，让我们的延迟函数的回调可以将新的作用域封闭在每个迭代内部，每个迭代中都会含有一个正确值的变量让我们访问。                
 
-Problem solved!
+Problem solved!          
+问题解决了
 
-### Block Scoping Revisited
+### Block Scoping Revisited              
+ ### 重返块级作用域            
 
-Look carefully at our analysis of the previous solution. We used an IIFE to create new scope per-iteration. In other words, we actually *needed* a per-iteration **block scope**. Chapter 3 showed us the `let` declaration, which hijacks a block and declares a variable right there in the block.
+Look carefully at our analysis of the previous solution. We used an IIFE to create new scope per-iteration. In other words, we actually *needed* a per-iteration **block scope**. Chapter 3 showed us the `let` declaration, which hijacks a block and declares a variable right there in the block.              
+仔细思考我们对前面解决方案的分析。我们使用IIFE在每次迭代中创建一个新的作用域。换句话说，每次迭代我们都*需要*一个**块级作用域**。在第3章介绍了`let`的声明，可以用来劫持块级作用域，并且在这个作用中声明一个变量。              
 
-**It essentially turns a block into a scope that we can close over.** So, the following awesome code "just works":
+**It essentially turns a block into a scope that we can close over.** So, the following awesome code "just works":                     
+**它本质上是将一个块变成一个可以关闭的作用域** 因此下面看起来很酷的代码就可以“正常运行”             
 
 ```js
 for (var i=1; i<=5; i++) {
@@ -601,9 +624,15 @@ Now we can see closures all around our existing code, and we have the ability to
 
 
 ## 单词本
-
 | 单词 | 音标 | 释义 |
 |------|------|-----|
+| Linters ||代码格式检查器|
+| properly | ['prɑpɚli] | adv. 适当地；正确地；恰当地 |
+| subtlety | ['sʌtlti] |n. 微妙；敏锐；精明（灵敏）|
+|terminate | ['tɝmɪnet] | vt. 使终止；使结束；解雇vi. 结束，终止；结果adj. 结束的|
+| captures | ['kæptʃɚ] | vt. 俘获；夺得；捕捉，拍摄,录制n. 捕获；战利品，俘虏 |
+| separately | ['sɛprətli] | adv. 分别地；分离地；个别地 |
+| sophisticated | [sə'fɪstɪketɪd | adj. 复杂的；精致的；久经世故的；富有经验的 |
 
 ## 疑难杂句
-* 
+*
