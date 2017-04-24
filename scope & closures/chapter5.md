@@ -1,33 +1,43 @@
-# You Don't Know JS: Scope & Closures --(罗尧)
-# Chapter 5: Scope Closure
+# 你不知道的js：作用域和闭包（You Don't Know JS: Scope & Closures） --(罗尧)
 
-We arrive at this point with hopefully a very healthy, solid understanding of how scope works.
+# 第五章：作用域闭包（Chapter 5: Scope Closure）
 
-We turn our attention to an incredibly important, but persistently elusive, *almost mythological*, part of the language: **closure**. If you have followed our discussion of lexical scope thus far, the payoff is that closure is going to be, largely, anticlimactic, almost self-obvious. *There's a man behind the wizard's curtain, and we're about to see him*. No, his name is not Crockford!
+We arrive at this point with hopefully a very healthy, solid understanding of how scope works.   
+接下来要讲的这些需要你对作用域有非常深刻详细的了解。
 
-If however you have nagging questions about lexical scope, now would be a good time to go back and review Chapter 2 before proceeding.
+We turn our attention to an incredibly important, but persistently elusive, almost mythological, part of the language: closure. If you have followed our discussion of lexical scope thus far, the payoff is that closure is going to be, largely, anticlimactic, almost self-obvious. There's a man behind the wizard's curtain, and we're about to see him. No, his name is not Crockford!   
+我们把注意力转移到这门语言非常重要的，难以掌控的，几乎*神话*的一个概念上：**闭包**。如果你已经已经学习过了之前的词法作用域的讨论，那么闭包对于你来说就是不言自明的，就是显而易见的。*魔术师的幕后藏有一个人，我们即将看到他*。不，他的名字不是Crockford！
 
-## Enlightenment
+## 启示（Enlightenment）
 
-For those who are somewhat experienced in JavaScript, but have perhaps never fully grasped the concept of closures, *understanding closure* can seem like a special nirvana that one must strive and sacrifice to attain.
+For those who are somewhat experienced in JavaScript, but have perhaps never fully grasped the concept of closures, *understanding closure* can seem like a special nirvana that one must strive and sacrifice to attain.    
+对于那些对JavaScript有一点使用经验但是有不完全理解闭包的人来说，*理解闭包*看起来就像是一次特殊的重生，但是需要达到这点要做出努力和牺牲。
 
-I recall years back when I had a firm grasp on JavaScript, but had no idea what closure was. The hint that there was *this other side* to the language, one which promised even more capability than I already possessed, teased and taunted me. I remember reading through the source code of early frameworks trying to understand how it actually worked. I remember the first time something of the "module pattern" began to emerge in my mind. I remember the *a-ha!* moments quite vividly.
+I recall years back when I had a firm grasp on JavaScript, but had no idea what closure was. The hint that there was *this other side* to the language, one which promised even more capability than I already possessed, teased and taunted me. I remember reading through the source code of early frameworks trying to understand how it actually worked. I remember the first time something of the "module pattern" began to emerge in my mind. I remember the *a-ha!* moments quite vividly.   
+前几年，我对JavaScript有一个牢固的掌握，但不知道什么是闭包。总以为这门语言有其隐晦的另一面，可以帮我成长为能力更强的人，现实打脸。我记得阅读了大量的早期框架的源代码，试图了解闭包的实际工作原理。我记得第一次在我的脑海里出现了“模块模式（module pattern）”的一些东西时那份激动。
 
-What I didn't know back then, what took me years to understand, and what I hope to impart to you presently, is this secret: **closure is all around you in JavaScript, you just have to recognize and embrace it.** Closures are not a special opt-in tool that you must learn new syntax and patterns for. No, closures are not even a weapon that you must learn to wield and master as Luke trained in The Force.
+What I didn't know back then, what took me years to understand, and what I hope to impart to you presently, is this secret: **closure is all around you in JavaScript, you just have to recognize and embrace it.** Closures are not a special opt-in tool that you must learn new syntax and patterns for. No, closures are not even a weapon that you must learn to wield and master as Luke trained in The Force.   
+当时我不理解的并花了多年的时间才能明白，希望现在能传达给你，这是就是秘诀：**闭包在JavaScript里面无处不在，你只需要认识并拥抱它。**闭包不是一个你必须学习新的语法和模式才能使用的工具。不，闭包甚至不是必须接受如Luke一样的原力训练才能使用和掌握的武装。
 
-Closures happen as a result of writing code that relies on lexical scope. They just happen. You do not even really have to intentionally create closures to take advantage of them. Closures are created and used for you all over your code. What you are *missing* is the proper mental context to recognize, embrace, and leverage closures for your own will.
+Closures happen as a result of writing code that relies on lexical scope. They just happen. You do not even really have to intentionally create closures to take advantage of them. Closures are created and used for you all over your code. What you are *missing* is the proper mental context to recognize, embrace, and leverage closures for your own will.   
+闭包是基于词法作用域的写代码而自然产生的的。他们只是发生。你甚至不需要有意创造闭包以此来理解它们。闭包自然地被创建并作用于你的所有代码。你所*缺少*的是适当的心理背景，以自己的意志来理解，拥抱和使用闭包。
 
-The enlightenment moment should be: **oh, closures are already occurring all over my code, I can finally *see* them now.** Understanding closures is like when Neo sees the Matrix for the first time.
+The enlightenment moment should be: **oh, closures are already occurring all over my code, I can finally *see* them now.** Understanding closures is like when Neo sees the Matrix for the first time.    
+启蒙的关键点应该是：**哦，关闭已经在我的代码中发生了，我终于可以看到他们了**。了解闭包就像当Neo第一次看到Matrix时一样。
 
-## Nitty Gritty
+## 实质问题（Nitty Gritty）
 
-OK, enough hyperbole and shameless movie references.
+OK, enough hyperbole and shameless movie references.   
+好了，足够的夸张和浮夸的电影比喻已经够多了。
 
-Here's a down-n-dirty definition of what you need to know to understand and recognize closures:
+Here's a down-n-dirty definition of what you need to know to understand and recognize closures:   
+下面就是直接了当的定义帮助你理解掌握闭包：
 
 > Closure is when a function is able to remember and access its lexical scope even when that function is executing outside its lexical scope.
+> 闭包是函数能够记住和访问其词法作用域，即使该函数在其词法作用域之外执行。
 
 Let's jump into some code to illustrate that definition.
+让我们看一些代码来说明这个定义。
 
 ```js
 function foo() {
@@ -43,17 +53,23 @@ function foo() {
 foo();
 ```
 
-This code should look familiar from our discussions of Nested Scope. Function `bar()` has *access* to the variable `a` in the outer enclosing scope because of lexical scope look-up rules (in this case, it's an RHS reference look-up).
+This code should look familiar from our discussions of Nested Scope. Function `bar()` has *access* to the variable `a` in the outer enclosing scope because of lexical scope look-up rules (in this case, it's an RHS reference look-up).    
+这段代码和我们之前讨论的嵌套作用域很相似。由于词法作用域查找规则（在这种情况下，它是RHS参考查找），函数`bar()`可以*访问*外部封闭范围中的变量`a`。
 
 Is this "closure"?
+这就是“闭包”？
 
-Well, technically... *perhaps*. But by our what-you-need-to-know definition above... *not exactly*. I think the most accurate way to explain `bar()` referencing `a` is via lexical scope look-up rules, and those rules are *only* (an important!) **part** of what closure is.
+Well, technically... *perhaps*. But by our what-you-need-to-know definition above... *not exactly*. I think the most accurate way to explain `bar()` referencing `a` is via lexical scope look-up rules, and those rules are *only* (an important!) **part** of what closure is.  
+从技术上来说...*或许是*。但是按照上面我们需要掌握的的定义来说...*不完全是*。我认为解释`bar()`引用`a`最准确的说法是通过词法范围查找规则，而这些规则* 只是* （但是是非常重要的）闭包的一部分。
 
-From a purely academic perspective, what is said of the above snippet is that the function `bar()` has a *closure* over the scope of `foo()` (and indeed, even over the rest of the scopes it has access to, such as the global scope in our case). Put slightly differently, it's said that `bar()` closes over the scope of `foo()`. Why? Because `bar()` appears nested inside of `foo()`. Plain and simple.
+From a purely academic perspective, what is said of the above snippet is that the function `bar()` has a *closure* over the scope of `bar()` (and indeed, even over the rest of the scopes it has access to, such as the global scope in our case). Put slightly differently, it's said that `bar()` closes over the scope of `foo()`. Why? Because `bar()` appears nested inside of `foo()`. Plain and simple.   
+从纯粹的学术角度来说，上面的代码片断说明的是，函数`bar()`在`foo()`的作用域内有一个闭包（实际上，甚至在其可以访问的其他作用域内，例如在全局作用域）。也可以说`bar()`被封闭在`foo()`的作用域。为什么？答案简单明了，因为`bar()`嵌套在`foo()`中。
 
-But, closure defined in this way is not directly *observable*, nor do we see closure *exercised* in that snippet. We clearly see lexical scope, but closure remains sort of a mysterious shifting shadow behind the code.
+But, closure defined in this way is not directly *observable*, nor do we see closure *exercised* in that snippet. We clearly see lexical scope, but closure remains sort of a mysterious shifting shadow behind the code.   
+但是，以这种方式定义的闭包不是*直接可见*的，我们也不会看到在该代码段中如何执行了闭包。我们只能看到词法作用域，但闭包仍然藏在代码背后的一个神秘的阴影里。
 
-Let us then consider code which brings closure into full light:
+Let us then consider code which brings closure into full light:   
+为了更透彻地观察闭包，让我们来看下面一段代码：
 
 ```js
 function foo() {
@@ -68,28 +84,39 @@ function foo() {
 
 var baz = foo();
 
-baz(); // 2 -- Whoa, closure was just observed, man.
+baz(); // 2 -- wow，朋友，你看到闭包了吧.
 ```
 
-The function `bar()` has lexical scope access to the inner scope of `foo()`. But then, we take `bar()`, the function itself, and pass it *as* a value. In this case, we `return` the function object itself that `bar` references.
+The function `bar()` has lexical scope access to the inner scope of `foo()`. But then, we take `bar()`, the function itself, and pass it *as* a value. In this case, we `return` the function object itself that `bar` references.   
+函数`bar()`具有对`foo()`的内部作用域的词法作用域访问。但是，我们把`bar()`函数本身作为一个值传递。在这个例子中，我们`return``bar`函数对象本身。
 
-After we execute `foo()`, we assign the value it returned (our inner `bar()` function) to a variable called `baz`, and then we actually invoke `baz()`, which of course is invoking our inner function `bar()`, just by a different identifier reference.
+After we execute `foo()`, we assign the value it returned (our inner `bar()` function) to a variable called `baz`, and then we actually invoke `baz()`, which of course is invoking our inner function `bar()`, just by a different identifier reference.  
+在我们执行`foo()`之后，我们将它返回的值（我们的内部`bar()`函数）赋给一个名为`baz`的变量，然后我们实际上调用了`baz()`，当然这是调用我们的内部函数`bar()`不同的标识符引用。
 
-`bar()` is executed, for sure. But in this case, it's executed *outside* of its declared lexical scope.
+`bar()` is executed, for sure. But in this case, it's executed *outside* of its declared lexical scope.   
+`bar()` 被执行。但在这个例子中，它在其声明的词法作用域外执行。
 
-After `foo()` executed, normally we would expect that the entirety of the inner scope of `foo()` would go away, because we know that the *Engine* employs a *Garbage Collector* that comes along and frees up memory once it's no longer in use. Since it would appear that the contents of `foo()` are no longer in use, it would seem natural that they should be considered *gone*.
+After `foo()` executed, normally we would expect that the entirety of the inner scope of `foo()` would go away, because we know that the *Engine* employs a *Garbage Collector* that comes along and frees up memory once it's no longer in use. Since it would appear that the contents of `foo()` are no longer in use, it would seem natural that they should be considered *gone*.    
+在执行`foo()`之后，通常我们会期望`foo()`的内部作用域全部都消失，因为我们知道引擎使用了一个*垃圾收集器*，一旦它不再使用就释放内存。由于看起来`foo()`的内容不再被使用，所以很自然地应该被*回收*。
 
-But the "magic" of closures does not let this happen. That inner scope is in fact *still* "in use", and thus does not go away. Who's using it? **The function `bar()` itself**.
+But the "magic" of closures does not let this happen. That inner scope is in fact *still* "in use", and thus does not go away. Who's using it? **The function `bar()` itself**.  
+但是“神奇的”的是闭包会阻止这事的发生。内部作用域实际上*仍然*“还在被使用”，因此不会消失。那谁又在使用这个作用域？答案是**`bar()`函数自己**
 
-By virtue of where it was declared, `bar()` has a lexical scope closure over that inner scope of `foo()`, which keeps that scope alive for `bar()` to reference at any later time.
+By virtue of where it was declared, `bar()` has a lexical scope closure over that inner scope of `foo()`, which keeps that scope alive for `bar()` to reference at any later time.      
+由于它被声明在那个地方，`bar()`在`foo()`的内部范围内有一个词法作用域闭包，它使该作用域一直存货以便之后的`bar()`引用。
 
-**`bar()` still has a reference to that scope, and that reference is called closure.**
 
-So, a few microseconds later, when the variable `baz` is invoked (invoking the inner function we initially labeled `bar`), it duly has *access* to author-time lexical scope, so it can access the variable `a` just as we'd expect.
+**`bar()` still has a reference to that scope, and that reference is called closure.**   
+** `bar()`仍然具有对该作用域的引用，该引用称为闭包。** 
 
-The function is being invoked well outside of its author-time lexical scope. **Closure** lets the function continue to access the lexical scope it was defined in at author-time.
+So, a few microseconds later, when the variable `baz` is invoked (invoking the inner function we initially labeled `bar`), it duly has *access* to author-time lexical scope, so it can access the variable `a` just as we'd expect.   
+所以，几微秒后，当调用变量`baz`（调用内部函数，我们最初标记为bar）时，它就可以访问定义时的词法作用域，所以它可以像我们所期望的那样访问变量`a`。
 
-Of course, any of the various ways that functions can be *passed around* as values, and indeed invoked in other locations, are all examples of observing/exercising closure.
+The function is being invoked well outside of its author-time lexical scope. **Closure** lets the function continue to access the lexical scope it was defined in at author-time.  
+该函数在其定义词汇作用域之外的地方被调用。闭包允许函数继续访问定义时的词法作用域。
+
+Of course, any of the various ways that functions can be *passed around* as values, and indeed invoked in other locations, are all examples of observing/exercising closure.   
+当然，无论使用哪种方法对函数类型的值进行*传递*，并且在其他位置被调用，这些可以看得到闭包。
 
 ```js
 function foo() {
