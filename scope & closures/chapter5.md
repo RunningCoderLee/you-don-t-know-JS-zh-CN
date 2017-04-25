@@ -108,9 +108,11 @@ function bar(fn) {
 ```
 
 -- (张静)
-We pass the inner function `baz` over to `bar`, and call that inner function (labeled `fn` now), and when we do, its closure over the inner scope of `foo()` is observed, by accessing `a`.
+We pass the inner function `baz` over to `bar`, and call that inner function (labeled `fn` now), and when we do, its closure over the inner scope of `foo()` is observed, by accessing `a`.                                                      
+我们把内部function`baz` 传给 `bar`，当调用这个内部函数（现在叫`fn`）时，`foo()`的内部作用域能被观察到，通过变量`a`。
 
-These passings-around of functions can be indirect, too.
+These passings-around of functions can be indirect, too.                                  
+传递函数也可以是间接的。
 
 ```js
 var fn;
@@ -122,11 +124,11 @@ function foo() {
 		console.log( a );
 	}
 
-	fn = baz; // assign `baz` to global variable
+	fn = baz; // assign `baz` to global variable（分配`baz`给全局变量）
 }
 
 function bar() {
-	fn(); // look ma, I saw closure!
+	fn(); // look ma, I saw closure!（看，这就是闭包）
 }
 
 foo();
@@ -134,11 +136,13 @@ foo();
 bar(); // 2
 ```
 
-Whatever facility we use to *transport* an inner function outside of its lexical scope, it will maintain a scope reference to where it was originally declared, and wherever we execute it, that closure will be exercised.
+Whatever facility we use to *transport* an inner function outside of its lexical scope, it will maintain a scope reference to where it was originally declared, and wherever we execute it, that closure will be exercised.                              
+无论通过何种方式将内部函数传递到它的词法作用域外，它都会保持对原始定义作用域的引用，无论在何处执行这个函数都会使用闭包。
 
-## Now I Can See
+## 现在我懂了(Now I Can See)
 
-The previous code snippets are somewhat academic and artificially constructed to illustrate *using closure*. But I promised you something more than just a cool new toy. I promised that closure was something all around you in your existing code. Let us now *see* that truth.
+The previous code snippets are somewhat academic and artificially constructed to illustrate *using closure*. But I promised you something more than just a cool new toy. I promised that closure was something all around you in your existing code. Let us now *see* that truth.                                                  
+之前的代码段有点学术，并且为了举例说明如何使用闭包人为的修改了结构。但是我保证闭包不仅仅是一个好玩的玩具。闭包存在你之前写过的很多代码段中。让我们现在来看看这个事实。
 
 ```js
 function wait(message) {
@@ -152,15 +156,20 @@ function wait(message) {
 wait( "Hello, closure!" );
 ```
 
-We take an inner function (named `timer`) and pass it to `setTimeout(..)`. But `timer` has a scope closure over the scope of `wait(..)`, indeed keeping and using a reference to the variable `message`.
+We take an inner function (named `timer`) and pass it to `setTimeout(..)`. But `timer` has a scope closure over the scope of `wait(..)`, indeed keeping and using a reference to the variable `message`.                                                   
+我们将内部函数`timer`传给`setTimeout(..)`。但是`timer`有一个覆盖`wait(..)`作用域的闭包，因此保有对变量`message`的引用。
 
-A thousand milliseconds after we have executed `wait(..)`, and its inner scope should otherwise be long gone, that inner function `timer` still has closure over that scope.
+A thousand milliseconds after we have executed `wait(..)`, and its inner scope should otherwise be long gone, that inner function `timer` still has closure over that scope.                                                                        
+`wait(..)`执行1000毫秒后，它的内部作用域并不会消失，timer函数依然保有`wait(..)`作用域的闭包。
 
-Deep down in the guts of the *Engine*, the built-in utility `setTimeout(..)` has reference to some parameter, probably called `fn` or `func` or something like that. *Engine* goes to invoke that function, which is invoking our inner `timer` function, and the lexical scope reference is still intact.
+Deep down in the guts of the *Engine*, the built-in utility `setTimeout(..)` has reference to some parameter, probably called `fn` or `func` or something like that. *Engine* goes to invoke that function, which is invoking our inner `timer` function, and the lexical scope reference is still intact.                                    
+深入到*引擎*的内部原理，内置的函数`setTimeout(..)`持有对一些参数的引用，可能叫`fn` 或 `func`或者一些类似的名字。*引擎*会调用这个函数，这里就是`timer`这个函数，词法作用域在这个过程中仍然完整。
 
-**Closure.**
+**Closure.**                                                                  
+**闭包。**
 
-Or, if you're of the jQuery persuasion (or any JS framework, for that matter):
+Or, if you're of the jQuery persuasion (or any JS framework, for that matter):                                            
+或者，如果你很熟悉jQuery(或者任何JS框架)：
 
 ```js
 function setupBot(name,selector) {
@@ -173,11 +182,14 @@ setupBot( "Closure Bot 1", "#bot_1" );
 setupBot( "Closure Bot 2", "#bot_2" );
 ```
 
-I am not sure what kind of code you write, but I regularly write code which is responsible for controlling an entire global drone army of closure bots, so this is totally realistic!
+I am not sure what kind of code you write, but I regularly write code which is responsible for controlling an entire global drone army of closure bots, so this is totally realistic!                                                               
+我不知道你写的哪种代码，但是我写的代码负责控制由闭包机器人组成的整个全球无人机大军，这是完全可以实现的。
 
-(Some) joking aside, essentially *whenever* and *wherever* you treat functions (which access their own respective lexical scopes) as first-class values and pass them around, you are likely to see those functions exercising closure. Be that timers, event handlers, Ajax requests, cross-window messaging, web workers, or any of the other asynchronous (or synchronous!) tasks, when you pass in a *callback function*, get ready to sling some closure around!
+(Some) joking aside, essentially *whenever* and *wherever* you treat functions (which access their own respective lexical scopes) as first-class values and pass them around, you are likely to see those functions exercising closure. Be that timers, event handlers, Ajax requests, cross-window messaging, web workers, or any of the other asynchronous (or synchronous!) tasks, when you pass in a *callback function*, get ready to sling some closure around!                         
+除开玩笑，本质上无论何时何地，如果将函数（访问它们各自的词法作用域）当作第一级的值类型并到处传递，你就会看到闭包在这些函数中的应用。在定时器、事件监听器、Ajax请求、跨窗口通信、Web Workers或者任何其他的异步（或者同步）任务中，只要使用了回调函数，实际上就是在使用闭包！
 
-**Note:** Chapter 3 introduced the IIFE pattern. While it is often said that IIFE (alone) is an example of observed closure, I would somewhat disagree, by our definition above.
+**Note:** Chapter 3 introduced the IIFE pattern. While it is often said that IIFE (alone) is an example of observed closure, I would somewhat disagree, by our definition above.                                                                
+**注意:** 第三章介绍了IIFE模式。通常认为IIFE是闭包的一个例子，我不同意。
 
 ```js
 var a = 2;
@@ -187,17 +199,23 @@ var a = 2;
 })();
 ```
 
-This code "works", but it's not strictly an observation of closure. Why? Because the function (which we named "IIFE" here) is not executed outside its lexical scope. It's still invoked right there in the same scope as it was declared (the enclosing/global scope that also holds `a`). `a` is found via normal lexical scope look-up, not really via closure.
+This code "works", but it's not strictly an observation of closure. Why? Because the function (which we named "IIFE" here) is not executed outside its lexical scope. It's still invoked right there in the same scope as it was declared (the enclosing/global scope that also holds `a`). `a` is found via normal lexical scope look-up, not really via closure.                                             
+这段代码可以运行，但严格来讲它并不是闭包。为什么？因为函数（这里是IIFE）在它的词法作用域外面没有执行。它在定义时所在的作用域中调用（而外部作用域，也就是全局作用域也持有`a`）。`a`是通过普通的词法作用域查找不是闭包被发现的。
 
-While closure might technically be happening at declaration time, it is *not* strictly observable, and so, as they say, *it's a tree falling in the forest with no one around to hear it.*
+While closure might technically be happening at declaration time, it is *not* strictly observable, and so, as they say, *it's a tree falling in the forest with no one around to hear it.*                                                         
+尽管从技术上讲，闭包可能发生在定义时，但不明显，所以说，既非风动，亦非幡动，仁者心动耳。
 
-Though an IIFE is not *itself* an example of closure, it absolutely creates scope, and it's one of the most common tools we use to create scope which can be closed over. So IIFEs are indeed heavily related to closure, even if not exercising closure themselves.
+Though an IIFE is not *itself* an example of closure, it absolutely creates scope, and it's one of the most common tools we use to create scope which can be closed over. So IIFEs are indeed heavily related to closure, even if not exercising closure themselves.                                                            
+尽管IIFE本身不是一个闭包的例子，但它明显创造了一个作用域，并且也是最常用来创建作用域的工具。因此IIFE确实与闭包息息相关，即使本身并不会真的使用闭包。
 
-Put this book down right now, dear reader. I have a task for you. Go open up some of your recent JavaScript code. Look for your functions-as-values and identify where you are already using closure and maybe didn't even know it before.
+Put this book down right now, dear reader. I have a task for you. Go open up some of your recent JavaScript code. Look for your functions-as-values and identify where you are already using closure and maybe didn't even know it before.                                                                                  
+亲爱的读者，现在放下书，我有个任务要给你。打开你最近写得js代码，找到其中函数类型的值，并指出哪里使用了闭包，即使你之前可能并不知道它是闭包。
 
-I'll wait.
+I'll wait.                                     
+等着你。
 
-Now... you see!
+Now... you see!                           
+现在，你懂了吧！
 
 ## Loops + Closure  --（翠翠）
 
@@ -604,6 +622,16 @@ Now we can see closures all around our existing code, and we have the ability to
 
 | 单词 | 音标 | 释义 |
 |------|------|-----|
+| closure | ['kloʒɚ] | n. 关闭；终止，结束  vt. 使终止 |
+| essentially | [ɪ'sɛnʃəli] | adv. 本质上；本来 |
+| regularly | [['reɡjələli]] | adv. 定期地；有规律地；整齐地；匀称地 |
+| invoke | [ɪn'vok] | vt. 调用；祈求；引起；恳求 |
+| utility | [ju'tɪləti] | n. 实用；效用；公共设施；功用 adj. 实用的；通用的；有多种用途的 |
+| illustrate | ['ɪləstret] | vt. 阐明，举例说明；图解 vi. 举例 |
 
 ## 疑难杂句
-* 
+* I regularly write code which is responsible for controlling an entire global drone army of closure bots, so this is totally realistic!                          
+我写的代码负责控制由闭包机器人组成的整个全球无人机大军，这是完全可以实现的。
+
+* it's a tree falling in the forest with no one around to hear it.                                                      
+既非风动，亦非幡动，仁者心动耳。比喻客观存在和观察认知之间的关系。
