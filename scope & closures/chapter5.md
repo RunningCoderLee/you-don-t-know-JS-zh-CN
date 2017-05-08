@@ -445,6 +445,8 @@ Here, we turned our module function into an IIFE (see Chapter 3), and we *immedi
 
 Modules are just functions, so they can receive parameters:
 
+现在把我们的函数变成一个立即执行函数(参照第三章),现在我们立即调用它,并且直接将返回值赋给我们的单例模块实例标识符`foo`
+
 ```js
 function CoolModule(id) {
 	function identify() {
@@ -464,6 +466,8 @@ foo2.identify(); // "foo 2"
 ```
 
 Another slight but powerful variation on the module pattern is to name the object you are returning as your public API:
+
+模块机制另一个简单而强大的用法是命名你要返回的作为公共API的对象.
 
 ```js
 var foo = (function CoolModule(id) {
@@ -495,9 +499,14 @@ foo.identify(); // FOO MODULE
 
 By retaining an inner reference to the public API object inside your module instance, you can modify that module instance **from the inside**, including adding and removing methods, properties, *and* changing their values.
 
+通过在实例对象里保留一个内部的公共API对象的引用,你可以通过内部方法修改模块实例,包括添加和移除方法,属性和改变他们的值.
+
 ### Modern Modules
+### 模块机制
 
 Various module dependency loaders/managers essentially wrap up this pattern of module definition into a friendly API. Rather than examine any one particular library, let me present a *very simple* proof of concept **for illustration purposes (only)**:
+
+很多模块依赖加载器/管理器　其主要原因是通过包裹这种模块模式将其定义进一个有好的API里.而不是研究某个特殊的类库,为了说明我的用意,让我`简单的`介绍一些概念．
 
 ```js
 var MyModules = (function Manager() {
@@ -524,6 +533,9 @@ var MyModules = (function Manager() {
 The key part of this code is `modules[name] = impl.apply(impl, deps)`. This is invoking the definition wrapper function for a module (passing in any dependencies), and storing the return value, the module's API, into an internal list of modules tracked by name.
 
 And here's how I might use it to define some modules:
+
+这段代码的主要部分是`modules[name] = impl.apply(impl, deps)`,主要作用是定义模块(可以传入任何依赖的模块)中的包装函数,同时将返回值即模块的API存储到一个通过名字来索引的模块内部的列表.
+
 
 ```js
 MyModules.define( "bar", [], function(){
@@ -638,5 +650,9 @@ Now we can see closures all around our existing code, and we have the ability to
 | 单词 | 音标 | 释义 |
 |------|------|-----|
 
+|instance identifier|------|实例标识符|
+｜module pattern｜------｜模块模式｜
+｜examine｜------｜研究｜
+｜wrapper function｜------｜包装函数｜
 ## 疑难杂句
 * 
